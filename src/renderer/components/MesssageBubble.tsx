@@ -190,7 +190,6 @@ export default function MesssageBubble({
               {getNameForNumber && getNameForNumber(message['sender.number'])}
             </p>
           )}
-        {message['chat.guid']}
         <div
           className={
             message.is_from_me === 1 ? 'chatBubbleMe' : 'chatBubbleOther'
