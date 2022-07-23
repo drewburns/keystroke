@@ -64,7 +64,6 @@ let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('get-reminders', async (event, arg) => {
   const results = await getReminders();
-  console.log('getting reminders', results);
   event.reply('get-reminders', results);
 });
 

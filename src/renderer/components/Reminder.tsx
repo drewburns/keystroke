@@ -57,10 +57,11 @@ export default function Reminder({
               whiteSpace: 'nowrap',
             }}
           >
-            {getChatUserHandle(
-              reminder.member_list.split(','),
-              reminder.display_name
-            )}
+            {reminder.member_list &&
+              getChatUserHandle(
+                reminder.member_list.split(','),
+                reminder.display_name
+              )}
           </p>
         </Grid>
         <Grid
