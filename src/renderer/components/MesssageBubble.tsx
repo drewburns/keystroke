@@ -50,7 +50,6 @@ export default function MesssageBubble({
   const renderAttachmnet = async (message: any) => {
     mixpanel.track('Render attachment');
 
-
     let filenames = [];
     let mimes = [];
     if (message.attach_list && message.mimes) {
@@ -67,6 +66,9 @@ export default function MesssageBubble({
 
     for (let x = 0; x < filenames.length; x++) {
       const fileName = filenames[x];
+      if (!fileName) {
+        continue;
+      }
       const mime_type = mimes[x];
       if (fileName.includes('.caf')) {
         renderArray.push(
