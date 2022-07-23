@@ -2,6 +2,8 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-await-in-loop */
 import { CircularProgress, Grid } from '@mui/material';
+import mixpanel from 'mixpanel-browser';
+
 import TimeAgo from 'javascript-time-ago';
 import TextareaAutosize from 'react-textarea-autosize';
 // import { ReactTinyLink } from 'react-tiny-link';
@@ -41,10 +43,14 @@ export default function MesssageBubble({
   };
 
   const showFile = (filePath: string) => {
+    mixpanel.track('show file double click');
     window.electron.ipcRenderer.sendMessage('showFile', filePath);
   };
 
   const renderAttachmnet = async (message: any) => {
+    mixpanel.track('Render attachment');
+
+
     let filenames = [];
     let mimes = [];
     if (message.attach_list && message.mimes) {

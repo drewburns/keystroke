@@ -1,5 +1,6 @@
 /* eslint-disable guard-for-in */
 import { Grid, Modal } from '@mui/material';
+import mixpanel from 'mixpanel-browser';
 import { ipcMain, ipcRenderer } from 'electron';
 import React from 'react';
 import {
@@ -24,6 +25,9 @@ type SelectedChatType = {
 };
 
 const Hello = () => {
+  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
+
+
   const { setState } = useGlobalState();
   const [chatThreads, setChatThreads] = React.useState([]);
   const [page, setPage] = React.useState('reminders');
@@ -65,6 +69,7 @@ const Hello = () => {
   }, [page]);
 
   React.useEffect(() => {
+    mixpanel.track('App load');
     window.electron.ipcRenderer.on('asynchronous-message', (res: any) => {
       setChatThreads(res.data);
     });
@@ -93,6 +98,7 @@ const Hello = () => {
         (thread) => thread['chat.guid'] === selectedChat.chatGuid
       );
       if (newPage === 'upChat') {
+        mixpanel.track('up chat arrow used');
         if (curIndex !== 0) {
           const row = chatThreads[curIndex - 1];
           setSelectedChat({
@@ -106,6 +112,7 @@ const Hello = () => {
         return;
       }
       if (newPage === 'downChat') {
+        mixpanel.track('Down chat arrow used');
         const row = chatThreads[curIndex + 1];
         setSelectedChat({
           chatGuid: row['chat.guid'],
@@ -130,6 +137,7 @@ const Hello = () => {
   };
 
   const goToChat = (chatGuid: string) => {
+    mixpanel.track('Chat selected');
     const row = chatThreads.find((r) => r['chat.guid'] === chatGuid);
     setSelectedChat({
       chatGuid: row['chat.guid'],

@@ -1,5 +1,6 @@
 import { CircularProgress, Grid } from '@mui/material';
 import React from 'react';
+import mixpanel from 'mixpanel-browser';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Dropzone from 'react-dropzone';
 // TODO: abstract this out
@@ -26,6 +27,8 @@ export default function ChatPage({
   const [hasMore, setHasMore] = React.useState(true);
   const [files, setFiles] = React.useState<any>([]);
 
+  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
+
   function unique(array: any[], propertyName: string) {
     return array.filter(
       (e, i) =>
@@ -34,6 +37,7 @@ export default function ChatPage({
   }
 
   React.useEffect(() => {
+    mixpanel.track('Message page loaded');
     window.electron.ipcRenderer.once('get-messages', (results: any[]) => {
       setMessages(unique(results, 'message.ROWID'));
       window.electron.ipcRenderer.sendMessage('set-chat-read', [chatGuid]);
@@ -66,6 +70,7 @@ export default function ChatPage({
   };
 
   const getMore = () => {
+    mixpanel.track('Fetch more messages');
     const lastRowID = messages[messages.length - 1]['message.ROWID'];
     if (!lastRowID) {
       setHasMore(false);
@@ -78,6 +83,8 @@ export default function ChatPage({
   };
 
   const openReminderCreate = (message: any) => {
+    mixpanel.track('Open create reminder modal');
+
     setMessageForRemindCreate(message);
   };
 

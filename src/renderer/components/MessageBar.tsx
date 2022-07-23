@@ -5,6 +5,7 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import mixpanel from 'mixpanel-browser';
 
 import React from 'react';
 
@@ -38,15 +39,20 @@ export default function MessageBar({
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault();
+      mixpanel.track('on send message keystroke', {
+        numUsers: chatGuids.length,
+      });
+
       chatGuids.forEach((chatGuid: string) => {
         console.log('sending to chatGuid', chatGuid);
+        mixpanel.track('sent message', { isDate: !!date });
         if (messageBody) {
           window.electron.ipcRenderer.sendMessage('send-message', [
             chatGuid,
             messageBody,
             false,
             messageId,
-            date
+            date,
           ]);
         }
         files.forEach((file) => {
@@ -136,7 +142,7 @@ export default function MessageBar({
           <div>
             <AccessAlarmIcon
               onClick={handleClick}
-              style={date && { color: '#1A8BFF'}}
+              style={date && { color: '#1A8BFF' }}
             />
             <Popover
               id={id}

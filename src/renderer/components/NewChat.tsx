@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import { Autocomplete, Chip, Grid, TextField } from '@mui/material';
 import Select from 'react-select';
+import mixpanel from 'mixpanel-browser';
+
 import React from 'react';
 import MessageBar from './MessageBar';
 
@@ -34,6 +36,8 @@ export default function NewChat({
   const [lastKeyCode, setLastKeyCode] = React.useState(0);
 
   React.useEffect(() => {
+    mixpanel.track('New chat page');
+
     window.electron.ipcRenderer.once(
       'get-chat-participants',
       (results: any[]) => {
@@ -63,6 +67,7 @@ export default function NewChat({
     if (lastKeyCode === 9 && value.length === 1) {
       // TODO: only allow this for a single guid and not multiple
       // or enforce that only multi select can be a mass send
+      mixpanel.track('Tab go to chat');
       setPage('chat');
       setSelectedChat({ chatGuid: value[0].value, chatName: value[0].label });
     }

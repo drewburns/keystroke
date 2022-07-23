@@ -123,6 +123,7 @@
     "execa": "^6.1.0",
     "heic2any": "0.0.3",
     "javascript-time-ago": "^2.5.4",
+    "mixpanel-browser": "^2.45.0",
     "moment": "^2.29.4",
     "node-osascript": "^2.1.0",
     "react": "^18.1.0",
@@ -209,8 +210,8 @@
   },
   "build": {
     "buildVersion": "1",
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Keystroke",
+    "appId": "org.erb.Keystroke",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

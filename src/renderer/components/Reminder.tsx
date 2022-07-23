@@ -2,6 +2,8 @@ import { Button, Card, Grid, Collapse } from '@mui/material';
 import React from 'react';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import mixpanel from 'mixpanel-browser';
+
 
 import { getTimeAgo } from '../util';
 import MesssageBubble from './MesssageBubble';
@@ -112,7 +114,11 @@ export default function Reminder({
           chatGuids={[reminder['chat.guid']]}
           files={[]}
           isFromNew={false}
-          onMessageSent={() => dismissReminder(reminder['reminder.id'])}
+          onMessageSent={() => {
+            dismissReminder(reminder['reminder.id']);
+            mixpanel.track('Replied to reminder');
+
+          }}
         />
         {/* </Grid> */}
       </Collapse>

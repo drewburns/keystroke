@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Box, Select, TextField, MenuItem, Button } from '@mui/material';
+import mixpanel from 'mixpanel-browser';
+
 import React from 'react';
 
 type Props = { message: any; setMessageForRemindCreate: (obj: any) => void };
@@ -11,6 +13,8 @@ export default function CreateReminderModal({
   const [note, setNote] = React.useState('');
   const [timeAmount, setTimeAmount] = React.useState(1);
   const [timeDenom, setTimeDenom] = React.useState(60 * 60);
+
+  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
 
   const style = {
     position: 'absolute',
@@ -40,6 +44,11 @@ export default function CreateReminderModal({
       chat_id,
       note,
     ]);
+    mixpanel.track('Create reminder', {
+      isNote: !!note,
+      timeAmount: timeAmount * (timeDenom * 1000),
+    });
+
     setMessageForRemindCreate({}); // close modal
   };
 

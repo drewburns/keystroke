@@ -1,6 +1,8 @@
 import { Box, Card, CircularProgress, Grid, Button } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import mixpanel from 'mixpanel-browser';
+
 import React from 'react';
 
 import { getTimeAgo } from '../util';
@@ -18,17 +20,22 @@ export default function Reminders({
 }: Props) {
   const [reminders, setReminders] = React.useState([]);
 
+  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
   const dismissReminder = (reminder_id: string) => {
     window.electron.ipcRenderer.sendMessage('update-reminder', [
       reminder_id,
       'dismissed',
     ]);
+    mixpanel.track('Dismiss reminder');
+
     setReminders(reminders.filter((r) => reminder_id !== r['reminder.id']));
   };
 
   React.useEffect(() => {
+    mixpanel.track('Reminder page loaded');
     window.electron.ipcRenderer.on('get-reminders', (results: any[]) => {
       console.log('results', results);
+      mixpanel.track('Get reminders');
       if (results) setReminders(results);
     });
 
@@ -36,6 +43,7 @@ export default function Reminders({
   }, []);
 
   const deleteReminders = (type: string) => {
+    mixpanel.track('Delete all reminders', { type });
     window.electron.ipcRenderer.sendMessage('mass-delete-reminders', type);
   };
 
