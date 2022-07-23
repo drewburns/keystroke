@@ -196,6 +196,7 @@ const getMessagesToSend = async () => {
 };
 
 const updateMessageToSend = async (message_to_send_id: number) => {
+  console.log(updateTimedMessageSQL(message_to_send_id));
   await runSelect(updateTimedMessageSQL(message_to_send_id));
 };
 

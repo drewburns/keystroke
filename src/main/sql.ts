@@ -41,7 +41,7 @@ export const getTimedMessagesReadyToSendSQL = `
 
 export const updateTimedMessageSQL = (message_to_send_id: number) => {
   return `
-    UPDATE message_to_send set sent_at="${new Date().toISOString()}" where id=${message_to_send_id}"
+    UPDATE message_to_send set sent_at="${new Date().toISOString()}" where id=${message_to_send_id}
   `;
 };
 
