@@ -23,8 +23,6 @@ export default function Reminder({
   dismissReminder,
   goToChat,
 }: Props) {
-  alert('hello!');
-  alert('reminder');
   const { state } = useGlobalState();
   const [isReplying, setIsReplying] = React.useState(false);
   const getNameForNumber = (number: string) => {
