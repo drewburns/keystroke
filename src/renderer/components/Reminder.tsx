@@ -4,7 +4,6 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import mixpanel from 'mixpanel-browser';
 
-
 import { getTimeAgo } from '../util';
 import MesssageBubble from './MesssageBubble';
 import { formatPhoneNumber } from '../util';
@@ -24,6 +23,8 @@ export default function Reminder({
   dismissReminder,
   goToChat,
 }: Props) {
+  alert('hello!');
+  alert('reminder');
   const { state } = useGlobalState();
   const [isReplying, setIsReplying] = React.useState(false);
   const getNameForNumber = (number: string) => {
@@ -117,7 +118,6 @@ export default function Reminder({
           onMessageSent={() => {
             dismissReminder(reminder['reminder.id']);
             mixpanel.track('Replied to reminder');
-
           }}
         />
         {/* </Grid> */}
