@@ -1,4 +1,4 @@
-import { Box, Card, CircularProgress, Grid } from '@mui/material';
+import { Box, Card, CircularProgress, Grid, Button } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import React from 'react';
@@ -35,6 +35,10 @@ export default function Reminders({
     window.electron.ipcRenderer.sendMessage('get-reminders', null);
   }, []);
 
+  const deleteReminders = (type: string) => {
+    window.electron.ipcRenderer.sendMessage('mass-delete-reminders', type);
+  };
+
   if (!nameNumbersLoaded) {
     return <CircularProgress />;
   }
@@ -55,6 +59,27 @@ export default function Reminders({
           <Grid item xs={8}>
             {reminders.length > 0 ? (
               <div>
+                <Grid container>
+                  <Grid item xs={4}>
+                    <Button
+                      variant="contained"
+                      size="small"
+                      onClick={() => deleteReminders('auto')}
+                    >
+                      Delete all auto reminders
+                    </Button>
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button
+                      color="secondary"
+                      variant="contained"
+                      size="small"
+                      onClick={() => deleteReminders('manual')}
+                    >
+                      Delete all manual reminders
+                    </Button>
+                  </Grid>
+                </Grid>
                 {reminders.map((reminder) => (
                   <Reminder
                     getChatUserHandle={getChatUserHandle}

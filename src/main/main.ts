@@ -48,6 +48,7 @@ import {
   createMessageToSend,
   getMessagesToSend,
   updateMessageToSend,
+  massDeleteReminders,
 } from './db';
 import { sendMessageToChatId } from './scripts/handler';
 
@@ -62,6 +63,12 @@ export default class AppUpdater {
 let mainWindow: BrowserWindow | null = null;
 
 ipcMain.on('get-reminders', async (event, arg) => {
+  const results = await getReminders();
+  event.reply('get-reminders', results);
+});
+
+ipcMain.on('mass-delete-reminders', async (event, arg) => {
+  await massDeleteReminders(arg);
   const results = await getReminders();
   event.reply('get-reminders', results);
 });
@@ -170,6 +177,8 @@ const createWindow = async () => {
   const getAssetPath = (...paths: string[]): string => {
     return path.join(RESOURCES_PATH, ...paths);
   };
+
+  app.dock.setIcon(getAssetPath('icon.png'));
 
   mainWindow = new BrowserWindow({
     show: false,

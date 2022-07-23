@@ -1,3 +1,7 @@
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-await-in-loop */
+import { exec, execFile, spawnSync } from 'child_process';
 import {
   createReminderInsertSQL,
   createReminderTable,
@@ -26,12 +30,12 @@ const fs = require('fs');
 
 const SQLiteMessagesDB = `${process.env.HOME}/Library/Messages/chat.db`;
 // eslint-disable-next-line no-useless-escape
-const ContactDB = `/Users/andrewburns/Library/Application\ Support/AddressBook/Sources/C5E62DEF-746E-478A-AEAA-F9DF611730C1/AddressBook-v22.abcddb`;
+const ContactDB = `/Users/andrewburns/Library/Application\ Support/AddressBook/Sources/653D320B-FD72-4A2C-9D37-586E60690EC2/AddressBook-v22.abcddb`;
 
 const sqlite3 = require('sqlite3').verbose();
 
 const db = new sqlite3.Database(SQLiteMessagesDB);
-const contactdb = new sqlite3.Database(ContactDB);
+// const contactdb = new sqlite3.Database(ContactDB);
 
 // maybe store message context for message? not too sure
 
@@ -42,17 +46,32 @@ const contactdb = new sqlite3.Database(ContactDB);
 // };
 
 const getNamesForNumbers = async () => {
-  const result = await new Promise((resolve) => {
-    contactdb.serialize(function () {
-      contactdb.all(getNamesForNumbersSQL, function (err: any, rows: any) {
-        if (!rows || !rows.length) {
-          return resolve(false);
-        }
-        return resolve(rows);
+  const contactdbPaths = spawnSync('find', [
+    `${process.env.HOME}/Library/Application\ Support/AddressBook/Sources/`,
+  ])
+    .stdout.toString()
+    .split('\n')
+    .filter(
+      (x) =>
+        x.includes('AddressBook-v22.abcddb') &&
+        x.split('/').slice(-1)[0] === 'AddressBook-v22.abcddb'
+    );
+  let results = [];
+  for (const x in contactdbPaths) {
+    const contactdb = new sqlite3.Database(contactdbPaths[x]);
+    const result = await new Promise((resolve) => {
+      contactdb.serialize(function () {
+        contactdb.all(getNamesForNumbersSQL, function (err: any, rows: any) {
+          if (!rows || !rows.length) {
+            return resolve(false);
+          }
+          return resolve(rows);
+        });
       });
     });
-  });
-  return result;
+    results = results.concat(result);
+  }
+  return results;
 };
 
 const runSelect = async (sql: string) => {
@@ -180,6 +199,12 @@ const updateMessageToSend = async (message_to_send_id: number) => {
   await runSelect(updateTimedMessageSQL(message_to_send_id));
 };
 
+const massDeleteReminders = async (type: string) => {
+  await runSelect(
+    `UPDATE reminder set dismissed_at="${new Date().toISOString()}" where type="${type}"`
+  );
+};
+
 const createReminder = async (
   message_id: string,
   remind_at: Date,
@@ -217,4 +242,5 @@ module.exports = {
   createMessageToSend,
   getMessagesToSend,
   updateMessageToSend,
+  massDeleteReminders,
 };

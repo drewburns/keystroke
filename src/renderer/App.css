@@ -81,24 +81,24 @@ a:hover {
 .chatPreview {
   height: 80px;
   border-bottom: 1px solid #454547;
-  /* -moz-user-select: none;
+  -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
 
   -ms-user-select: none;
-  user-select: none; */
+  user-select: none;
 }
 
 .chatPreviewSelected {
   height: 80px;
   border-bottom: 1px solid #454547;
   background-color: #1A8BFF;
-  /* -moz-user-select: none;
+  -moz-user-select: none;
   -khtml-user-select: none;
   -webkit-user-select: none;
 
   -ms-user-select: none;
-  user-select: none; */
+  user-select: none;
 }
 
 
