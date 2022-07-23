@@ -179,9 +179,6 @@ export default function MesssageBubble({
     })();
   }, [message]);
 
-  if (!message['chat.guid']) {
-    alert('no chat guid');
-  }
   return (
     <Grid container>
       {message.is_from_me === 1 && <Grid item xs={6} md={4} />}
@@ -193,6 +190,7 @@ export default function MesssageBubble({
               {getNameForNumber && getNameForNumber(message['sender.number'])}
             </p>
           )}
+        {message['chat.guid']}
         <div
           className={
             message.is_from_me === 1 ? 'chatBubbleMe' : 'chatBubbleOther'
