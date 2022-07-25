@@ -3,6 +3,9 @@
 
 import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
+const Store = require('electron-store');
+
+const store = new Store();
 
 /**
  * This module executes inside of electron's main process. You can start
@@ -72,6 +75,16 @@ let mainWindow = null;
 ipcMain.on('get-message-to-send-feed', async (event, arg) => {
   const results = await getMessageToSendFeed();
   event.reply('get-message-to-send-feed', results);
+});
+
+ipcMain.on('get-auto-reminder-time', async (event, arg) => {
+  const result = store.get('auto-reminder-default-hours');
+  event.reply('get-auto-reminder-time', result);
+});
+// update-auto-reminder-time
+
+ipcMain.on('update-auto-reminder-time', async (event, arg) => {
+  store.set('auto-reminder-default-hours', arg);
 });
 
 ipcMain.on('delete-message-to-send', async (event, arg) => {
@@ -208,7 +221,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       webSecurity: false,
-      devTools: false,
+      devTools: true,
       spellcheck: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

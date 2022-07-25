@@ -35,6 +35,7 @@ export default function NewChat({
   const [selectOptions, setSelectOptions] = React.useState([]);
   const [lastKeyCode, setLastKeyCode] = React.useState(0);
 
+  
   React.useEffect(() => {
     mixpanel.track('New chat page');
 
@@ -109,6 +110,7 @@ export default function NewChat({
             <MessageBar
               isFromNew
               chatGuids={value.map((v: any) => v.value)} // TODO: type this
+              chatNames={value.map((v: any) => v.label)} // TODO: type this
               files={[]}
               setFiles={() => console.log('null')} // TODO: remove
             />

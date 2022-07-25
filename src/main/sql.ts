@@ -1,3 +1,6 @@
+const Store = require('electron-store');
+const store = new Store();
+
 export const createReminderTable = `
 CREATE TABLE IF NOT EXISTS reminder(
   id             INTEGER PRIMARY KEY     NOT NULL,
@@ -77,7 +80,8 @@ export const updateTimedMessageSQL = (message_to_send_id: number) => {
   `;
 };
 
-export const getUnrepliedMessagesSQL = `
+export const getUnrepliedMessagesSQL = (hours: number) => {
+  return `
   SELECT text, chat.guid as "chat.guid", message.ROWID as "message.ROWID"
   FROM message
   LEFT JOIN chat_message_join ON chat_message_join.message_id = message.ROWID
@@ -88,9 +92,12 @@ export const getUnrepliedMessagesSQL = `
       LEFT JOIN chat_message_join ON chat_message_join.message_id = message.ROWID
       LEFT JOIN chat ON chat.ROWID = chat_message_join.chat_id
       GROUP BY chat.guid
-  ) AND message.is_from_me=0 AND datetime(SUBSTR(message.date, 1, 9) + strftime('%s', '2001-01-01 00:00:00'),'unixepoch', 'localtime') < datetime('now', '-1 day', 'localtime')
+  ) AND message.is_from_me=0 AND datetime(SUBSTR(message.date, 1, 9) + strftime('%s', '2001-01-01 00:00:00'),'unixepoch', 'localtime') < datetime('now', '-${
+    hours || 24
+  } hour', 'localtime')
   AND message.ROWID NOT IN (select message_id from reminder);
 `;
+};
 
 export const getChatGuidsLastMessageMeSQL = `
 SELECT text, chat.guid as "chat.guid", message.ROWID as "message.ROWID"

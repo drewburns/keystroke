@@ -19,6 +19,7 @@ import { formatPhoneNumber } from './util';
 import NewChat from './components/NewChat';
 import CreateReminderModal from './components/CreateReminderModal';
 import TimedMessageFeed from './pages/TimedMessageFeed';
+import Settings from './pages/Settings';
 
 type SelectedChatType = {
   chatGuid: string;
@@ -197,6 +198,7 @@ const Hello = () => {
           {page === 'timedMessages' && (
             <TimedMessageFeed getChatUserHandle={getChatUserHandle} />
           )}
+          {page === 'settings' && <Settings />}
         </Grid>
       </Grid>
     </div>

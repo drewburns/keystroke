@@ -16,6 +16,7 @@ type Props = {
   isFromNew: boolean;
   setFiles?: (newFiles: any[]) => void;
   onMessageSent?: () => void;
+  chatNames: string[];
   messageId: string | null;
 };
 
@@ -26,6 +27,7 @@ export default function MessageBar({
   isFromNew,
   messageId,
   onMessageSent,
+  chatNames,
 }: Props) {
   // console.log(chatGuids);
   const [messageBody, setMessageBody] = React.useState('');
@@ -57,14 +59,15 @@ export default function MessageBar({
         numUsers: chatGuids.length,
       });
       setTimeAmount(0);
-
-      chatGuids.forEach((chatGuid: string) => {
+      chatGuids.forEach((chatGuid: string, index: number) => {
+        const firstName = chatNames[index].split(' ')[0];
+        const parsedBody = messageBody.replace('{first_name}', firstName);
         console.log('sending to chatGuid', chatGuid);
         mixpanel.track('sent message', { isDate: !!date });
         if (messageBody) {
           window.electron.ipcRenderer.sendMessage('send-message', [
             chatGuid,
-            messageBody,
+            parsedBody,
             false,
             messageId,
             date,

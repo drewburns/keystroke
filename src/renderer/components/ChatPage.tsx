@@ -140,6 +140,7 @@ export default function ChatPage({
         <MessageBar
           chatGuids={[chatGuid]}
           isFromNew={false}
+          chatNames={[chatName]}
           files={files}
           setFiles={setFiles}
         />

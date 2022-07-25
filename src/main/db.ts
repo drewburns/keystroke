@@ -29,6 +29,10 @@ import {
   updateMessageToSendSQL,
 } from './sql';
 
+const Store = require('electron-store');
+
+const store = new Store();
+
 const fs = require('fs');
 
 const SQLiteMessagesDB = `${process.env.HOME}/Library/Messages/chat.db`;
@@ -158,7 +162,9 @@ const getChatPreviews = async () => {
 };
 
 const createAutoReminders = async () => {
-  const results = await runSelect(getUnrepliedMessagesSQL);
+  const results = await runSelect(
+    getUnrepliedMessagesSQL(store.get('auto-reminder-default-hours'))
+  );
   if (results) {
     results.forEach((result) => {
       runSelect(createAutoReminderSQL([result]));
