@@ -58,7 +58,7 @@ export default function Reminders({
           overflow: 'scroll',
           width: '100%',
           float: 'left',
-          height: '95vh',
+          height: '89vh',
           backgroundColor: '#27282A',
         }}
       >

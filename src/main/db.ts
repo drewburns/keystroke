@@ -137,8 +137,8 @@ const getBadgeNumber = async () => {
   return result;
 };
 
-const getReminders = async () => {
-  const result = await runSelect(getRemindersSQL);
+const getReminders = async (page = 0) => {
+  const result = await runSelect(getRemindersSQL(page));
   return result;
 };
 
@@ -216,8 +216,8 @@ const getMessageToSendFeed = async () => {
 };
 
 const deleteMessageToSend = async (message_to_send_id: number) => {
-  await runSelect(cancelMessageToSendSQL(message_to_send_id))
-}
+  await runSelect(cancelMessageToSendSQL(message_to_send_id));
+};
 
 const massDeleteReminders = async (type: string) => {
   await runSelect(

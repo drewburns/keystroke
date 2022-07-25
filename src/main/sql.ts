@@ -146,7 +146,9 @@ export const updateManualReminderByMessageIdSQL = (messageRowId: number) => {
   `;
 };
 
-export const getRemindersSQL = `
+export const getRemindersSQL = (page = 0) => {
+  const pageSize = 50;
+  return `
   SELECT
   *,
   reminder.message_id as "reminder.message_id",
@@ -167,8 +169,9 @@ export const getRemindersSQL = `
   LEFT JOIN attachment ON message_attachment_join.attachment_id = attachment.ROWID
   WHERE datetime(reminder.remind_at, 'localtime') < datetime(current_timestamp, 'localtime')
   AND reminder.completed_at IS NULL AND reminder.dismissed_at IS NULL
-  GROUP BY message.ROWID ORDER BY message.date desc;
+  GROUP BY message.ROWID ORDER BY message.date desc LIMIT ${pageSize};
 `;
+};
 
 export const createReminderInsertSQL = (
   message_id: string,

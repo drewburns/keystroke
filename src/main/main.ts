@@ -54,7 +54,7 @@ const {
   massDeleteReminders,
   getMessageToSendFeed,
   deleteMessageToSend,
-  editMessageToSend
+  editMessageToSend,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -84,7 +84,7 @@ ipcMain.on('edit-message-to-send', async (event, arg) => {
 // editMessageToSend
 
 ipcMain.on('get-reminders', async (event, arg) => {
-  const results = await getReminders();
+  const results = await getReminders(arg || 0);
   event.reply('get-reminders', results);
 });
 
@@ -208,7 +208,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       webSecurity: false,
-      devTools: false,
+      devTools: true,
       spellcheck: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

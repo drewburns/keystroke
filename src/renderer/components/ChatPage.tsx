@@ -38,6 +38,7 @@ export default function ChatPage({
 
   React.useEffect(() => {
     mixpanel.track('Message page loaded');
+    // setMessages([]);
     window.electron.ipcRenderer.once('get-messages', (results: any[]) => {
       setMessages(unique(results, 'message.ROWID'));
       window.electron.ipcRenderer.sendMessage('set-chat-read', [chatGuid]);
