@@ -79,7 +79,7 @@ ipcMain.on('delete-message-to-send', async (event, arg) => {
 });
 
 ipcMain.on('edit-message-to-send', async (event, arg) => {
-  await editMessageToSend(arg[0], arg[1]);
+  await editMessageToSend(arg[0], arg[1].replace(/["']/g, '“'));
 });
 // editMessageToSend
 
