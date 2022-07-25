@@ -1,6 +1,9 @@
 /* eslint-disable no-await-in-loop */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
+import { systemPreferences } from "electron";
+import MenuBuilder from "./menu";
+
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -9,8 +12,9 @@
  * When running `npm run build` or `npm run build:main`, this file is compiled to
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
-import path from 'path';
-import {
+// import path from 'path';
+const path = require('path');
+const {
   app,
   dialog,
   BrowserWindow,
@@ -19,17 +23,16 @@ import {
   ipcRenderer,
   Notification,
   globalShortcut,
-} from 'electron';
-import { autoUpdater } from 'electron-updater';
-import log from 'electron-log';
-import MenuBuilder from './menu';
-import {
+} = require('electron');
+const { autoUpdater } = require('electron-updater');
+const log = require('electron-log');
+const {
   resolveHtmlPath,
   formatPhoneNumber,
   showMessagePreview,
   getChatUserHandle,
-} from './util';
-import {
+} = require('./util');
+const {
   getChatPreviews,
   getNamesForNumbers,
   getChatMessages,
@@ -49,10 +52,10 @@ import {
   getMessagesToSend,
   updateMessageToSend,
   massDeleteReminders,
-} from './db';
-import { sendMessageToChatId } from './scripts/handler';
+} = require('./db');
+const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
-export default class AppUpdater {
+class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
     autoUpdater.logger = log;
@@ -60,7 +63,8 @@ export default class AppUpdater {
   }
 }
 
-let mainWindow: BrowserWindow | null = null;
+// let mainWindow: BrowserWindow | null = null;
+let mainWindow = null;
 
 ipcMain.on('get-reminders', async (event, arg) => {
   const results = await getReminders();
@@ -327,6 +331,7 @@ app
   .whenReady()
   .then(() => {
     createWindow();
+    // testPermission()
     globalShortcut.register('CommandOrControl+N', () => {
       mainWindow?.webContents.send('go-to-page-keypress', 'newChat');
     });
