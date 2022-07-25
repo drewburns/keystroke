@@ -18,6 +18,7 @@ import Reminders from './pages/Reminders';
 import { formatPhoneNumber } from './util';
 import NewChat from './components/NewChat';
 import CreateReminderModal from './components/CreateReminderModal';
+import TimedMessageFeed from './pages/TimedMessageFeed';
 
 type SelectedChatType = {
   chatGuid: string;
@@ -26,7 +27,6 @@ type SelectedChatType = {
 
 const Hello = () => {
   mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
-
 
   const { setState } = useGlobalState();
   const [chatThreads, setChatThreads] = React.useState([]);
@@ -193,6 +193,9 @@ const Hello = () => {
               nameNumbers={nameNumbers}
               setPage={setPage}
             />
+          )}
+          {page === 'timedMessages' && (
+            <TimedMessageFeed getChatUserHandle={getChatUserHandle} />
           )}
         </Grid>
       </Grid>

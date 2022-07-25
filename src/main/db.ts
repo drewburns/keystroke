@@ -24,6 +24,9 @@ import {
   createMessageToSendSQL,
   getTimedMessagesReadyToSendSQL,
   updateTimedMessageSQL,
+  getMessagesToSendFeedSQL,
+  cancelMessageToSendSQL,
+  updateMessageToSendSQL,
 } from './sql';
 
 const fs = require('fs');
@@ -196,9 +199,25 @@ const getMessagesToSend = async () => {
 };
 
 const updateMessageToSend = async (message_to_send_id: number) => {
-  console.log(updateTimedMessageSQL(message_to_send_id));
   await runSelect(updateTimedMessageSQL(message_to_send_id));
 };
+
+const editMessageToSend = async (
+  message_to_send_id: number,
+  newDate: Date,
+  newText: string
+) => {
+  await runSelect(updateMessageToSendSQL(message_to_send_id, newDate, newText));
+};
+
+const getMessageToSendFeed = async () => {
+  const results = await runSelect(getMessagesToSendFeedSQL);
+  return results;
+};
+
+const deleteMessageToSend = async (message_to_send_id: number) => {
+  await runSelect(cancelMessageToSendSQL(message_to_send_id))
+}
 
 const massDeleteReminders = async (type: string) => {
   await runSelect(
@@ -244,4 +263,7 @@ module.exports = {
   getMessagesToSend,
   updateMessageToSend,
   massDeleteReminders,
+  editMessageToSend,
+  getMessageToSendFeed,
+  deleteMessageToSend,
 };

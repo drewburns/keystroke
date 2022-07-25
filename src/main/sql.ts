@@ -22,6 +22,39 @@ CREATE TABLE IF NOT EXISTS message_to_send(
 )
 `;
 
+// select chat.guid,display_name, GROUP_CONCAT(handle.id) as part_list
+// from chat
+// left join chat_handle_join on chat.ROWID = chat_handle_join.chat_id
+// left  join handle on handle.ROWID = chat_handle_join.handle_id group by chat.guid;
+export const getMessagesToSendFeedSQL = `
+SELECT GROUP_CONCAT(handle.id) as part_list, chat.display_name AS "chat.display_name", message_to_send.*
+from message_to_send
+JOIN chat on  message_to_send.chat_guid = chat.guid
+left join chat_handle_join on chat.ROWID = chat_handle_join.chat_id
+left  join handle on handle.ROWID = chat_handle_join.handle_id 
+WHERE sent_at IS NULL
+group by chat.guid
+`;
+
+export const cancelMessageToSendSQL = (message_to_send_id: number) => {
+  return `
+    DELETE FROM message_to_send where id=${message_to_send_id}
+  `;
+};
+
+export const updateMessageToSendSQL = (
+  message_to_send_id: number,
+  newDate: Date,
+  newText: string
+) => {
+  return `
+    UPDATE message_to_send 
+    set scheduled_for="${newDate.toISOString()}",
+    body="${newText}"
+     where id=${message_to_send_id};
+  `;
+};
+
 export const createMessageToSendSQL = (
   chat_guid: string,
   body: string,

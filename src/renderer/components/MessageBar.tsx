@@ -8,6 +8,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import mixpanel from 'mixpanel-browser';
 
 import React from 'react';
+import TimePicker from './TimePicker';
 
 type Props = {
   chatGuids: string[];
@@ -30,11 +31,24 @@ export default function MessageBar({
   const [messageBody, setMessageBody] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
+  const [timeAmount, setTimeAmount] = React.useState(0);
+  const [timeDenom, setTimeDenom] = React.useState(60 * 60);
+
   const [date, setDate] = React.useState<Date | null>(null);
 
-  const handleDatePick = (newValue: Date | null) => {
-    setDate(newValue);
-  };
+  // const handleDatePick = (newValue: Date | null) => {
+  //   setDate(newValue);
+  // };
+
+  React.useEffect(() => {
+    if (timeAmount === 0) {
+      setDate(null);
+      return;
+    }
+    const t = new Date();
+    t.setSeconds(t.getSeconds() + timeAmount * timeDenom);
+    setDate(t);
+  }, [timeDenom, timeAmount]);
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.keyCode === 13 && !e.shiftKey) {
@@ -42,6 +56,7 @@ export default function MessageBar({
       mixpanel.track('on send message keystroke', {
         numUsers: chatGuids.length,
       });
+      setTimeAmount(0);
 
       chatGuids.forEach((chatGuid: string) => {
         console.log('sending to chatGuid', chatGuid);
@@ -75,6 +90,7 @@ export default function MessageBar({
   const textInput = React.useRef(null);
 
   React.useEffect(() => {
+    // setTimeAmount(0);
     if (!isFromNew) {
       textInput.current.focus();
     }
@@ -158,14 +174,41 @@ export default function MessageBar({
                 horizontal: 'left',
               }}
             >
-              <div style={{ padding: 10 }}>
-                <DateTimePicker
+              <div style={{ padding: 10, backgroundColor: 'black' }}>
+                <TimePicker
+                  timeDenom={timeDenom}
+                  timeAmount={timeAmount}
+                  setTimeAmount={setTimeAmount}
+                  setTimeDenom={setTimeDenom}
+                />
+                {/* <DateTimePicker
                   label="Send at"
                   value={date}
                   onChange={handleDatePick}
                   renderInput={(params) => <TextField {...params} />}
-                />
-                {date && <Button onClick={() => setDate(null)}>Clear</Button>}
+                /> */}
+                {date ? (
+                  <Button
+                    // variant="contained"
+                    fullWidth
+                    onClick={() => setDate(null)}
+                  >
+                    Remove
+                  </Button>
+                ) : (
+                  <Button
+                    // variant="contained"
+                    fullWidth
+                    onClick={() => {
+                      const t = new Date();
+                      t.setSeconds(t.getSeconds() + timeAmount * timeDenom);
+                      setDate(t);
+                      setAnchorEl(null);
+                    }}
+                  >
+                    Select
+                  </Button>
+                )}
               </div>
             </Popover>
           </div>

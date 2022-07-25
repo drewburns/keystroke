@@ -1,8 +1,8 @@
 /* eslint-disable no-await-in-loop */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
-import { systemPreferences } from "electron";
-import MenuBuilder from "./menu";
+import { systemPreferences } from 'electron';
+import MenuBuilder from './menu';
 
 /**
  * This module executes inside of electron's main process. You can start
@@ -52,6 +52,8 @@ const {
   getMessagesToSend,
   updateMessageToSend,
   massDeleteReminders,
+  getMessageToSendFeed,
+  deleteMessageToSend,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -65,6 +67,15 @@ class AppUpdater {
 
 // let mainWindow: BrowserWindow | null = null;
 let mainWindow = null;
+
+ipcMain.on('get-message-to-send-feed', async (event, arg) => {
+  const results = await getMessageToSendFeed();
+  event.reply('get-message-to-send-feed', results);
+});
+
+ipcMain.on('delete-message-to-send', async (event, arg) => {
+  await deleteMessageToSend(arg);
+});
 
 ipcMain.on('get-reminders', async (event, arg) => {
   const results = await getReminders();
@@ -191,7 +202,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       webSecurity: false,
-      devTools: false,
+      devTools: true,
       spellcheck: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')

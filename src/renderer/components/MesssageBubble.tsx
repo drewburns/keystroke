@@ -6,7 +6,7 @@ import mixpanel from 'mixpanel-browser';
 
 import TimeAgo from 'javascript-time-ago';
 import TextareaAutosize from 'react-textarea-autosize';
-// import { ReactTinyLink } from 'react-tiny-link';
+import { ReactTinyLink } from 'react-tiny-link';
 import { LinkPreview } from '@dhaiwat10/react-link-preview';
 
 import heic2any from 'heic2any';
@@ -45,6 +45,12 @@ export default function MesssageBubble({
   const showFile = (filePath: string) => {
     mixpanel.track('show file double click');
     window.electron.ipcRenderer.sendMessage('showFile', filePath);
+  };
+
+  const customFetcher = async (url: string) => {
+    const response = await fetch(`https://rlp-proxy.herokuapp.com/v2?url=${url}`);
+    const json = await response.json();
+    return json.metadata;
   };
 
   const renderAttachmnet = async (message: any) => {
@@ -155,6 +161,7 @@ export default function MesssageBubble({
             <LinkPreview
               width="300px"
               fallback={<p>{message.text}</p>}
+              // fallback={<ReactTinyLink cardSize="small" showGraphic={true} />}
               url={message.text}
             />
           </div>

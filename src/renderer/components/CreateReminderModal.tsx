@@ -3,6 +3,7 @@ import { Box, Select, TextField, MenuItem, Button } from '@mui/material';
 import mixpanel from 'mixpanel-browser';
 
 import React from 'react';
+import TimePicker from './TimePicker';
 
 type Props = { message: any; setMessageForRemindCreate: (obj: any) => void };
 
@@ -56,31 +57,12 @@ export default function CreateReminderModal({
     <Box sx={style}>
       <h3>Create reminder</h3>
       <i>Remind me to respond in:</i>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}
-      >
-        <TextField
-          type="number"
-          value={timeAmount}
-          onChange={(e) => setTimeAmount(parseInt(e.target.value))}
-          style={{ marginTop: 20, backgroundColor: 'white', width: 80 }}
-        />
-        <Select
-          id="demo-simple-select"
-          style={{ backgroundColor: 'white', height: 60, marginTop: 19 }}
-          value={timeDenom}
-          label="Age"
-          onChange={(e) => setTimeDenom(e.target.value)}
-        >
-          <MenuItem value={60}>Minutes</MenuItem>
-          <MenuItem value={60 * 60}>Hours</MenuItem>
-          <MenuItem value={60 * 60 * 24}>Days</MenuItem>
-        </Select>
-      </div>
+      <TimePicker
+        timeAmount={timeAmount}
+        timeDenom={timeDenom}
+        setTimeAmount={setTimeAmount}
+        setTimeDenom={setTimeDenom}
+      />
       <TextField
         type="text"
         value={note}
