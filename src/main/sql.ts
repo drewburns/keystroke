@@ -44,12 +44,11 @@ export const cancelMessageToSendSQL = (message_to_send_id: number) => {
 
 export const updateMessageToSendSQL = (
   message_to_send_id: number,
-  newDate: Date,
   newText: string
 ) => {
   return `
     UPDATE message_to_send 
-    set scheduled_for="${newDate.toISOString()}",
+    set
     body="${newText}"
      where id=${message_to_send_id};
   `;

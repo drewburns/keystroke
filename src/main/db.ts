@@ -204,10 +204,10 @@ const updateMessageToSend = async (message_to_send_id: number) => {
 
 const editMessageToSend = async (
   message_to_send_id: number,
-  newDate: Date,
   newText: string
 ) => {
-  await runSelect(updateMessageToSendSQL(message_to_send_id, newDate, newText));
+  console.log(updateMessageToSendSQL(message_to_send_id, newText));
+  await runSelect(updateMessageToSendSQL(message_to_send_id, newText));
 };
 
 const getMessageToSendFeed = async () => {

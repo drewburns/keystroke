@@ -54,6 +54,7 @@ const {
   massDeleteReminders,
   getMessageToSendFeed,
   deleteMessageToSend,
+  editMessageToSend
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -76,6 +77,11 @@ ipcMain.on('get-message-to-send-feed', async (event, arg) => {
 ipcMain.on('delete-message-to-send', async (event, arg) => {
   await deleteMessageToSend(arg);
 });
+
+ipcMain.on('edit-message-to-send', async (event, arg) => {
+  await editMessageToSend(arg[0], arg[1]);
+});
+// editMessageToSend
 
 ipcMain.on('get-reminders', async (event, arg) => {
   const results = await getReminders();

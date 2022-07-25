@@ -1,5 +1,8 @@
 import { Button, Card, Grid } from '@mui/material';
 import React from 'react';
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
+import TimedMessageCard from 'renderer/components/TimedMessageCard';
 
 type Props = {
   getChatUserHandle: (list: string[], displayName: string) => string;
@@ -21,28 +24,13 @@ export default function TimedMessageFeed({ getChatUserHandle }: Props) {
     window.electron.ipcRenderer.sendMessage('delete-message-to-send', id);
     setMessages(messages.filter((m) => m.id !== id));
   };
+  const updateMessageToSend = (id: number, newText: string) => {
+    window.electron.ipcRenderer.sendMessage('edit-message-to-send', [
+      id,
+      newText,
+    ]);
+  };
 
-  function timeToGo(d: Date) {
-    // Utility to add leading zero
-    function z(n) {
-      return (n < 10 ? '0' : '') + n;
-    }
-
-    // Convert string to date object
-    let diff = d - new Date();
-
-    // Allow for previous times
-    const sign = diff < 0 ? '-' : '';
-    diff = Math.abs(diff);
-
-    // Get time components
-    const hours = (diff / 3.6e6) | 0;
-    const mins = ((diff % 3.6e6) / 6e4) | 0;
-    const secs = Math.round((diff % 6e4) / 1e3);
-
-    // Return formatted string
-    return `${sign + z(hours)}:${z(mins)}:${z(secs)}`;
-  }
   if (!messages) {
     return (
       <div>
@@ -59,42 +47,12 @@ export default function TimedMessageFeed({ getChatUserHandle }: Props) {
         <Grid item xs={8}>
           {messages &&
             messages.map((m) => (
-              <Card
-                variant="outlined"
-                className="reminderCard"
-                style={{
-                  backgroundColor: '#373737',
-                  color: 'white',
-                  paddingLeft: 5,
-                }}
-              >
-                <p
-                  style={{
-                    marginTop: 5,
-                    textOverflow: 'ellipsis',
-                    overflow: 'hidden',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  To:{' '}
-                  {m.part_list &&
-                    getChatUserHandle(
-                      m.part_list.split(','),
-                      m['chat.display_name']
-                    )}
-                </p>
-                <p>Body: {m.body}</p>
-                <i>Sending in {timeToGo(new Date(m.scheduled_for))}</i>
-                <Button
-                  style={{ marginTop: 20 }}
-                  variant="outlined"
-                  fullWidth
-                  color="warning"
-                  onClick={() => deleteMessageToSend(m.id)}
-                >
-                  Cancel
-                </Button>
-              </Card>
+              <TimedMessageCard
+                deleteMessageToSend={deleteMessageToSend}
+                getChatUserHandle={getChatUserHandle}
+                message={m}
+                updateMessageToSend={updateMessageToSend}
+              />
             ))}
         </Grid>
       </Grid>
