@@ -27,6 +27,7 @@ import {
   getMessagesToSendFeedSQL,
   cancelMessageToSendSQL,
   updateMessageToSendSQL,
+  addLastMessageToSendLastMessageRowID,
 } from './sql';
 
 const Store = require('electron-store');
@@ -105,6 +106,7 @@ const getLatestMessageRowId = async () => {
 const attemptCreateReminderTable = async () => {
   await runSelect(createReminderTable);
   await runSelect(createMessageToSendTable);
+  await runSelect(addLastMessageToSendLastMessageRowID);
   return true;
 };
 

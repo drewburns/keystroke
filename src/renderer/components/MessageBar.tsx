@@ -1,4 +1,12 @@
-import { Button, Grid, Popover, TextField, Typography } from '@mui/material';
+import {
+  Button,
+  FormControlLabel,
+  Grid,
+  Popover,
+  TextField,
+  Checkbox,
+  Typography,
+} from '@mui/material';
 import TextareaAutosize from 'react-textarea-autosize';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
@@ -178,6 +186,22 @@ export default function MessageBar({
               }}
             >
               <div style={{ padding: 10, backgroundColor: 'black' }}>
+                {/* <FormControlLabel
+                  control={
+                    <Checkbox
+                      defaultChecked
+                      sx={{
+                        color: '#1A8BFF',
+                        '&.Mui-checked': {
+                          color: '#1A8BFF',
+                        },
+                      }}
+                    />
+                  }
+                  style={{ color: 'white' }}
+                  label="Cancel if they reply first"
+                /> */}
+
                 <TimePicker
                   timeDenom={timeDenom}
                   timeAmount={timeAmount}

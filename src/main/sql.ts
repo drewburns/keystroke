@@ -20,9 +20,15 @@ CREATE TABLE IF NOT EXISTS message_to_send(
   created_at     datetime default current_timestamp,
   chat_guid        TEXT    NOT NULL,
   body           TEXT NOT NULL,
+  cancel_if_last_message_above INTEGER,
   scheduled_for   datetime,
   sent_at   datetime
 )
+`;
+
+export const addLastMessageToSendLastMessageRowID = `
+  ALTER TABLE message_to_send
+  ADD cancel_if_last_message_above INTEGER;
 `;
 
 // select chat.guid,display_name, GROUP_CONCAT(handle.id) as part_list
@@ -99,6 +105,20 @@ export const getUnrepliedMessagesSQL = (hours: number) => {
 `;
 };
 
+export const getLastMessageROWIDForChat = (chatGuid: string) => {
+  return `
+  SELECT message.ROWID as "ROWID"
+  FROM message
+  LEFT JOIN chat_message_join ON chat_message_join.message_id = message.ROWID
+  LEFT JOIN chat ON chat.ROWID = chat_message_join.chat_id
+  WHERE message.ROWID IN (
+      SELECT MAX(message.ROWID)
+      FROM message
+      LEFT JOIN chat_message_join ON chat_message_join.message_id = message.ROWID
+      LEFT JOIN chat ON chat.ROWID = chat_message_join.chat_id
+      GROUP BY chat.guid
+  ) AND chat.guid="${chatGuid}"`;
+};
 export const getChatGuidsLastMessageMeSQL = `
 SELECT text, chat.guid as "chat.guid", message.ROWID as "message.ROWID"
 FROM message

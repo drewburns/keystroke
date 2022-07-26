@@ -6,6 +6,7 @@ import MenuBuilder from './menu';
 const Store = require('electron-store');
 
 const store = new Store();
+const electronLocalshortcut = require('electron-localshortcut');
 
 /**
  * This module executes inside of electron's main process. You can start
@@ -229,6 +230,29 @@ const createWindow = async () => {
     },
   });
 
+  electronLocalshortcut.register(mainWindow, 'Shift+CommandOrControl+N', () => {
+    mainWindow.webContents.send('go-to-page-keypress', 'newChat');
+  });
+  electronLocalshortcut.register(
+    mainWindow,
+    'Shift+CommandOrControl+Up',
+    () => {
+      mainWindow.webContents.send('go-to-page-keypress', 'upChat');
+    }
+  );
+  electronLocalshortcut.register(mainWindow, 'Shift+CommandOrControl+M', () => {
+    mainWindow.webContents.send('go-to-page-keypress', 'timedMessages');
+  });
+  electronLocalshortcut.register(
+    mainWindow,
+    'Shift+CommandOrControl+Down',
+    () => {
+      mainWindow.webContents.send('go-to-page-keypress', 'downChat');
+    }
+  );
+  electronLocalshortcut.register(mainWindow, 'Shift+CommandOrControl+E', () => {
+    mainWindow.webContents.send('go-to-page-keypress', 'reminders');
+  });
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
@@ -362,21 +386,6 @@ app
   .then(() => {
     createWindow();
     // testPermission()
-    globalShortcut.register('Shift+CommandOrControl+N', () => {
-      mainWindow?.webContents.send('go-to-page-keypress', 'newChat');
-    });
-    globalShortcut.register('Shift+CommandOrControl+Up', () => {
-      mainWindow?.webContents.send('go-to-page-keypress', 'upChat');
-    });
-    globalShortcut.register('Shift+CommandOrControl+M', () => {
-      mainWindow?.webContents.send('go-to-page-keypress', 'timedMessages');
-    });
-    globalShortcut.register('Shift+CommandOrControl+Down', () => {
-      mainWindow?.webContents.send('go-to-page-keypress', 'downChat');
-    });
-    globalShortcut.register('Shift+CommandOrControl+E', () => {
-      mainWindow?.webContents.send('go-to-page-keypress', 'reminders');
-    });
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
