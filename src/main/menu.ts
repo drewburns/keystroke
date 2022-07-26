@@ -50,9 +50,66 @@ export default class MenuBuilder {
           },
         },
         { label: 'Copy', accelerator: 'Command+C', selector: 'copy:' },
+        {
+          label: 'Timed Messages',
+          accelerator: 'Alt+Cmd+I',
+          click: () => {
+            this.mainWindow.webContents.send(
+              'go-to-page-keypress',
+              'timedMessages'
+            );
+          },
+        },
+        {
+          label: 'New Message',
+          accelerator: 'CommandOrControl+N',
+          click: () => {
+            this.mainWindow.webContents.send('go-to-page-keypress', 'newChat');
+          },
+        },
+        {
+          label: 'Reminders',
+          accelerator: 'CommandOrControl+E',
+          click: () => {
+            this.mainWindow.webContents.send(
+              'go-to-page-keypress',
+              'reminders'
+            );
+          },
+        },
+        {
+          label: 'Up',
+          accelerator: 'CommandOrControl+Up',
+          click: () => {
+            this.mainWindow.webContents.send('go-to-page-keypress', 'upChat');
+          },
+        },
+        {
+          label: 'Down',
+          accelerator: 'CommandOrControl+Down',
+          click: () => {
+            this.mainWindow.webContents.send('go-to-page-keypress', 'downChat');
+          },
+        },
       ]).popup({ window: this.mainWindow });
     });
   }
+
+  // globalShortcut.register('CommandOrControl+N', () => {
+  // mainWindow?.webContents.send('go-to-page-keypress', 'newChat');
+  // });
+  // globalShortcut.register('CommandOrControl+Up', () => {
+  //   mainWindow?.webContents.send('go-to-page-keypress', 'upChat');
+  // });
+  // globalShortcut.register('CommandOrControl+M', () => {
+  //   mainWindow?.webContents.send('go-to-page-keypress', 'timedMessages');
+  // });
+  // globalShortcut.register('CommandOrControl+Down', () => {
+  //   mainWindow?.webContents.send('go-to-page-keypress', 'downChat');
+  // });
+  // globalShortcut.register('CommandOrControl+E', () => {
+  //   mainWindow?.webContents.send('go-to-page-keypress', 'reminders');
+  // });
 
   buildDarwinTemplate(): MenuItemConstructorOptions[] {
     const subMenuAbout: DarwinMenuItemConstructorOptions = {

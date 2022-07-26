@@ -362,16 +362,19 @@ app
   .then(() => {
     createWindow();
     // testPermission()
-    globalShortcut.register('CommandOrControl+N', () => {
+    globalShortcut.register('Shift+CommandOrControl+N', () => {
       mainWindow?.webContents.send('go-to-page-keypress', 'newChat');
     });
-    globalShortcut.register('CommandOrControl+Up', () => {
+    globalShortcut.register('Shift+CommandOrControl+Up', () => {
       mainWindow?.webContents.send('go-to-page-keypress', 'upChat');
     });
-    globalShortcut.register('CommandOrControl+Down', () => {
+    globalShortcut.register('Shift+CommandOrControl+M', () => {
+      mainWindow?.webContents.send('go-to-page-keypress', 'timedMessages');
+    });
+    globalShortcut.register('Shift+CommandOrControl+Down', () => {
       mainWindow?.webContents.send('go-to-page-keypress', 'downChat');
     });
-    globalShortcut.register('CommandOrControl+E', () => {
+    globalShortcut.register('Shift+CommandOrControl+E', () => {
       mainWindow?.webContents.send('go-to-page-keypress', 'reminders');
     });
     app.on('activate', () => {

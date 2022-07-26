@@ -65,9 +65,11 @@ const getNamesForNumbers = async () => {
     );
   let results = [];
   for (const x in contactdbPaths) {
+    console.log('getting path', contactdbPaths[x]);
     const contactdb = new sqlite3.Database(contactdbPaths[x]);
     const result = await new Promise((resolve) => {
       contactdb.serialize(function () {
+        console.log('path worked', contactdbPaths[x]);
         contactdb.all(getNamesForNumbersSQL, function (err: any, rows: any) {
           if (!rows || !rows.length) {
             return resolve(false);
@@ -82,9 +84,11 @@ const getNamesForNumbers = async () => {
 };
 
 const runSelect = async (sql: string) => {
+  console.log('getting path main DB');
   const result = await new Promise((resolve) => {
     db.serialize(function () {
       db.all(sql, function (err: any, rows: any) {
+        console.log('GOT main DB');
         if (!rows || !rows.length) {
           return resolve(false);
         }
