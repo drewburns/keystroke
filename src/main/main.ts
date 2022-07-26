@@ -230,7 +230,7 @@ const createWindow = async () => {
     },
   });
 
-  electronLocalshortcut.register(mainWindow, 'Shift+CommandOrControl+N', () => {
+  electronLocalshortcut.register(mainWindow, 'CommandOrControl+N', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'newChat');
   });
   electronLocalshortcut.register(
@@ -240,7 +240,7 @@ const createWindow = async () => {
       mainWindow.webContents.send('go-to-page-keypress', 'upChat');
     }
   );
-  electronLocalshortcut.register(mainWindow, 'Shift+CommandOrControl+M', () => {
+  electronLocalshortcut.register(mainWindow, 'CommandOrControl+T', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'timedMessages');
   });
   electronLocalshortcut.register(
@@ -250,7 +250,7 @@ const createWindow = async () => {
       mainWindow.webContents.send('go-to-page-keypress', 'downChat');
     }
   );
-  electronLocalshortcut.register(mainWindow, 'Shift+CommandOrControl+E', () => {
+  electronLocalshortcut.register(mainWindow, 'CommandOrControl+E', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'reminders');
   });
   mainWindow.loadURL(resolveHtmlPath('index.html'));
