@@ -60,7 +60,7 @@ export default function MesssageBubble({
 
     let filenames = [];
     let mimes = [];
-    if (message.attach_list && message.mimes) {
+    if (message.attach_list && message.mime_list) {
       filenames = message.attach_list
         .split(',')
         .map(
@@ -73,7 +73,7 @@ export default function MesssageBubble({
       ];
       mimes = [message.mime_type];
     }
-
+    console.log(message.mimes)
     const renderArray = [];
 
     for (let x = 0; x < filenames.length; x++) {
