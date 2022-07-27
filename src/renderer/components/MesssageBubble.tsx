@@ -48,7 +48,9 @@ export default function MesssageBubble({
   };
 
   const customFetcher = async (url: string) => {
-    const response = await fetch(`https://rlp-proxy.herokuapp.com/v2?url=${url}`);
+    const response = await fetch(
+      `https://rlp-proxy.herokuapp.com/v2?url=${url}`
+    );
     const json = await response.json();
     return json.metadata;
   };
@@ -61,10 +63,14 @@ export default function MesssageBubble({
     if (message.attach_list && message.mimes) {
       filenames = message.attach_list
         .split(',')
-        .map((m: string) => `file:///Users/andrewburns/${m.slice(2)}`);
+        .map(
+          (m: string) => `file://${window.electron.env.getHome()}/${m.slice(2)}`
+        );
       mimes = message.mime_list.split(',');
     } else {
-      filenames = [`file:///Users/andrewburns/${message.filename.slice(2)}`];
+      filenames = [
+        `file://${window.electron.env.getHome()}/${message.filename.slice(2)}`,
+      ];
       mimes = [message.mime_type];
     }
 

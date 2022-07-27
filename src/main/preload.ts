@@ -31,4 +31,9 @@ contextBridge.exposeInMainWorld('electron', {
       clipboard.writeText(str);
     },
   },
+  env: {
+    getHome() {
+      return process.env.HOME;
+    },
+  },
 });
