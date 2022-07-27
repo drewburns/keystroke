@@ -222,7 +222,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       webSecurity: false,
-      devTools: false,
+      devTools: true,
       spellcheck: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -233,23 +233,15 @@ const createWindow = async () => {
   electronLocalshortcut.register(mainWindow, 'CommandOrControl+N', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'newChat');
   });
-  electronLocalshortcut.register(
-    mainWindow,
-    'Shift+CommandOrControl+Up',
-    () => {
-      mainWindow.webContents.send('go-to-page-keypress', 'upChat');
-    }
-  );
+  electronLocalshortcut.register(mainWindow, 'CommandOrControl+Up', () => {
+    mainWindow.webContents.send('go-to-page-keypress', 'upChat');
+  });
   electronLocalshortcut.register(mainWindow, 'CommandOrControl+T', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'timedMessages');
   });
-  electronLocalshortcut.register(
-    mainWindow,
-    'Shift+CommandOrControl+Down',
-    () => {
-      mainWindow.webContents.send('go-to-page-keypress', 'downChat');
-    }
-  );
+  electronLocalshortcut.register(mainWindow, 'CommandOrControl+Down', () => {
+    mainWindow.webContents.send('go-to-page-keypress', 'downChat');
+  });
   electronLocalshortcut.register(mainWindow, 'CommandOrControl+E', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'reminders');
   });

@@ -1,5 +1,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Autocomplete, Chip, Grid, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Checkbox,
+  Chip,
+  FormControlLabel,
+  Grid,
+  TextField,
+} from '@mui/material';
 import Select from 'react-select';
 import mixpanel from 'mixpanel-browser';
 
@@ -35,7 +42,6 @@ export default function NewChat({
   const [selectOptions, setSelectOptions] = React.useState([]);
   const [lastKeyCode, setLastKeyCode] = React.useState(0);
 
-  
   React.useEffect(() => {
     mixpanel.track('New chat page');
 
@@ -94,6 +100,22 @@ export default function NewChat({
           onChange={(newValues) => setValue(newValues)}
           options={selectOptions}
           onKeyDown={onKeyDown}
+          filterOption={(o, v: string) =>
+            !v
+              .toLowerCase()
+              .split(' ')
+              .map((sub) => o.label.toLowerCase().indexOf(sub.toLowerCase()) > -1)
+              .includes(false)
+          }
+          // filterOption={(o, v: string) =>
+          //   v
+          //     .toLowerCase()
+          //     .split(' ')
+          //     .forEach((subName) => {
+          //       o.label.toLowerCase().indexOf(subName.toLowerCase()) > -1;
+          //     })
+          // }
+          isSearchable
           // options={Object.entries(nameNumbers).map((val) => ({
           //   value: val[0],
           //   label: val[1],
@@ -114,6 +136,7 @@ export default function NewChat({
               files={[]}
               setFiles={() => console.log('null')} // TODO: remove
             />
+            {/* <TextField type="text" /> */}
           </div>
         )}
       </Grid>

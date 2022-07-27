@@ -14,6 +14,22 @@ CREATE TABLE IF NOT EXISTS reminder(
   type           TEXT default "manual"
 )`; // chat_id = chat_guid
 
+export const createBroadcastListTable = `
+CREATE TABLE IF NOT EXISTS broadcast_list(
+  id             INTEGER PRIMARY KEY     NOT NULL,
+  name           TEXT     NOT NULL,
+  created_at     datetime default current_timestamp,
+)
+`;
+
+export const createBroadcastListHandleTable = `
+CREATE TABLE IF NOT EXISTS broadcast_list_handle(
+  broadcast_list_id INTEGER,
+  handle_row_id       INTEGER,
+  PRIMARY KEY (broadcast_list_id, handle_id)
+)
+`;
+
 export const createMessageToSendTable = `
 CREATE TABLE IF NOT EXISTS message_to_send(
   id             INTEGER PRIMARY KEY     NOT NULL,
@@ -30,6 +46,7 @@ export const addLastMessageToSendLastMessageRowID = `
   ALTER TABLE message_to_send
   ADD cancel_if_last_message_above INTEGER;
 `;
+
 
 // select chat.guid,display_name, GROUP_CONCAT(handle.id) as part_list
 // from chat
