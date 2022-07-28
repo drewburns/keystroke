@@ -102,6 +102,7 @@ export default function MessageBar({
 
   React.useEffect(() => {
     // setTimeAmount(0);
+    console.log(chatGuids)
     if (!isFromNew) {
       textInput.current.focus();
     }
@@ -263,6 +264,7 @@ export default function MessageBar({
               autoFocus
               onChange={(e) => setMessageBody(e.target.value)}
               value={messageBody}
+              spellCheck
               minRows={1}
               placeholder="Message"
               onKeyDown={onKeyDown}

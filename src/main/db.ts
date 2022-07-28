@@ -28,6 +28,12 @@ import {
   cancelMessageToSendSQL,
   updateMessageToSendSQL,
   addLastMessageToSendLastMessageRowID,
+  createBroadcastListTable,
+  createBroadcastListHandleTable,
+  createBroadcastListSQL,
+  getHandleRowIDsForChatGuidsSQL,
+  createBroadcastParticipantSQL,
+  getBroadcastListsSQL,
 } from './sql';
 
 const Store = require('electron-store');
@@ -107,6 +113,8 @@ const attemptCreateReminderTable = async () => {
   await runSelect(createReminderTable);
   await runSelect(createMessageToSendTable);
   await runSelect(addLastMessageToSendLastMessageRowID);
+  await runSelect(createBroadcastListTable);
+  await runSelect(createBroadcastListHandleTable);
   return true;
 };
 
@@ -145,6 +153,11 @@ const getBadgeNumber = async () => {
 
 const getReminders = async (page = 0) => {
   const result = await runSelect(getRemindersSQL(page));
+  return result;
+};
+
+const getBroadcastLists = async () => {
+  const result = await runSelect(getBroadcastListsSQL);
   return result;
 };
 
@@ -232,6 +245,17 @@ const massDeleteReminders = async (type: string) => {
   );
 };
 
+const createBroadcastList = async (name: string, chat_guids: string) => {
+  const results = await runSelect(createBroadcastListSQL(name));
+  const newListId = results[0].id;
+
+  for (const x in chat_guids.split(',')) {
+    const id = chat_guids.split(',')[x];
+    console.log(createBroadcastParticipantSQL(newListId, id));
+    await runSelect(createBroadcastParticipantSQL(newListId, id));
+  }
+};
+
 const createReminder = async (
   message_id: string,
   remind_at: Date,
@@ -273,4 +297,6 @@ module.exports = {
   editMessageToSend,
   getMessageToSendFeed,
   deleteMessageToSend,
+  createBroadcastList,
+  getBroadcastLists,
 };

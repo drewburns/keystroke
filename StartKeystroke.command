@@ -1,0 +1,1 @@
+cd ~/Desktop/Programming/keystroke/electron-app && npm start

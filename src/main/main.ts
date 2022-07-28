@@ -59,6 +59,8 @@ const {
   getMessageToSendFeed,
   deleteMessageToSend,
   editMessageToSend,
+  createBroadcastList,
+  getBroadcastLists,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -76,6 +78,11 @@ let mainWindow = null;
 ipcMain.on('get-message-to-send-feed', async (event, arg) => {
   const results = await getMessageToSendFeed();
   event.reply('get-message-to-send-feed', results);
+});
+
+ipcMain.on('create-broadcast-list', async (event, arg) => {
+  await createBroadcastList(arg[0], arg[1]);
+  // event.reply('get-message-to-send-feed', results);
 });
 
 ipcMain.on('get-auto-reminder-time', async (event, arg) => {
@@ -146,7 +153,20 @@ ipcMain.on('create-user-reminder', async (event, arg) => {
 });
 
 ipcMain.on('get-chat-participants', async (event, arg) => {
-  const results = await getChatParticipants();
+  let results = await getChatParticipants();
+  const broadcastResults = await getBroadcastLists();
+  if (!broadcastResults) {
+    event.reply('get-chat-participants', results);
+    return;
+  }
+  results = results.concat(
+    broadcastResults.map((list) => ({
+      display_name: list.name + ' [Broadcast List]',
+      part_list: list.part_list,
+      broadcast_list_id: list.broadcast_list_id,
+    }))
+  );
+
   event.reply('get-chat-participants', results);
 });
 
@@ -377,7 +397,7 @@ app
   .whenReady()
   .then(() => {
     createWindow();
-    // testPermission()
+    testPermission();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.

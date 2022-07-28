@@ -211,6 +211,7 @@
     "webpack-dev-server": "^4.9.0",
     "webpack-merge": "^5.8.0"
   },
+  "productName": "Keystroke",
   "build": {
     "buildVersion": "1",
     "productName": "Keystroke",

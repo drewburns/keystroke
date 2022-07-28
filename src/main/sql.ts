@@ -18,15 +18,15 @@ export const createBroadcastListTable = `
 CREATE TABLE IF NOT EXISTS broadcast_list(
   id             INTEGER PRIMARY KEY     NOT NULL,
   name           TEXT     NOT NULL,
-  created_at     datetime default current_timestamp,
+  created_at     datetime default current_timestamp
 )
 `;
 
 export const createBroadcastListHandleTable = `
-CREATE TABLE IF NOT EXISTS broadcast_list_handle(
+CREATE TABLE IF NOT EXISTS broadcast_list_participant(
   broadcast_list_id INTEGER,
-  handle_row_id       INTEGER,
-  PRIMARY KEY (broadcast_list_id, handle_id)
+  chat_guid     TEXT,
+  PRIMARY KEY (broadcast_list_id, chat_guid)
 )
 `;
 
@@ -47,6 +47,40 @@ export const addLastMessageToSendLastMessageRowID = `
   ADD cancel_if_last_message_above INTEGER;
 `;
 
+export const createBroadcastListSQL = (name: string) => {
+  return `
+    INSERT INTO broadcast_list (name, created_at) VALUES 
+    ("${name}", "${new Date().toISOString()}") RETURNING *;
+  `;
+};
+
+export const createBroadcastParticipantSQL = (
+  broadcast_list_id: number,
+  chat_guid: string
+) => {
+  return `
+  INSERT INTO broadcast_list_participant (broadcast_list_id, chat_guid) VALUES 
+  (${broadcast_list_id},"${chat_guid}");
+  `;
+};
+
+export const getHandleRowIDsForChatGuidsSQL = (chat_guids: string) => {
+  return `
+    SELECT GROUP_CONCAT(handle.ROWID) as "handle_rowid_list" FROM
+    chat
+    JOIN chat_handle_join ON chat_handle_join.chat_id = chat.ROWID
+    JOIN handle on chat_handle_join.handle_id=handle.ROWID
+    WHERE chat.guid IN (${chat_guids});
+  `;
+};
+
+export const getBroadcastListsSQL = `
+  SELECT GROUP_CONCAT(chat.guid) as "part_list",
+  * from broadcast_list
+  JOIN broadcast_list_participant on broadcast_list.id = broadcast_list_participant.broadcast_list_id
+  JOIN chat on broadcast_list_participant.chat_guid = chat.guid
+  GROUP BY broadcast_list.id
+`;
 
 // select chat.guid,display_name, GROUP_CONCAT(handle.id) as part_list
 // from chat
