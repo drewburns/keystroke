@@ -32,7 +32,9 @@ const sendMessageToChatId = (
     },
     function (err, result, raw) {
       if (err) {
+        throw new Error(err);
         return console.log(err);
+
       }
     }
   );

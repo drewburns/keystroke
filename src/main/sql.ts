@@ -47,7 +47,6 @@ export const addLastMessageToSendLastMessageRowID = `
   ADD cancel_if_last_message_above INTEGER;
 `;
 
-
 // select chat.guid,display_name, GROUP_CONCAT(handle.id) as part_list
 // from chat
 // left join chat_handle_join on chat.ROWID = chat_handle_join.chat_id
@@ -83,20 +82,41 @@ export const updateMessageToSendSQL = (
 export const createMessageToSendSQL = (
   chat_guid: string,
   body: string,
-  scheduled_for: Date
+  scheduled_for: Date,
+  lastRowID = null
 ) => {
+  if (lastRowID) {
+    return `INSERT INTO message_to_send
+    (created_at, chat_guid, scheduled_for, body, cancel_if_last_message_above)
+    VALUES ("${new Date().toISOString()}",
+     "${chat_guid}",  "${scheduled_for.toISOString()}", "${body}", ${lastRowID});
+    `;
+  }
   return `INSERT INTO message_to_send
-  (created_at, chat_guid, scheduled_for, body)
-  VALUES ("${new Date().toISOString()}",
-   "${chat_guid}",  "${scheduled_for.toISOString()}", "${body}");
-  `;
+    (created_at, chat_guid, scheduled_for, body)
+    VALUES ("${new Date().toISOString()}",
+     "${chat_guid}",  "${scheduled_for.toISOString()}", "${body}");
+    `;
 };
 
-export const getTimedMessagesReadyToSendSQL = `
+export const getTimedMessagesReadyToSendSQL = (getAll = false) => {
+  // TODO: do this all in one SQL query
+  if (getAll) {
+    return `
+    SELECT * from message_to_send WHERE sent_at IS NULL
+  `;
+  }
+  return `
   SELECT * from message_to_send WHERE
   datetime(scheduled_for, 'localtime') < datetime(current_timestamp, 'localtime') AND sent_at IS NULL
 `;
+};
 
+export const deleteTimedMessageSQL = (message_to_send_id: number) => {
+  return `
+  DELETE from message_to_send where id=${message_to_send_id};
+  `;
+};
 export const updateTimedMessageSQL = (message_to_send_id: number) => {
   return `
     UPDATE message_to_send set sent_at="${new Date().toISOString()}" where id=${message_to_send_id}
@@ -122,7 +142,10 @@ export const getUnrepliedMessagesSQL = (hours: number) => {
 `;
 };
 
-export const getLastMessageROWIDForChat = (chatGuid: string) => {
+export const getLastMessageROWIDForChatSQL = (
+  chatGuid: string,
+  notFromMe = false
+) => {
   return `
   SELECT message.ROWID as "ROWID"
   FROM message
@@ -133,9 +156,11 @@ export const getLastMessageROWIDForChat = (chatGuid: string) => {
       FROM message
       LEFT JOIN chat_message_join ON chat_message_join.message_id = message.ROWID
       LEFT JOIN chat ON chat.ROWID = chat_message_join.chat_id
+      ${notFromMe ? 'WHERE message.is_from_me=0' : ''}
       GROUP BY chat.guid
   ) AND chat.guid="${chatGuid}"`;
 };
+
 export const getChatGuidsLastMessageMeSQL = `
 SELECT text, chat.guid as "chat.guid", message.ROWID as "message.ROWID"
 FROM message
@@ -213,7 +238,7 @@ export const getRemindersSQL = (page = 0) => {
   LEFT JOIN attachment ON message_attachment_join.attachment_id = attachment.ROWID
   WHERE datetime(reminder.remind_at, 'localtime') < datetime(current_timestamp, 'localtime')
   AND reminder.completed_at IS NULL AND reminder.dismissed_at IS NULL
-  GROUP BY message.ROWID ORDER BY message.date desc LIMIT ${pageSize};
+  GROUP BY message.ROWID ORDER BY reminder.created_at desc LIMIT ${pageSize};
 `;
 };
 

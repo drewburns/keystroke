@@ -5,8 +5,8 @@ rm -rf ~/Desktop/keystroke
 git clone https://github.com/drewburns/keystroke.git keystroke
 cd keystroke
 npm i --force
+chmod +x armNode.sh && ./armNode.sh
 echo -e "export const myID = '$1';" >> src/renderer/myid.js
-# chmod +x armNode.sh && ./armNode.sh
 # npm install sqlite3 --build-from-source --target_arch=arm64 --fallback-to-build
 npm run start
 # cd ~/Desktop
