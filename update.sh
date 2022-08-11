@@ -1,0 +1,1 @@
+cd ~/Desktop/keystroke && npm i && echo -e "export const myID = '$1';" >> src/renderer/myid.js && npm run start

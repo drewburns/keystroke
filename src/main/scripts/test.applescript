@@ -1,3 +1,3 @@
-tell application "System Events"
-	key code 57 --Shift
+tell application "Messages"
+	count windows
 end tell
