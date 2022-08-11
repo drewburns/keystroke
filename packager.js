@@ -1,7 +1,8 @@
 const packager = require('electron-packager');
 
 packager({
-  dir: '.',
+  dir: 'release/app',
+
   osxSign: {
     identity: 'Developer ID Application: Andrew Burns (92VN998L5W)',
     'hardened-runtime': true,

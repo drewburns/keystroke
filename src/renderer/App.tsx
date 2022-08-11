@@ -163,9 +163,9 @@ const Hello = () => {
     setPage('chat');
   };
 
-  if (!isPaid) {
-    return <PayMe />;
-  }
+  // if (!isPaid) {
+  //   return <PayMe />;
+  // }
 
   return (
     <div>

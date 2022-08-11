@@ -3,7 +3,7 @@
 
 import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
-import * as Sentry from '@sentry/electron';
+import * as Sentry from "@sentry/electron/main";
 import { getLastMessageROWIDForChat } from './sql';
 Sentry.init({
   dsn: 'https://1b2cb5027f6a480aa94fc8f567fe00db@o1338627.ingest.sentry.io/6609806',
@@ -417,7 +417,7 @@ app
   .then(() => {
     createWindow();
 
-    // testPermission()
+    testPermission();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
       // dock icon is clicked and there are no other windows open.
