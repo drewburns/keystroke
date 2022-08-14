@@ -5,6 +5,8 @@ import CreateIcon from '@mui/icons-material/Create';
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import PeopleIcon from '@mui/icons-material/People';
+import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 
 type Props = {
   setPage: (page: string) => void;
@@ -27,6 +29,14 @@ export default function TopSideBar({ setPage }: Props) {
         style={{ cursor: 'pointer' }}
       />
       <AccessTimeIcon
+        onClick={() => setPage('timedMessages')}
+        style={{ cursor: 'pointer' }}
+      />
+      <PeopleIcon
+        onClick={() => setPage('timedMessages')}
+        style={{ cursor: 'pointer' }}
+      />
+      <EmojiPeopleIcon
         onClick={() => setPage('timedMessages')}
         style={{ cursor: 'pointer' }}
       />
