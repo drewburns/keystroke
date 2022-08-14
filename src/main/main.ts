@@ -3,7 +3,7 @@
 
 import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
-import * as Sentry from "@sentry/electron/main";
+import * as Sentry from '@sentry/electron/main';
 import { getLastMessageROWIDForChat } from './sql';
 Sentry.init({
   dsn: 'https://1b2cb5027f6a480aa94fc8f567fe00db@o1338627.ingest.sentry.io/6609806',
@@ -89,7 +89,15 @@ ipcMain.on('get-auto-reminder-time', async (event, arg) => {
   const result = store.get('auto-reminder-default-hours');
   event.reply('get-auto-reminder-time', result);
 });
-// update-auto-reminder-time
+
+ipcMain.on('get-access-code', async (event, arg) => {
+  const result = store.get('access-code');
+  event.reply('get-access-code', result);
+});
+
+ipcMain.on('set-access-code', async (event, arg) => {
+  store.set('access-code');
+});
 
 ipcMain.on('update-auto-reminder-time', async (event, arg) => {
   store.set('auto-reminder-default-hours', arg);
