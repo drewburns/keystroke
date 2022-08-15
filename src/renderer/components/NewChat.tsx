@@ -159,7 +159,7 @@ export default function NewChat({
               setFiles={() => console.log('null')} // TODO: remove
             />
             {selectedTargets.filter((s) => s.label.includes('[Broadcast'))
-              .length > 1 && (
+              .length === 0 && (
               <FormControlLabel
                 control={
                   <Checkbox

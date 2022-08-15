@@ -7,6 +7,8 @@ import Dropzone from 'react-dropzone';
 import MessageBar from './MessageBar';
 import { formatPhoneNumber } from '../util';
 import MesssageBubble from './MesssageBubble';
+import NotificationsOffIcon from '@mui/icons-material/NotificationsOff';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import { useGlobalState } from '../util/GlobalContext';
 
 type Props = {
@@ -26,6 +28,7 @@ export default function ChatPage({
   const [messages, setMessages] = React.useState<any[]>([]);
   const [hasMore, setHasMore] = React.useState(true);
   const [files, setFiles] = React.useState<any>([]);
+  const [isMuted, setIsMuted] = React.useState(false);
 
   mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
 
@@ -43,9 +46,14 @@ export default function ChatPage({
       setMessages(unique(results, 'message.ROWID'));
       window.electron.ipcRenderer.sendMessage('set-chat-read', [chatGuid]);
     });
+    window.electron.ipcRenderer.once('get-is-muted', (result: boolean) => {
+      console.log('muted', result);
+      setIsMuted(result);
+    });
     setFiles([]);
 
     window.electron.ipcRenderer.sendMessage('get-messages', [chatGuid]);
+    window.electron.ipcRenderer.sendMessage('get-is-muted', chatGuid);
   }, [chatGuid]);
 
   React.useEffect(() => {
@@ -95,7 +103,32 @@ export default function ChatPage({
   return (
     <div>
       <div style={{ marginTop: 0 }}>
-        <h3>To: {chatName}</h3>
+        <div>
+          <h3 style={{ display: 'inline-block' }}>To: {chatName}</h3>
+          {!isMuted ? (
+            <NotificationsOffIcon
+              style={{ float: 'right', marginTop: 17, cursor: 'pointer' }}
+              onClick={() => {
+                window.electron.ipcRenderer.sendMessage('toggle-mute', [
+                  chatGuid,
+                  !isMuted,
+                ]);
+                setIsMuted(!isMuted);
+              }}
+            />
+          ) : (
+            <NotificationsActiveIcon
+              style={{ float: 'right', marginTop: 17, cursor: 'pointer' }}
+              onClick={() => {
+                window.electron.ipcRenderer.sendMessage('toggle-mute', [
+                  chatGuid,
+                  !isMuted,
+                ]);
+                setIsMuted(!isMuted);
+              }}
+            />
+          )}
+        </div>
         <div
           style={{ backgroundColor: 'black', height: '1px', width: '100%' }}
         />

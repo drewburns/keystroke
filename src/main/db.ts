@@ -34,6 +34,8 @@ import {
   getHandleRowIDsForChatGuidsSQL,
   createBroadcastParticipantSQL,
   getBroadcastListsSQL,
+  addMuteToChat,
+  toggleChatMuteSQL,
 } from './sql';
 
 const Store = require('electron-store');
@@ -115,6 +117,7 @@ const attemptCreateReminderTable = async () => {
   await runSelect(addLastMessageToSendLastMessageRowID);
   await runSelect(createBroadcastListTable);
   await runSelect(createBroadcastListHandleTable);
+  await runSelect(addMuteToChat);
   return true;
 };
 
@@ -159,6 +162,18 @@ const getReminders = async (page = 0) => {
 const getBroadcastLists = async () => {
   const result = await runSelect(getBroadcastListsSQL);
   return result;
+};
+
+const toggleChatMute = async (guid: string, val: boolean) => {
+  await runSelect(toggleChatMuteSQL(guid, val));
+};
+
+const getIsMuted = async (guid: string) => {
+  const results = await runSelect(
+    `SELECT ks_muted from chat where guid="${guid}"`
+  );
+  const data = results[0];
+  return data.ks_muted;
 };
 
 const getChatPreviews = async () => {
@@ -299,4 +314,6 @@ module.exports = {
   deleteMessageToSend,
   createBroadcastList,
   getBroadcastLists,
+  toggleChatMute,
+  getIsMuted,
 };

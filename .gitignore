@@ -2,7 +2,7 @@
 logs
 *.log
 .env
-
+src/renderer/myid.js
 # Runtime data
 pids
 *.pid

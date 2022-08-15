@@ -47,6 +47,11 @@ export const addLastMessageToSendLastMessageRowID = `
   ADD cancel_if_last_message_above INTEGER;
 `;
 
+export const addMuteToChat = `
+  ALTER TABLE chat
+  ADD ks_muted BOOLEAN;
+`;
+
 export const createBroadcastListSQL = (name: string) => {
   return `
     INSERT INTO broadcast_list (name, created_at) VALUES 
@@ -234,6 +239,7 @@ export const getRemindersSQL = (page = 0) => {
   reminder.id as "reminder.id",
   handle.id as "sender.number",
   chat.guid as "chat.guid",
+  chat.ks_muted,
   reminder.type as "reminder_type",
   GROUP_CONCAT(filename) as "attach_list",
   GROUP_CONCAT(mime_type) as "mime_list",
@@ -268,6 +274,7 @@ export const createReminderInsertSQL = (
 
 export const getChatPreviewSQL = `SELECT chat.guid AS "chat.guid", chat.display_name AS "chat.display_name",
 chat.service_name AS "chat.service_name",
+chat.ks_muted,
 GROUP_CONCAT(handle.id) AS member_list
 FROM chat
 JOIN chat_handle_join ON chat.ROWID = chat_handle_join.chat_id
@@ -302,8 +309,13 @@ export const getBadgeNumberSQL = `
   select count(*) as count from message where is_read=0 and is_from_me=0;
 `;
 
+export const toggleChatMuteSQL = (chatGuid: string, val: boolean) => {
+  return `UPDATE chat set ks_muted=${val} where guid="${chatGuid}"`;
+};
+
 export const getAllChatSummary = `SELECT
 chat.guid AS "chat.guid",
+chat.ks_muted,
 chat.display_name AS "chat.display_name",
 chat.service_name AS "chat.service_name",
 message.text AS "message.text",
@@ -350,6 +362,7 @@ export const getNamesForNumbersSQL = `select ZABCDPHONENUMBER.ZFULLNUMBER, ZFIRS
 export const generateNewMessageQuery = (lastRowIdSeen: number) => {
   return `
 SELECT message.ROWID as "message.ROWID", chat.guid as "chat.guid",
+chat.ks_muted,
 sender_handle.id as "sender.number",
 GROUP_CONCAT(filename) as "attach_list",
 GROUP_CONCAT(mime_type) as "mime_list",

@@ -73,7 +73,6 @@ export default function MesssageBubble({
       ];
       mimes = [message.mime_type];
     }
-    console.log(message.mimes)
     const renderArray = [];
 
     for (let x = 0; x < filenames.length; x++) {

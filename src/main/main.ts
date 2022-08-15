@@ -6,6 +6,7 @@ import MenuBuilder from './menu';
 const Store = require('electron-store');
 
 const store = new Store();
+require('update-electron-app')();
 const electronLocalshortcut = require('electron-localshortcut');
 
 /**
@@ -61,6 +62,8 @@ const {
   editMessageToSend,
   createBroadcastList,
   getBroadcastLists,
+  toggleChatMute,
+  getIsMuted,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -78,6 +81,15 @@ let mainWindow = null;
 ipcMain.on('get-message-to-send-feed', async (event, arg) => {
   const results = await getMessageToSendFeed();
   event.reply('get-message-to-send-feed', results);
+});
+
+ipcMain.on('toggle-mute', async (event, arg) => {
+  await toggleChatMute(arg[0], arg[1]);
+});
+
+ipcMain.on('get-is-muted', async (event, arg) => {
+  const result = await getIsMuted(arg);
+  event.reply('get-is-muted', result);
 });
 
 ipcMain.on('create-broadcast-list', async (event, arg) => {
@@ -365,7 +377,7 @@ const checkForNewMessage = async () => {
         results[0]['message.ROWID'] || lastSeenRowId + results.length;
       mainWindow?.webContents.send('new-message', { data: results });
       results.forEach((row: any) => {
-        if (row.is_from_me === 0) {
+        if (row.is_from_me === 0 && row.ks_muted !== 1) {
           new Notification({
             title: getChatUserHandle(
               tempData,

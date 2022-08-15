@@ -70,7 +70,6 @@ export default function MessageBar({
       chatGuids.forEach((chatGuid: string, index: number) => {
         const firstName = chatNames[index].split(' ')[0];
         const parsedBody = messageBody.replace('{first_name}', firstName);
-        console.log('sending to chatGuid', chatGuid);
         mixpanel.track('sent message', { isDate: !!date });
         if (messageBody) {
           window.electron.ipcRenderer.sendMessage('send-message', [
@@ -102,7 +101,7 @@ export default function MessageBar({
 
   React.useEffect(() => {
     // setTimeAmount(0);
-    console.log(chatGuids)
+    // console.log(chatGuids)
     if (!isFromNew) {
       textInput.current.focus();
     }
