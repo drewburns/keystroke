@@ -96,7 +96,7 @@ ipcMain.on('get-access-code', async (event, arg) => {
 });
 
 ipcMain.on('set-access-code', async (event, arg) => {
-  store.set('access-code');
+  store.set('access-code', arg);
 });
 
 ipcMain.on('update-auto-reminder-time', async (event, arg) => {
@@ -323,6 +323,8 @@ const runScanHelper = async () => {
   await scanTimedMessageToDelete();
   const badgeNum = await getBadgeNumber();
   app.dock.setBadge(badgeNum[0].count.toString());
+
+  mainWindow?.webContents.send('get-acccess-code', store.get('access-code'));
 };
 
 const scanTimedMessageToDelete = async () => {

@@ -53,6 +53,7 @@ const Hello = () => {
     }
     const list: string[] = [];
     if (numberList.length === 1) {
+      if (numberList[0].includes('@')) return numberList[0];
       return nameNumbers[formatPhoneNumber(numberList[0])] || numberList[0];
     }
     numberList.forEach((n) => {
@@ -73,20 +74,24 @@ const Hello = () => {
     }
   }, [page]);
 
-  const checkIfPaid = async () => {
+  const checkIfPaid = async (code: string) => {
     const res = await axios.get(
       'https://gist.github.com/drewburns/e4e17713c7e8a936dea1803167559703'
     );
     const paidUsers = res.data;
-    setIsPaid(paidUsers.includes(myID));
+    setIsPaid(paidUsers.includes(code));
   };
 
   React.useEffect(() => {
     mixpanel.track('App load');
-    checkIfPaid();
     window.electron.ipcRenderer.on('asynchronous-message', (res: any) => {
       setChatThreads(res.data);
     });
+    window.electron.ipcRenderer.once('get-access-code', (res: any) => {
+      console.log('accesscode', res);
+      checkIfPaid(res);
+    });
+    window.electron.ipcRenderer.sendMessage('get-access-code');
     window.electron.ipcRenderer.once('name-numbers', (res: any) => {
       // eslint-disable-next-line no-console
       // setChatThreads(res.data);
@@ -162,6 +167,8 @@ const Hello = () => {
     });
     setPage('chat');
   };
+
+  const tryCode = (code: string) => {};
 
   // if (!isPaid) {
   //   return <PayMe />;
