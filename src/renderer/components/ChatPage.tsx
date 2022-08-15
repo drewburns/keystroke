@@ -95,7 +95,7 @@ export default function ChatPage({
   return (
     <div>
       <div style={{ marginTop: 0, paddingLeft: 10 }}>
-        <h4>To: {chatName.slice(0, 80)}</h4>
+        <h5>To: {chatName.slice(0, 80)}</h5>
         <div
           style={{ backgroundColor: 'black', height: '1px', width: '100%' }}
         />
