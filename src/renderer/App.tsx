@@ -79,7 +79,10 @@ const Hello = () => {
       'https://gist.github.com/drewburns/e4e17713c7e8a936dea1803167559703'
     );
     const paidUsers = res.data;
-    setIsPaid(paidUsers.includes(code));
+    if (paidUsers.includes(code)) {
+      setIsPaid(true);
+      window.electron.ipcRenderer.sendMessage('set-access-code', code);
+    }
   };
 
   React.useEffect(() => {
@@ -168,11 +171,9 @@ const Hello = () => {
     setPage('chat');
   };
 
-  const tryCode = (code: string) => {};
-
-  // if (!isPaid) {
-  //   return <PayMe />;
-  // }
+  if (!isPaid) {
+    return <PayMe tryCode={checkIfPaid} />;
+  }
 
   return (
     <div>

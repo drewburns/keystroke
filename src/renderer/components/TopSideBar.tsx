@@ -32,14 +32,14 @@ export default function TopSideBar({ setPage }: Props) {
         onClick={() => setPage('timedMessages')}
         style={{ cursor: 'pointer' }}
       />
-      <PeopleIcon
+      {/* <PeopleIcon
         onClick={() => setPage('timedMessages')}
         style={{ cursor: 'pointer' }}
       />
       <EmojiPeopleIcon
         onClick={() => setPage('timedMessages')}
         style={{ cursor: 'pointer' }}
-      />
+      /> */}
     </div>
   );
 }

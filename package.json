@@ -242,8 +242,8 @@
       },
       "type": "distribution",
       "hardenedRuntime": true,
-      "entitlements": "./entitlements.mac.plist",
-      "entitlementsInherit": "./entitlements.mac.plist",
+      "entitlements": "./assets/entitlements.mac.plist",
+      "entitlementsInherit": "./assets/entitlements.mac.plist",
       "gatekeeperAssess": true,
       "extendInfo": {
         "NSAppleEventsUsageDescription": "Shell Notebook can control other applications with AppleScript."
