@@ -102,9 +102,9 @@ export default function ChatPage({
   }
   return (
     <div>
-      <div style={{ marginTop: 0 }}>
+      <div style={{ marginTop: 0, paddingLeft: 10 }}>
         <div>
-          <h3 style={{ display: 'inline-block' }}>To: {chatName}</h3>
+          <h5 style={{ display: 'inline-block' }}>To: {chatName}</h5>
           {!isMuted ? (
             <NotificationsOffIcon
               style={{ float: 'right', marginTop: 17, cursor: 'pointer' }}

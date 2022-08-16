@@ -3,6 +3,12 @@
 
 import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
+import * as Sentry from "@sentry/electron/main";
+import { getLastMessageROWIDForChat } from './sql';
+Sentry.init({
+  dsn: 'https://1b2cb5027f6a480aa94fc8f567fe00db@o1338627.ingest.sentry.io/6609806',
+});
+
 const Store = require('electron-store');
 
 const store = new Store();
@@ -64,6 +70,7 @@ const {
   getBroadcastLists,
   toggleChatMute,
   getIsMuted,
+  getLastMessageROWIDForChat,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -188,8 +195,14 @@ ipcMain.on('send-message', async (event, arg) => {
   const isFile = arg[2] || false;
   const messageIdFromReminder = arg[3] || null;
   const sendAt = arg[4] || null;
+  const cancelIfReply = arg[5] || false;
   if (sendAt) {
-    await createMessageToSend(chatGuid, body.replace(/["']/g, '“'), sendAt);
+    await createMessageToSend(
+      chatGuid,
+      body.replace(/["']/g, '“'),
+      sendAt,
+      cancelIfReply
+    );
     return;
   }
   await sendMessageToChatId(chatGuid, body.replace(/["']/g, '“'), isFile);
@@ -331,8 +344,25 @@ const runScanHelper = async () => {
 
   await createAutoReminders();
   await sendTimedMessage();
+  await scanTimedMessageToDelete();
   const badgeNum = await getBadgeNumber();
   app.dock.setBadge(badgeNum[0].count.toString());
+};
+
+const scanTimedMessageToDelete = async () => {
+  const results = await getMessagesToSend(true);
+  for (const x in results) {
+    const row = results[x];
+    const res = await getLastMessageROWIDForChat(row.chat_guid, true);
+    if (
+      row.cancel_if_last_message_above &&
+      res[0].ROWID > row.cancel_if_last_message_above
+    ) {
+      console.log('canceling message');
+      await deleteMessageToSend(row.id);
+      return;
+    }
+  }
 };
 
 const sendTimedMessage = async () => {
@@ -340,6 +370,15 @@ const sendTimedMessage = async () => {
   // eslint-disable-next-line guard-for-in
   for (const x in results) {
     const row = results[x];
+    const res = await getLastMessageROWIDForChat(row.chat_guid, true);
+    if (
+      row.cancel_if_last_message_above &&
+      res[0].ROWID > row.cancel_if_last_message_above
+    ) {
+      console.log('canceling message');
+      await deleteMessageToSend(row.id);
+      return;
+    }
     await sendMessageToChatId(
       row.chat_guid,
       row.body.replace(/["']/g, '“'),

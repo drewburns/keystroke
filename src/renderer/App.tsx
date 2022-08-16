@@ -2,6 +2,7 @@
 import { Grid, Modal } from '@mui/material';
 import mixpanel from 'mixpanel-browser';
 import { ipcMain, ipcRenderer } from 'electron';
+import axios from 'axios';
 import React from 'react';
 import {
   MemoryRouter as Router,
@@ -20,6 +21,8 @@ import NewChat from './components/NewChat';
 import CreateReminderModal from './components/CreateReminderModal';
 import TimedMessageFeed from './pages/TimedMessageFeed';
 import Settings from './pages/Settings';
+import PayMe from './pages/PayMe';
+import { myID } from './myid';
 
 type SelectedChatType = {
   chatGuid: string;
@@ -31,6 +34,7 @@ const Hello = () => {
 
   const { setState } = useGlobalState();
   const [chatThreads, setChatThreads] = React.useState([]);
+  const [isPaid, setIsPaid] = React.useState(false);
   const [page, setPage] = React.useState('reminders');
   const [nameNumbers, setNameNumbers] = React.useState({});
   const [selectedChat, setSelectedChat] = React.useState<SelectedChatType>({
@@ -69,8 +73,17 @@ const Hello = () => {
     }
   }, [page]);
 
+  const checkIfPaid = async () => {
+    const res = await axios.get(
+      'https://gist.github.com/drewburns/e4e17713c7e8a936dea1803167559703'
+    );
+    const paidUsers = res.data;
+    setIsPaid(paidUsers.includes(myID));
+  };
+
   React.useEffect(() => {
     mixpanel.track('App load');
+    checkIfPaid();
     window.electron.ipcRenderer.on('asynchronous-message', (res: any) => {
       setChatThreads(res.data);
     });
@@ -149,6 +162,10 @@ const Hello = () => {
     });
     setPage('chat');
   };
+
+  // if (!isPaid) {
+  //   return <PayMe />;
+  // }
 
   return (
     <div>

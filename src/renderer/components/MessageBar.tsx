@@ -43,6 +43,7 @@ export default function MessageBar({
 
   const [timeAmount, setTimeAmount] = React.useState(0);
   const [timeDenom, setTimeDenom] = React.useState(60 * 60);
+  const [cancelIfReply, setCancelIfReply] = React.useState(true);
 
   const [date, setDate] = React.useState<Date | null>(null);
 
@@ -78,6 +79,7 @@ export default function MessageBar({
             false,
             messageId,
             date,
+            cancelIfReply,
           ]);
         }
         files.forEach((file) => {
@@ -186,10 +188,11 @@ export default function MessageBar({
               }}
             >
               <div style={{ padding: 10, backgroundColor: 'black' }}>
-                {/* <FormControlLabel
+                <FormControlLabel
                   control={
                     <Checkbox
-                      defaultChecked
+                      checked={cancelIfReply}
+                      onChange={() => setCancelIfReply(!cancelIfReply)}
                       sx={{
                         color: '#1A8BFF',
                         '&.Mui-checked': {
@@ -200,7 +203,7 @@ export default function MessageBar({
                   }
                   style={{ color: 'white' }}
                   label="Cancel if they reply first"
-                /> */}
+                />
 
                 <TimePicker
                   timeDenom={timeDenom}

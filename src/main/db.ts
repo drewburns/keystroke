@@ -36,6 +36,8 @@ import {
   getBroadcastListsSQL,
   addMuteToChat,
   toggleChatMuteSQL,
+  getLastMessageROWIDForChatSQL,
+  deleteTimedMessageSQL,
 } from './sql';
 
 const Store = require('electron-store');
@@ -221,16 +223,31 @@ const updateManualReminderByMessageId = async (messageRowId: number) => {
   await runSelect(updateManualReminderByMessageIdSQL(messageRowId));
 };
 
+const getLastMessageROWIDForChat = async (
+  chat_guid: string,
+  is_from_me = false
+) => {
+  return await runSelect(getLastMessageROWIDForChatSQL(chat_guid, is_from_me));
+};
 const createMessageToSend = async (
   chat_guid: string,
   body: string,
-  scheduled_for: Date
+  scheduled_for: Date,
+  cancelIfReply = false
 ) => {
-  await runSelect(createMessageToSendSQL(chat_guid, body, scheduled_for));
+  if (cancelIfReply) {
+    const res = await runSelect(getLastMessageROWIDForChatSQL(chat_guid, true));
+    const lastRowID = res[0].ROWID;
+    await runSelect(
+      createMessageToSendSQL(chat_guid, body, scheduled_for, lastRowID)
+    );
+  } else {
+    await runSelect(createMessageToSendSQL(chat_guid, body, scheduled_for));
+  }
 };
 
-const getMessagesToSend = async () => {
-  const results = await runSelect(getTimedMessagesReadyToSendSQL);
+const getMessagesToSend = async (getAll = false) => {
+  const results = await runSelect(getTimedMessagesReadyToSendSQL(getAll));
   return results;
 };
 
@@ -316,4 +333,5 @@ module.exports = {
   getBroadcastLists,
   toggleChatMute,
   getIsMuted,
+  getLastMessageROWIDForChat,
 };

@@ -7,7 +7,9 @@ src/renderer/myid.js
 pids
 *.pid
 *.seed
+src/renderer/myid.js
 
+*.p12
 # Coverage directory used by tools like istanbul
 coverage
 .eslintcache
