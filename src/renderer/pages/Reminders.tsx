@@ -34,7 +34,6 @@ export default function Reminders({
   React.useEffect(() => {
     mixpanel.track('Reminder page loaded');
     window.electron.ipcRenderer.on('get-reminders', (results: any[]) => {
-      console.log('results', results);
       mixpanel.track('Get reminders');
       if (results) setReminders(results);
     });

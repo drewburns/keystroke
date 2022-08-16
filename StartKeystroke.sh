@@ -1,1 +1,0 @@
-cd ~/Desktop/keystroke && npm start
