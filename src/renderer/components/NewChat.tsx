@@ -47,6 +47,10 @@ export default function NewChat({
   const [broadcastListName, setBroadcastListName] = React.useState('');
 
   React.useEffect(() => {
+    console.log(selectedTargets);
+  }, [selectedTargets]);
+
+  React.useEffect(() => {
     mixpanel.track('New chat page');
 
     window.electron.ipcRenderer.once(
@@ -64,7 +68,7 @@ export default function NewChat({
                   }`
               )
               .join(' & '),
-          value: r.guid || r.part_list,
+          value: r.guid || r.broadcast_list_id || r.part_list,
         }));
         setSelectOptions(data.sort((a, b) => a.label.length - b.label.length));
       }
@@ -150,9 +154,15 @@ export default function NewChat({
               isFromNew
               chatGuids={[
                 ...new Set(
-                  selectedTargets.map((v: any) => v.value.split(',')).flat()
+                  selectedTargets
+                    .filter((v) => !v.label.includes('[Broadcast'))
+                    .map((v: any) => v.value.split(','))
+                    .flat()
                 ),
               ]} // TODO: type this
+              broadcastIds={selectedTargets
+                .filter((v) => v.label.includes('[Broadcast'))
+                .map((v: any) => v.value)}
               chatNames={selectedTargets.map((v: any) => v.label)} // TODO: type this
               files={[]}
               onMessageSent={createBroadcastList}

@@ -21,6 +21,7 @@ import TimePicker from './TimePicker';
 type Props = {
   chatGuids: string[];
   files: any[];
+  broadcastIds: number[];
   isFromNew: boolean;
   setFiles?: (newFiles: any[]) => void;
   onMessageSent?: () => void;
@@ -33,6 +34,7 @@ export default function MessageBar({
   files,
   setFiles,
   isFromNew,
+  broadcastIds,
   messageId,
   onMessageSent,
   chatNames,
@@ -68,6 +70,17 @@ export default function MessageBar({
         numUsers: chatGuids.length,
       });
       setTimeAmount(0);
+      if (broadcastIds) {
+        broadcastIds.forEach((id: number) => {
+          window.electron.ipcRenderer.sendMessage('send-to-broadcast-id', [
+            id,
+            chatGuids,
+            messageBody,
+            date,
+            cancelIfReply,
+          ]);
+        });
+      }
       chatGuids.forEach((chatGuid: string, index: number) => {
         const firstName = chatNames[index].split(' ')[0];
         const parsedBody = messageBody.replace('{first_name}', firstName);

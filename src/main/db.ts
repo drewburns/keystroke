@@ -38,6 +38,7 @@ import {
   toggleChatMuteSQL,
   getLastMessageROWIDForChatSQL,
   deleteTimedMessageSQL,
+  getChatGuidsForBroadcastListSQL,
 } from './sql';
 
 const Store = require('electron-store');
@@ -283,11 +284,19 @@ const createBroadcastList = async (name: string, chat_guids: string) => {
 
   for (const x in chat_guids.split(',')) {
     const id = chat_guids.split(',')[x];
-    console.log(createBroadcastParticipantSQL(newListId, id));
     await runSelect(createBroadcastParticipantSQL(newListId, id));
   }
 };
 
+const getBroadcastListGuids = async (
+  broadcast_id: number
+): Promise<string[]> => {
+  const results = await runSelect(
+    getChatGuidsForBroadcastListSQL(broadcast_id)
+  );
+  const data = results[0].guids;
+  return data.split(',');
+};
 const createReminder = async (
   message_id: string,
   remind_at: Date,
@@ -334,4 +343,5 @@ module.exports = {
   toggleChatMute,
   getIsMuted,
   getLastMessageROWIDForChat,
+  getBroadcastListGuids,
 };

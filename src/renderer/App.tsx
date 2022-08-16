@@ -23,6 +23,7 @@ import TimedMessageFeed from './pages/TimedMessageFeed';
 import Settings from './pages/Settings';
 import PayMe from './pages/PayMe';
 import { myID } from './myid';
+import Broadcast from './pages/Broadcast';
 
 type SelectedChatType = {
   chatGuid: string;
@@ -224,6 +225,7 @@ const Hello = () => {
             <TimedMessageFeed getChatUserHandle={getChatUserHandle} />
           )}
           {page === 'settings' && <Settings />}
+          {page === 'broadcast' && <Broadcast />}
         </Grid>
       </Grid>
     </div>

@@ -1,10 +1,13 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable no-await-in-loop */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
 import * as Sentry from '@sentry/electron/main';
-import { getLastMessageROWIDForChat } from './sql';
+// import { getLastMessageROWIDForChat } from './sql';
 Sentry.init({
   dsn: 'https://1b2cb5027f6a480aa94fc8f567fe00db@o1338627.ingest.sentry.io/6609806',
 });
@@ -71,6 +74,7 @@ const {
   toggleChatMute,
   getIsMuted,
   getLastMessageROWIDForChat,
+  getBroadcastListGuids,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -220,6 +224,41 @@ ipcMain.on('send-message', async (event, arg) => {
   }
 });
 
+ipcMain.on('send-to-broadcast-id', async (event, arg) => {
+  const broadcastId = arg[0];
+  const chatGuidsToIgnore = arg[1];
+  const body = arg[2];
+  const sendAt = arg[3] || null;
+  const cancelIfReply = arg[4] || false;
+  const broadcastGuids = await getBroadcastListGuids(broadcastId);
+  const uniqueBroadcastGuids = broadcastGuids.filter(
+    (x) => !chatGuidsToIgnore.includes(x)
+  );
+  const nameNumbers = await getNamesForNumbers();
+  const tempData = {};
+  nameNumbers.forEach((row: any) => {
+    const number = formatPhoneNumber(row.ZFULLNUMBER);
+    const name = `${row.ZFIRSTNAME}`;
+    tempData[number] = name;
+  });
+  for (let x = 0; x < uniqueBroadcastGuids.length; x++) {
+    const chatGuid = uniqueBroadcastGuids[x];
+    console.log(sendAt, chatGuid, body);
+    const name = tempData[formatPhoneNumber(chatGuid.split(';')[2])];
+    if (sendAt) {
+      await createMessageToSend(
+        chatGuid,
+        body.replace(/["']/g, '“').replace('{first_name}', name),
+        sendAt,
+        cancelIfReply
+      );
+      continue;
+    }
+    await sendMessageToChatId(chatGuid, body.replace(/["']/g, '“'), false);
+    await updateAutoChatGuidReminders(chatGuid);
+  }
+});
+
 ipcMain.on('fetch-more', async (event, arg) => {
   const chatGuid = arg[0];
   const lastRowID = arg[1];
@@ -275,7 +314,7 @@ const createWindow = async () => {
     icon: getAssetPath('icon.png'),
     webPreferences: {
       webSecurity: false,
-      devTools: false,
+      devTools: true,
       spellcheck: true,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
@@ -285,6 +324,9 @@ const createWindow = async () => {
 
   electronLocalshortcut.register(mainWindow, 'CommandOrControl+N', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'newChat');
+  });
+  electronLocalshortcut.register(mainWindow, 'CommandOrControl+B', () => {
+    mainWindow.webContents.send('go-to-page-keypress', 'broadcast');
   });
   electronLocalshortcut.register(mainWindow, 'CommandOrControl+Up', () => {
     mainWindow.webContents.send('go-to-page-keypress', 'upChat');

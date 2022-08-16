@@ -59,6 +59,17 @@ export const createBroadcastListSQL = (name: string) => {
   `;
 };
 
+// TODO: get their handle for mail merge
+export const getChatGuidsForBroadcastListSQL = (broadcast_id: number) => {
+  return `
+    SELECT GROUP_CONCAT(chat.guid) as "guids" FROM broadcast_list
+    JOIN broadcast_list_participant ON broadcast_list.id=broadcast_list_participant.broadcast_list_id
+    JOIN chat ON broadcast_list_participant.chat_guid=chat.guid
+    WHERE broadcast_list.id=${broadcast_id}
+    GROUP BY broadcast_list.id
+  `;
+};
+
 export const createBroadcastParticipantSQL = (
   broadcast_list_id: number,
   chat_guid: string
