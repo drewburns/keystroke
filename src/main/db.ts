@@ -28,6 +28,14 @@ import {
   cancelMessageToSendSQL,
   updateMessageToSendSQL,
   addLastMessageToSendLastMessageRowID,
+  createBroadcastListTable,
+  createBroadcastListHandleTable,
+  createBroadcastListSQL,
+  getHandleRowIDsForChatGuidsSQL,
+  createBroadcastParticipantSQL,
+  getBroadcastListsSQL,
+  addMuteToChat,
+  toggleChatMuteSQL,
   getLastMessageROWIDForChatSQL,
   deleteTimedMessageSQL,
 } from './sql';
@@ -109,6 +117,9 @@ const attemptCreateReminderTable = async () => {
   await runSelect(createReminderTable);
   await runSelect(createMessageToSendTable);
   await runSelect(addLastMessageToSendLastMessageRowID);
+  await runSelect(createBroadcastListTable);
+  await runSelect(createBroadcastListHandleTable);
+  await runSelect(addMuteToChat);
   return true;
 };
 
@@ -148,6 +159,23 @@ const getBadgeNumber = async () => {
 const getReminders = async (page = 0) => {
   const result = await runSelect(getRemindersSQL(page));
   return result;
+};
+
+const getBroadcastLists = async () => {
+  const result = await runSelect(getBroadcastListsSQL);
+  return result;
+};
+
+const toggleChatMute = async (guid: string, val: boolean) => {
+  await runSelect(toggleChatMuteSQL(guid, val));
+};
+
+const getIsMuted = async (guid: string) => {
+  const results = await runSelect(
+    `SELECT ks_muted from chat where guid="${guid}"`
+  );
+  const data = results[0];
+  return data.ks_muted;
 };
 
 const getChatPreviews = async () => {
@@ -249,6 +277,17 @@ const massDeleteReminders = async (type: string) => {
   );
 };
 
+const createBroadcastList = async (name: string, chat_guids: string) => {
+  const results = await runSelect(createBroadcastListSQL(name));
+  const newListId = results[0].id;
+
+  for (const x in chat_guids.split(',')) {
+    const id = chat_guids.split(',')[x];
+    console.log(createBroadcastParticipantSQL(newListId, id));
+    await runSelect(createBroadcastParticipantSQL(newListId, id));
+  }
+};
+
 const createReminder = async (
   message_id: string,
   remind_at: Date,
@@ -290,5 +329,9 @@ module.exports = {
   editMessageToSend,
   getMessageToSendFeed,
   deleteMessageToSend,
+  createBroadcastList,
+  getBroadcastLists,
+  toggleChatMute,
+  getIsMuted,
   getLastMessageROWIDForChat,
 };

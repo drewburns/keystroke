@@ -12,6 +12,7 @@ Sentry.init({
 const Store = require('electron-store');
 
 const store = new Store();
+require('update-electron-app')();
 const electronLocalshortcut = require('electron-localshortcut');
 
 /**
@@ -65,6 +66,10 @@ const {
   getMessageToSendFeed,
   deleteMessageToSend,
   editMessageToSend,
+  createBroadcastList,
+  getBroadcastLists,
+  toggleChatMute,
+  getIsMuted,
   getLastMessageROWIDForChat,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
@@ -83,6 +88,20 @@ let mainWindow = null;
 ipcMain.on('get-message-to-send-feed', async (event, arg) => {
   const results = await getMessageToSendFeed();
   event.reply('get-message-to-send-feed', results);
+});
+
+ipcMain.on('toggle-mute', async (event, arg) => {
+  await toggleChatMute(arg[0], arg[1]);
+});
+
+ipcMain.on('get-is-muted', async (event, arg) => {
+  const result = await getIsMuted(arg);
+  event.reply('get-is-muted', result);
+});
+
+ipcMain.on('create-broadcast-list', async (event, arg) => {
+  await createBroadcastList(arg[0], arg[1]);
+  // event.reply('get-message-to-send-feed', results);
 });
 
 ipcMain.on('get-auto-reminder-time', async (event, arg) => {
@@ -161,7 +180,20 @@ ipcMain.on('create-user-reminder', async (event, arg) => {
 });
 
 ipcMain.on('get-chat-participants', async (event, arg) => {
-  const results = await getChatParticipants();
+  let results = await getChatParticipants();
+  const broadcastResults = await getBroadcastLists();
+  if (!broadcastResults) {
+    event.reply('get-chat-participants', results);
+    return;
+  }
+  results = results.concat(
+    broadcastResults.map((list) => ({
+      display_name: list.name + ' [Broadcast List]',
+      part_list: list.part_list,
+      broadcast_list_id: list.broadcast_list_id,
+    }))
+  );
+
   event.reply('get-chat-participants', results);
 });
 
@@ -394,7 +426,7 @@ const checkForNewMessage = async () => {
         results[0]['message.ROWID'] || lastSeenRowId + results.length;
       mainWindow?.webContents.send('new-message', { data: results });
       results.forEach((row: any) => {
-        if (row.is_from_me === 0) {
+        if (row.is_from_me === 0 && row.ks_muted !== 1) {
           new Notification({
             title: getChatUserHandle(
               tempData,
@@ -426,7 +458,6 @@ app
   .whenReady()
   .then(() => {
     createWindow();
-
     testPermission();
     app.on('activate', () => {
       // On macOS it's common to re-create a window in the app when the
