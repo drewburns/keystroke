@@ -158,7 +158,7 @@ export default function NewChat({
               onMessageSent={createBroadcastList}
               setFiles={() => console.log('null')} // TODO: remove
             />
-            {selectedTargets.filter((s) => s.label.includes('[Broadcast'))
+            {/* {selectedTargets.filter((s) => s.label.includes('[Broadcast'))
               .length === 0 && (
               <FormControlLabel
                 control={
@@ -178,9 +178,9 @@ export default function NewChat({
                 style={{ color: 'white' }}
                 label="Create this as a broadcast list on send"
               />
-            )}
+            )} */}
             <br />
-            {createAsBroadcastList && (
+            {/* {createAsBroadcastList && (
               <TextField
                 type="text"
                 label="Broadcast List Name"
@@ -189,7 +189,7 @@ export default function NewChat({
                 onChange={(e) => setBroadcastListName(e.target.value)}
                 style={{ backgroundColor: 'white' }}
               />
-            )}
+            )} */}
           </div>
         )}
       </Grid>
