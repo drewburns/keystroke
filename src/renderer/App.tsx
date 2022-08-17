@@ -57,14 +57,19 @@ const Hello = () => {
       if (numberList[0].includes('@')) return numberList[0];
       return nameNumbers[formatPhoneNumber(numberList[0])] || numberList[0];
     }
+    // TODO: add marker for SMS
     numberList.forEach((n) => {
-      console.log('getting handle here', nameNumbers[formatPhoneNumber(n)]);
-      console.log('their number', n, formatPhoneNumber(n));
-      list.push(
-        nameNumbers[formatPhoneNumber(n)]
-          ? nameNumbers[formatPhoneNumber(n)].split(' ')[0]
-          : n
-      );
+      // console.log('getting handle here', nameNumbers[formatPhoneNumber(n)]);
+      // console.log('their number', n, formatPhoneNumber(n));
+      if (!formatPhoneNumber(n)) {
+        list.push(n);
+      } else {
+        list.push(
+          nameNumbers[formatPhoneNumber(n)]
+            ? nameNumbers[formatPhoneNumber(n)].split(' ')[0]
+            : n
+        );
+      }
     });
     return list.sort().reverse().join(', ');
   };
