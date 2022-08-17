@@ -46,9 +46,8 @@ export default function NewChat({
 
   const [broadcastListName, setBroadcastListName] = React.useState('');
 
-  React.useEffect(() => {
-    console.log(selectedTargets);
-  }, [selectedTargets]);
+  // React.useEffect(() => {
+  // }, [selectedTargets]);
 
   React.useEffect(() => {
     mixpanel.track('New chat page');
@@ -57,8 +56,9 @@ export default function NewChat({
       'get-chat-participants',
       (results: any[]) => {
         // console.log('chat parts', results);
-        console.log('name nums', nameNumbers);
-        console.log('chat part ', results);
+        // console.log('name nums', nameNumbers);
+        // console.log('chat part ', results);
+        console.log(results.filter((r) => !r.part_list));
         const data = results.map((r) => ({
           label:
             r.display_name ||
