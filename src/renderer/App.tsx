@@ -58,6 +58,8 @@ const Hello = () => {
       return nameNumbers[formatPhoneNumber(numberList[0])] || numberList[0];
     }
     numberList.forEach((n) => {
+      console.log('getting handle here', nameNumbers[formatPhoneNumber(n)]);
+      console.log('their number', n, formatPhoneNumber(n));
       list.push(
         nameNumbers[formatPhoneNumber(n)]
           ? nameNumbers[formatPhoneNumber(n)].split(' ')[0]
