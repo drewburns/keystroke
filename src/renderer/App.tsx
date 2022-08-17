@@ -97,6 +97,7 @@ const Hello = () => {
     });
     window.electron.ipcRenderer.sendMessage('get-access-code');
     window.electron.ipcRenderer.once('name-numbers', (res: any) => {
+      console.log('namenums', nameNumbers);
       // eslint-disable-next-line no-console
       // setChatThreads(res.data);
       const { data } = res;

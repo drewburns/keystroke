@@ -56,6 +56,7 @@ export default function NewChat({
     window.electron.ipcRenderer.once(
       'get-chat-participants',
       (results: any[]) => {
+        console.log('chat parts', results);
         const data = results.map((r) => ({
           label:
             r.display_name ||
