@@ -58,24 +58,22 @@ export default function NewChat({
         // console.log('chat parts', results);
         // console.log('name nums', nameNumbers);
         // console.log('chat part ', results);
-        console.log(
-          'one w no home',
-          results.filter((r) => !r.part_list)
-        );
-        const data = results.map((r) => ({
-          label:
-            r.display_name ||
-            r.part_list
-              .split(',')
-              .map(
-                (num: string) =>
-                  `${nameNumbers[num.replace(/^\+[0-9]/, '')] || num} ${
-                    r.guid.includes('SMS') ? '(SMS)' : ''
-                  }`
-              )
-              .join(' & '),
-          value: r.guid || r.broadcast_list_id || r.part_list,
-        }));
+        const data = results
+          .filter((r) => r.part_list)
+          .map((r) => ({
+            label:
+              r.display_name ||
+              r.part_list
+                .split(',')
+                .map(
+                  (num: string) =>
+                    `${nameNumbers[num.replace(/^\+[0-9]/, '')] || num} ${
+                      r.guid.includes('SMS') ? '(SMS)' : ''
+                    }`
+                )
+                .join(' & '),
+            value: r.guid || r.broadcast_list_id || r.part_list,
+          }));
         console.log('data', data);
         setSelectOptions(data.sort((a, b) => a.label.length - b.label.length));
       }
