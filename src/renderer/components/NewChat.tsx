@@ -58,7 +58,10 @@ export default function NewChat({
         // console.log('chat parts', results);
         // console.log('name nums', nameNumbers);
         // console.log('chat part ', results);
-        console.log(results.filter((r) => !r.part_list));
+        console.log(
+          'one w no home',
+          results.filter((r) => !r.part_list)
+        );
         const data = results.map((r) => ({
           label:
             r.display_name ||
