@@ -483,6 +483,7 @@ const runNameNumbers = async () => {
   // const output = execSync('echo "hello world"', { encoding: 'utf-8' }); // the default is 'buffer'
   // console.log('Output was:\n', output);
   const rows = await getNamesForNumbers();
+  console.log('name number rows', rows);
   mainWindow?.webContents.send('name-numbers', { data: rows });
 };
 

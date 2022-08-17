@@ -88,6 +88,7 @@ const getNamesForNumbers = async () => {
         });
       });
     });
+    console.log('name num results in db handler', results);
     results = results.concat(result);
   }
   return results;
