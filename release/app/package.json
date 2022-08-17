@@ -1,8 +1,9 @@
 {
-  "name": "electron-react-boilerplate",
-  "version": "4.6.0",
+  "name": "keystroke",
+  "version": "4.6.2",
   "description": "A foundation for scalable desktop apps",
   "license": "MIT",
+  "repository": "github:drewburns/keystroke",
   "author": {
     "name": "Electron React Boilerplate Maintainers",
     "email": "electronreactboilerplate@gmail.com",

@@ -98,6 +98,7 @@ export const getBroadcastListsSQL = `
   GROUP BY broadcast_list.id
 `;
 
+
 // select chat.guid,display_name, GROUP_CONCAT(handle.id) as part_list
 // from chat
 // left join chat_handle_join on chat.ROWID = chat_handle_join.chat_id

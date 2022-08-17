@@ -15,10 +15,7 @@
   "bugs": {
     "url": "https://github.com/electron-react-boilerplate/electron-react-boilerplate/issues"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/drewburns/keystroke.git"
-  },
+  "repository": "github:drewburns/keystroke",
   "license": "MIT",
   "author": {
     "name": "Electron React Boilerplate Maintainers",
@@ -219,9 +216,9 @@
     "webpack-merge": "^5.8.0"
   },
   "productName": "Keystroke",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "build": {
-    "buildVersion": "1",
+    "buildVersion": "2",
     "productName": "Keystroke",
     "appId": "me.aburns.keystroke",
     "asar": true,
@@ -240,6 +237,9 @@
           "x64"
         ]
       },
+      "publish": [
+        "github"
+      ],
       "type": "distribution",
       "hardenedRuntime": true,
       "entitlements": "./assets/entitlements.mac.plist",
@@ -282,11 +282,13 @@
     "extraResources": [
       "./assets/**"
     ],
-    "publish": {
-      "provider": "github",
-      "owner": "drewburns",
-      "repo": "keystroke"
-    }
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "drewburns",
+        "repo": "keystroke"
+      }
+    ]
   },
   "collective": {
     "url": "https://opencollective.com/electron-react-boilerplate-594"

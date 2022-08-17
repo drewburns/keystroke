@@ -75,6 +75,10 @@ const {
   getIsMuted,
   getLastMessageROWIDForChat,
   getBroadcastListGuids,
+  addMemberToBroadcastList,
+  deleteMemberFromBroadcastList,
+  getEmptyBroadcastList,
+  deleteBroadcastList,
 } = require('./db');
 const { sendMessageToChatId, testPermission } = require('./scripts/handler');
 
@@ -92,6 +96,40 @@ let mainWindow = null;
 ipcMain.on('get-message-to-send-feed', async (event, arg) => {
   const results = await getMessageToSendFeed();
   event.reply('get-message-to-send-feed', results);
+});
+
+ipcMain.on('add-to-broadcast-list', async (event, arg) => {
+  const id = arg[0];
+  const guid = arg[1];
+  await addMemberToBroadcastList(id, guid);
+});
+
+ipcMain.on('delete-list', async (event, arg) => {
+  const id = arg;
+  await deleteBroadcastList(id);
+});
+ipcMain.on('create-list', async (event, arg) => {
+  const name = arg;
+  await createBroadcastList(name, '');
+  event.reply('create-list', 'OK');
+});
+
+ipcMain.on('remove-from-broadcast-list', async (event, arg) => {
+  const id = arg[0];
+  const guid = arg[1];
+  await deleteMemberFromBroadcastList(id, guid);
+});
+
+function unique(array: any[], propertyName: string) {
+  return array.filter(
+    (e, i) => array.findIndex((a) => a[propertyName] === e[propertyName]) === i
+  );
+}
+ipcMain.on('get-broadcast-lists', async (event, arg) => {
+  const broadcastResults = (await getBroadcastLists()) || [];
+  const empty = (await getEmptyBroadcastList()) || [];
+  const allResults = broadcastResults.concat(empty);
+  event.reply('get-broadcast-lists', unique(allResults, 'id'));
 });
 
 ipcMain.on('toggle-mute', async (event, arg) => {

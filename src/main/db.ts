@@ -256,6 +256,16 @@ const updateMessageToSend = async (message_to_send_id: number) => {
   await runSelect(updateTimedMessageSQL(message_to_send_id));
 };
 
+const addMemberToBroadcastList = async (id: numer, guid: string) => {
+  await runSelect(createBroadcastParticipantSQL(id, guid));
+};
+
+const deleteMemberFromBroadcastList = async (id: numer, guid: string) => {
+  await runSelect(
+    `DELETE FROM broadcast_list_participant where chat_guid="${guid}" AND broadcast_list_id=${id}`
+  );
+};
+
 const editMessageToSend = async (
   message_to_send_id: number,
   newText: string
@@ -288,6 +298,17 @@ const createBroadcastList = async (name: string, chat_guids: string) => {
   }
 };
 
+const getEmptyBroadcastList = async () => {
+  const results = await runSelect('SELECT * from broadcast_list');
+  return results;
+};
+
+const deleteBroadcastList = async (id: number) => {
+  await runSelect(`DELETE FROM broadcast_list where id=${id}`);
+  await runSelect(
+    `DELETE FROM broadcast_list_participant where broadcast_list_id=${id}`
+  );
+};
 const getBroadcastListGuids = async (
   broadcast_id: number
 ): Promise<string[]> => {
@@ -344,4 +365,8 @@ module.exports = {
   getIsMuted,
   getLastMessageROWIDForChat,
   getBroadcastListGuids,
+  addMemberToBroadcastList,
+  deleteMemberFromBroadcastList,
+  getEmptyBroadcastList,
+  deleteBroadcastList,
 };

@@ -225,7 +225,7 @@ const Hello = () => {
             <TimedMessageFeed getChatUserHandle={getChatUserHandle} />
           )}
           {page === 'settings' && <Settings />}
-          {page === 'broadcast' && <Broadcast />}
+          {page === 'broadcast' && <Broadcast nameNumbers={nameNumbers} />}
         </Grid>
       </Grid>
     </div>
