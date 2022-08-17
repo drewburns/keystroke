@@ -58,6 +58,7 @@ export default function NewChat({
       (results: any[]) => {
         // console.log('chat parts', results);
         console.log('name nums', nameNumbers);
+        console.log('chat part ', results);
         const data = results.map((r) => ({
           label:
             r.display_name ||
@@ -72,6 +73,7 @@ export default function NewChat({
               .join(' & '),
           value: r.guid || r.broadcast_list_id || r.part_list,
         }));
+        console.log('data', data);
         setSelectOptions(data.sort((a, b) => a.label.length - b.label.length));
       }
     );
