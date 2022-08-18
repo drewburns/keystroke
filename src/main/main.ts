@@ -283,16 +283,12 @@ ipcMain.on('send-to-broadcast-id', async (event, arg) => {
     const chatGuid = uniqueBroadcastGuids[x];
     console.log(sendAt, chatGuid, body);
     const name = tempData[formatPhoneNumber(chatGuid.split(';')[2])];
+    const parsedBody = body.replace(/["']/g, '“').replace('{first_name}', name);
     if (sendAt) {
-      await createMessageToSend(
-        chatGuid,
-        body.replace(/["']/g, '“').replace('{first_name}', name),
-        sendAt,
-        cancelIfReply
-      );
+      await createMessageToSend(chatGuid, parsedBody, sendAt, cancelIfReply);
       continue;
     }
-    await sendMessageToChatId(chatGuid, body.replace(/["']/g, '“'), false);
+    await sendMessageToChatId(chatGuid, parsedBody, false);
     await updateAutoChatGuidReminders(chatGuid);
   }
 });
