@@ -27,8 +27,8 @@ const style = {
   textAlign: 'center',
   justifyContent: 'center',
   transform: 'translate(-50%, -50%)',
-  bgcolor: 'black',
-  border: '1px #d3d3d3 solid',
+  bgcolor: '#333',
+  // border: '1px #d3d3d3 solid',
   boxShadow: 24,
   p: 4,
 };
@@ -92,22 +92,11 @@ export default function EditBroadcastList({
   return (
     <Box sx={style}>
       <div>
-        <h3>{selectedList.name}</h3>
-        <Button
-          onClick={() => {
-            setOpen(false);
-            window.electron.ipcRenderer.sendMessage(
-              'delete-list',
-              selectedList.id
-            );
-          }}
-          variant="contained"
-          color="warning"
-        >
-          Delete
-        </Button>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start'}}>
+          <h3>{selectedList.name}</h3>
+        </div>
         <Autocomplete
-          style={{ backgroundColor: 'white' }}
+          style={{ backgroundColor: 'white', borderRadius: 5 }}
           options={selectOptions}
           renderInput={(params) => <TextField {...params} label="Add" />}
           onChange={(event: any, selectedItem: any) => {
@@ -120,20 +109,34 @@ export default function EditBroadcastList({
           style={{ overflow: 'scroll', width: '100%', maxHeight: 350 }}
         >
           {listMembers.map((part) => (
-            <Grid item xs={4}>
-              <p>
+            // <Grid item xs={}>
+              <p style={{ marginRight: 15 }}>
                 {nameNumbers[formatPhoneNumber(part)] || part.split(';')[2]}{' '}
                 <span
                   onClick={() => removeItem(part)}
-                  style={{ color: 'red', cursor: 'pointer' }}
+                  style={{ color: 'red', cursor: 'pointer', fontWeight: 'bold' }}
                 >
                   X
                 </span>
               </p>
-            </Grid>
+            // </Grid>
           ))}
         </Grid>
       </div>
+      <Button
+        style={{ position: 'absolute', right: 15, top: 15}}
+        onClick={() => {
+          setOpen(false);
+          window.electron.ipcRenderer.sendMessage(
+            'delete-list',
+            selectedList.id
+          );
+        }}
+        variant="contained"
+        color="warning"
+      >
+        Delete List
+      </Button>
     </Box>
   );
 }
