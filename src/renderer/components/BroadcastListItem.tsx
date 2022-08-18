@@ -31,9 +31,9 @@ export default function BroadcastListItem({
             </i>
           </p>
         </Grid>
-        <Grid item xs={3} style={{ marginTop: 15 }}>
+        <Grid item xs={3} style={{ marginTop: 15, paddingRight: 15 }}>
           <Button
-            style={{ height: 60 }}
+            style={{ height: 50 }}
             variant="contained"
             color="warning"
             fullWidth
@@ -45,7 +45,7 @@ export default function BroadcastListItem({
         <Grid item xs={3} style={{ marginTop: 15 }}>
           <Button
             variant="contained"
-            style={{ height: 60 }}
+            style={{ height: 50 }}
             onClick={() => setIsReplying(!isReplying)}
           >
             {isReplying ? 'Cancel' : 'Send Message'}

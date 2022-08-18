@@ -32,15 +32,15 @@ export default function Broadcast({ nameNumbers }: Props) {
     left: '50%',
     width: '75%',
     maxHeight: '500px',
-    maxWidth: '700px',
+    maxWidth: '600px',
     alignItems: 'center',
     alignContent: 'center',
     // display: 'flex',
     textAlign: 'center',
     justifyContent: 'center',
     transform: 'translate(-50%, -50%)',
-    bgcolor: 'black',
-    border: '1px #d3d3d3 solid',
+    bgcolor: '#333',
+    // border: '1px #d3d3d3 solid',
     boxShadow: 24,
     p: 4,
   };
@@ -81,11 +81,12 @@ export default function Broadcast({ nameNumbers }: Props) {
         {!selectedList ? (
           <div>
             <Box sx={style}>
-              <h3>New</h3>
+              <h3>New Broadcast List</h3>
+              <p>Broadcast lists allow you to send one message individually to the list</p>
               <TextField
                 value={newListName}
                 onChange={(e) => setNewListName(e.target.value)}
-                style={{ backgroundColor: 'white' }}
+                style={{ backgroundColor: 'white', borderRadius: 5 }}
                 label="Name"
                 placeholder="New list..."
               />
@@ -116,10 +117,12 @@ export default function Broadcast({ nameNumbers }: Props) {
           backgroundColor: '#27282A',
         }}
       >
-        <h2>Broadcast</h2>
-        <Button variant="contained" onClick={() => setOpen(true)}>
-          Create New
-        </Button>
+        <div style={{ display: 'flex', alignItems: 'center',  paddingLeft: 60, width: '100%', justifyContent:'space-between'}}>
+          <h2>Broadcast</h2>
+          <Button variant="contained" onClick={() => setOpen(true)} style={{marginRight: 100}}>
+            Create New
+          </Button>
+        </div>
         <Grid container>
           <Grid item xs={1} />
           <Grid item xs={10}>
