@@ -42,7 +42,7 @@ export default function EditBroadcastList({
       'get-chat-participants',
       (results: any[]) => {
         const data = results
-          .filter((r) => r.part_list.split(',').length === 1)
+          .filter((r) => r.part_list && r.part_list.split(',').length === 1)
           .map((r) => ({
             label:
               r.display_name ||
