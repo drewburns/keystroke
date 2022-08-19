@@ -9,6 +9,9 @@
   src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
 }
 
+/* * {
+  user-select: all !important;
+} */
 p {
   user-select: text;
   -webkit-user-select: text;
@@ -103,6 +106,7 @@ a:hover {
 
 
 .chatBubbleMe {
+  user-select: all;
   background-color: #1A8BFF;
   display: inline-block;
   border-radius: 15px;
@@ -115,10 +119,12 @@ a:hover {
 }
 
 .chatBubbleReminder {
+  user-select: all;
   align-items:  center !important;
 }
 
 .chatBubbleOther {
+  user-select: all;
   background-color: #3B3B3D;
   display: inline-block;
   float: left;
@@ -131,6 +137,7 @@ a:hover {
 }
 
 .chatText {
+  user-select: all;
   margin-top: 5px;
   padding-left: 5px;
   padding-right: 5px;

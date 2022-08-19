@@ -1,3 +1,6 @@
+/* eslint-disable no-await-in-loop */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
 import {
   Button,
   FormControlLabel,
@@ -14,8 +17,9 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import mixpanel from 'mixpanel-browser';
-
 import React from 'react';
+import { truncate, uploadToS3 } from '../util';
+
 import TimePicker from './TimePicker';
 
 type Props = {
@@ -63,47 +67,62 @@ export default function MessageBar({
     setDate(t);
   }, [timeDenom, timeAmount]);
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const allowedFileTypes = [
+    'image/png',
+    'image/jpeg',
+    'image/webp',
+    'image/gif',
+    'image/tiff',
+  ];
+  const onKeyDown = async (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    let finalMessageBody = messageBody;
     if (e.keyCode === 13 && !e.shiftKey) {
       e.preventDefault();
       mixpanel.track('on send message keystroke', {
         numUsers: chatGuids.length,
       });
+      for (const x in files) {
+        const file = files[x];
+        if (file.type === 'image/heic') {
+          alert('HEIC image type not accepted yet');
+          return;
+        }
+        if (allowedFileTypes.includes(file.type)) {
+          const uploadedImage = await uploadToS3({
+            image: file,
+            fileType: file.type,
+          });
+          finalMessageBody += ` ${uploadedImage}`;
+        }
+      }
+
+      if (!finalMessageBody) return;
       setTimeAmount(0);
       if (broadcastIds) {
         broadcastIds.forEach((id: number) => {
           window.electron.ipcRenderer.sendMessage('send-to-broadcast-id', [
             id,
             chatGuids,
-            messageBody,
+            finalMessageBody,
             date,
             cancelIfReply,
           ]);
         });
       }
       chatGuids.forEach((chatGuid: string, index: number) => {
-        const firstName = chatNames[index].split(' ')[0];
-        const parsedBody = messageBody.replace('{first_name}', firstName);
+        const firstName = chatNames ? chatNames[index].split(' ')[0] : '';
+        const parsedBody = chatNames
+          ? finalMessageBody.replace('{first_name}', firstName)
+          : finalMessageBody;
         mixpanel.track('sent message', { isDate: !!date });
-        if (messageBody) {
-          window.electron.ipcRenderer.sendMessage('send-message', [
-            chatGuid,
-            parsedBody,
-            false,
-            messageId,
-            date,
-            cancelIfReply,
-          ]);
-        }
-        files.forEach((file) => {
-          // console.log(file);
-          window.electron.ipcRenderer.sendMessage('send-message', [
-            chatGuid,
-            file.path,
-            true,
-            null,
-          ]);
-        });
+        window.electron.ipcRenderer.sendMessage('send-message', [
+          chatGuid,
+          parsedBody,
+          false,
+          messageId,
+          date,
+          cancelIfReply,
+        ]);
       });
       setMessageBody('');
       if (onMessageSent) onMessageSent();
@@ -121,23 +140,6 @@ export default function MessageBar({
       textInput.current.focus();
     }
   }, [chatGuids]);
-
-  const truncate = (fullStr: string, strLen: number) => {
-    if (fullStr.length <= strLen) return fullStr;
-
-    const separator = '...';
-
-    const sepLen = separator.length;
-    const charsToShow = strLen - sepLen;
-    const frontChars = Math.ceil(charsToShow / 2);
-    const backChars = Math.floor(charsToShow / 2);
-
-    return (
-      fullStr.substr(0, frontChars) +
-      separator +
-      fullStr.substr(fullStr.length - backChars)
-    );
-  };
 
   const generateFilePreview = (file: any) => {
     if (file.type.includes('image')) {
@@ -224,23 +226,12 @@ export default function MessageBar({
                   setTimeAmount={setTimeAmount}
                   setTimeDenom={setTimeDenom}
                 />
-                {/* <DateTimePicker
-                  label="Send at"
-                  value={date}
-                  onChange={handleDatePick}
-                  renderInput={(params) => <TextField {...params} />}
-                /> */}
                 {date ? (
-                  <Button
-                    // variant="contained"
-                    fullWidth
-                    onClick={() => setDate(null)}
-                  >
+                  <Button fullWidth onClick={() => setDate(null)}>
                     Remove
                   </Button>
                 ) : (
                   <Button
-                    // variant="contained"
                     fullWidth
                     onClick={() => {
                       const t = new Date();
@@ -257,21 +248,21 @@ export default function MessageBar({
           </div>
         </Grid>
         <Grid item xs={10} style={{ marginTop: 20, marginBottom: 10 }}>
-          {/* <Grid container>
-          {files.map((f) => (
-            <div>
+          <Grid container>
+            {files.map((f) => (
               <div>
-                <span
-                  className="cancelUploadButton"
-                  onClick={() => removeFile(f.path)}
-                >
-                  X
-                </span>
-                {generateFilePreview(f)}
+                <div>
+                  <span
+                    className="cancelUploadButton"
+                    onClick={() => removeFile(f.path)}
+                  >
+                    X
+                  </span>
+                  {generateFilePreview(f)}
+                </div>
               </div>
-            </div>
-          ))}
-        </Grid> */}
+            ))}
+          </Grid>
           <div>
             <TextareaAutosize
               maxRows={3}

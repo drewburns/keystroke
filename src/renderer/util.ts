@@ -1,3 +1,4 @@
+import axios from 'axios';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 
@@ -22,6 +23,23 @@ function isValidHttpUrl(string: string) {
   return url.protocol === 'http:' || url.protocol === 'https:';
 }
 
+const truncate = (fullStr: string, strLen: number) => {
+  if (fullStr.length <= strLen) return fullStr;
+
+  const separator = '...';
+
+  const sepLen = separator.length;
+  const charsToShow = strLen - sepLen;
+  const frontChars = Math.ceil(charsToShow / 2);
+  const backChars = Math.floor(charsToShow / 2);
+
+  return (
+    fullStr.substr(0, frontChars) +
+    separator +
+    fullStr.substr(fullStr.length - backChars)
+  );
+};
+
 function getTimeAgo(dateString: string) {
   TimeAgo.addDefaultLocale(en);
   const timeAgo = new TimeAgo('en-US');
@@ -29,4 +47,30 @@ function getTimeAgo(dateString: string) {
   return timeAgo.format(then);
 }
 
-module.exports = { formatPhoneNumber, isValidHttpUrl, getTimeAgo };
+const getPresignedPostUrl = async (imageType) => {
+  const BASE_URL = 'http://localhost:8080';
+  const res = await axios.post(BASE_URL + '/image', {
+    fileType: imageType,
+  });
+  return res.data;
+};
+
+async function uploadToS3({ image, fileType }) {
+  const presignedPostUrl = await getPresignedPostUrl(fileType);
+  const formData = new FormData();
+  formData.append('file', image);
+  const response = await axios.put(presignedPostUrl, image, {
+    headers: { 'Content-Type': fileType },
+  });
+
+  return presignedPostUrl.split('?')[0];
+}
+
+module.exports = {
+  formatPhoneNumber,
+  isValidHttpUrl,
+  getTimeAgo,
+  truncate,
+  getPresignedPostUrl,
+  uploadToS3,
+};

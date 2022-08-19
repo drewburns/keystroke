@@ -133,54 +133,56 @@ export default function ChatPage({
           style={{ backgroundColor: 'black', height: '1px', width: '100%' }}
         />
       </div>
-      {/* <Dropzone
+      <Dropzone
         noClick
-        onDrop={(acceptedFiles) => setFiles(files.concat(acceptedFiles))}
-      >
-        {({ getRootProps, getInputProps }) => (
-          <div {...getRootProps()}> */}
-      <div
-        id="scrollableDiv"
-        style={{
-          height: files.length === 0 ? '80vh' : '70vh',
-          overflow: 'auto',
-          display: 'flex',
-          flexDirection: 'column-reverse',
+        onDrop={(acceptedFiles) => {
+          setFiles(files.concat(acceptedFiles));
         }}
       >
-        <InfiniteScroll
-          dataLength={messages.length}
-          next={getMore}
-          style={{ display: 'flex', flexDirection: 'column-reverse' }}
-          inverse
-          hasMore={hasMore}
-          loader={<CircularProgress />}
-          scrollableTarget="scrollableDiv"
-        >
-          {messages.map((m, index) => (
-            <div onDoubleClick={() => openReminderCreate(m)}>
-              <MesssageBubble
-                getNameForNumber={getNameForNumber}
-                message={m}
-                index={index}
-                messagesLength={messages.length}
-              />
+        {({ getRootProps, getInputProps }) => (
+          <div {...getRootProps()}>
+            <div
+              id="scrollableDiv"
+              style={{
+                height: files.length === 0 ? '80vh' : '70vh',
+                overflow: 'auto',
+                display: 'flex',
+                flexDirection: 'column-reverse',
+              }}
+            >
+              <InfiniteScroll
+                dataLength={messages.length}
+                next={getMore}
+                style={{ display: 'flex', flexDirection: 'column-reverse' }}
+                inverse
+                hasMore={hasMore}
+                loader={<CircularProgress />}
+                scrollableTarget="scrollableDiv"
+              >
+                {messages.map((m, index) => (
+                  <div onDoubleClick={() => openReminderCreate(m)}>
+                    <MesssageBubble
+                      getNameForNumber={getNameForNumber}
+                      message={m}
+                      index={index}
+                      messagesLength={messages.length}
+                    />
+                  </div>
+                ))}
+              </InfiniteScroll>
             </div>
-          ))}
-        </InfiniteScroll>
-      </div>
-      {!messageForRemindCreate['message.ROWID'] && (
-        <MessageBar
-          chatGuids={[chatGuid]}
-          isFromNew={false}
-          chatNames={[chatName]}
-          files={files}
-          setFiles={setFiles}
-        />
-      )}
+            {!messageForRemindCreate['message.ROWID'] && (
+              <MessageBar
+                chatGuids={[chatGuid]}
+                isFromNew={false}
+                chatNames={[chatName]}
+                files={files}
+                setFiles={setFiles}
+              />
+            )}
+          </div>
+        )}
+      </Dropzone>
     </div>
-    //     )}
-    //   </Dropzone>
-    // </div>
   );
 }

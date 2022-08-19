@@ -112,6 +112,7 @@ export default function Reminder({
         <MessageBar
           messageId={reminder['reminder.message_id']}
           chatGuids={[reminder['chat.guid']]}
+          chatName
           files={[]}
           isFromNew={false}
           onMessageSent={() => {

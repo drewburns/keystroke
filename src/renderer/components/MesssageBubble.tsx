@@ -157,6 +157,9 @@ export default function MesssageBubble({
     return renderArray;
   };
 
+  const isKeyStrokeImage = (text) => {
+    return text.includes('https://keystroke-images.s3.us-east-1.amazonaws.com');
+  };
   React.useEffect(() => {
     (async () => {
       if (!message) return;
@@ -173,7 +176,11 @@ export default function MesssageBubble({
         );
         return;
       }
+      //|| isKeyStrokeImage(message.text)
       if (message.cache_has_attachments) {
+        // if (isKeyStrokeImage(message.text)) {
+
+        // }
         setBubbleContent(<CircularProgress />);
         const att = await renderAttachmnet(message);
         setBubbleContent(
