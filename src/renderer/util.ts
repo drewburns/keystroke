@@ -48,7 +48,7 @@ function getTimeAgo(dateString: string) {
 }
 
 const getPresignedPostUrl = async (imageType) => {
-  const BASE_URL = 'http://localhost:8080';
+  const BASE_URL = 'https://keystroke-token.herokuapp.com';
   const res = await axios.post(BASE_URL + '/image', {
     fileType: imageType,
   });

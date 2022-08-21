@@ -47,17 +47,45 @@ export default function MesssageBubble({
     window.electron.ipcRenderer.sendMessage('showFile', filePath);
   };
 
-  const customFetcher = async (url: string) => {
-    const response = await fetch(
-      `https://rlp-proxy.herokuapp.com/v2?url=${url}`
-    );
-    const json = await response.json();
-    return json.metadata;
-  };
+  // const customFetcher = async (url: string) => {
+  //   const response = await fetch(
+  //     `https://rlp-proxy.herokuapp.com/v2?url=${url}`
+  //   );
+  //   const json = await response.json();
+  //   return json.metadata;
+  // };
 
+  const renderKSLinks = (message: any) => {
+    const renderArray = [];
+    let remainingString = message.text;
+    const matches = message.text.match(
+      /https:\/\/keystroke-images.s3.us-east-1.amazonaws.com\/\w+\.\w+/gm
+    );
+    matches.forEach((url) => {
+      renderArray.push(
+        <img
+          // onDoubleClick={() => showFile(fileName)}
+          // TODO: open in safari
+          src={url}
+          style={{
+            maxHeight: isReminderBubble ? 200 : 450,
+            maxWidth: 600,
+          }}
+        />
+      );
+      remainingString.replace(url, '');
+    });
+    if (remainingString)
+      renderArray.push(<p style={{ userSelect: 'text' }}>{remainingString}</p>);
+    return renderArray;
+  };
   const renderAttachmnet = async (message: any) => {
     mixpanel.track('Render attachment');
 
+    if (isKeyStrokeImage(message.text)) {
+      renderKSLinks(message);
+      return;
+    }
     let filenames = [];
     let mimes = [];
     if (message.attach_list && message.mime_list) {
@@ -158,12 +186,15 @@ export default function MesssageBubble({
   };
 
   const isKeyStrokeImage = (text) => {
-    return text.includes('https://keystroke-images.s3.us-east-1.amazonaws.com');
+    const val = text.includes(
+      'https://keystroke-images.s3.us-east-1.amazonaws.com'
+    );
+    return val;
   };
   React.useEffect(() => {
     (async () => {
       if (!message) return;
-      if (isValidHttpUrl(message.text)) {
+      if (isValidHttpUrl(message.text) && !isKeyStrokeImage(message.text)) {
         setBubbleContent(
           <div>
             <LinkPreview
@@ -176,11 +207,18 @@ export default function MesssageBubble({
         );
         return;
       }
-      //|| isKeyStrokeImage(message.text)
-      if (message.cache_has_attachments) {
-        // if (isKeyStrokeImage(message.text)) {
-
-        // }
+      if (message.cache_has_attachments || isKeyStrokeImage(message.text)) {
+        if (isKeyStrokeImage(message.text)) {
+          console.log('is ks image?', message.text);
+          const att = await renderKSLinks(message);
+          console.log('att', att);
+          setBubbleContent(
+            <p className={isReminderBubble ? 'reminderChatText' : 'chatText'}>
+              {att}
+            </p>
+          );
+          return;
+        }
         setBubbleContent(<CircularProgress />);
         const att = await renderAttachmnet(message);
         setBubbleContent(
@@ -194,6 +232,7 @@ export default function MesssageBubble({
             {message.text}
           </p>
         );
+        return;
       }
     })();
   }, [message]);

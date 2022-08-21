@@ -7,6 +7,7 @@ import {
   Grid,
   TextField,
 } from '@mui/material';
+import Dropzone from 'react-dropzone';
 import Select from 'react-select';
 import mixpanel from 'mixpanel-browser';
 
@@ -41,6 +42,7 @@ export default function NewChat({
   const [selectedTargets, setSelectedTargets] = React.useState<any>([]);
   const [selectOptions, setSelectOptions] = React.useState([]);
   const [lastKeyCode, setLastKeyCode] = React.useState(0);
+  const [files, setFiles] = React.useState([]);
   const [createAsBroadcastList, setCreateAsBroadcastList] =
     React.useState(false);
 
@@ -126,54 +128,63 @@ export default function NewChat({
   };
   // console.log('name nums', nameNumbers);
   return (
-    <Grid container>
-      <Grid item xs={2} />
-      <Grid item xs={8}>
-        <Select
-          isMulti
-          autoFocus
-          styles={customStyles}
-          onChange={(newValues) => setSelectedTargets(newValues)}
-          options={selectOptions}
-          onKeyDown={onKeyDown}
-          filterOption={(o, v: string) =>
-            !v
-              .toLowerCase()
-              .split(' ')
-              .map(
-                (sub) => o.label.toLowerCase().indexOf(sub.toLowerCase()) > -1
-              )
-              .includes(false)
-          }
-          isSearchable
-        />
-      </Grid>
+    <Dropzone
+      noClick
+      onDrop={(acceptedFiles) => {
+        setFiles(files.concat(acceptedFiles));
+      }}
+    >
+      {({ getRootProps, getInputProps }) => (
+        <div {...getRootProps()}>
+          <Grid container>
+            <Grid item xs={2} />
+            <Grid item xs={8}>
+              <Select
+                isMulti
+                autoFocus
+                styles={customStyles}
+                onChange={(newValues) => setSelectedTargets(newValues)}
+                options={selectOptions}
+                onKeyDown={onKeyDown}
+                filterOption={(o, v: string) =>
+                  !v
+                    .toLowerCase()
+                    .split(' ')
+                    .map(
+                      (sub) =>
+                        o.label.toLowerCase().indexOf(sub.toLowerCase()) > -1
+                    )
+                    .includes(false)
+                }
+                isSearchable
+              />
+            </Grid>
 
-      <Grid item xs={2} />
-      <Grid item xs={2} />
-      <Grid item xs={8}>
-        {showMessageBar() && (
-          <div>
-            <h3>Mass send massage:</h3>
-            <MessageBar
-              isFromNew
-              chatGuids={[
-                ...new Set(
-                  selectedTargets
-                    .filter((v) => !v.label.includes('[Broadcast'))
-                    .map((v: any) => v.value.split(','))
-                    .flat()
-                ),
-              ]} // TODO: type this
-              broadcastIds={selectedTargets
-                .filter((v) => v.label.includes('[Broadcast'))
-                .map((v: any) => v.value)}
-              chatNames={selectedTargets.map((v: any) => v.label)} // TODO: type this
-              files={[]}
-              onMessageSent={createBroadcastList}
-              setFiles={() => console.log('null')} // TODO: remove
-            />
-            {/* {selectedTargets.filter((s) => s.label.includes('[Broadcast'))
+            <Grid item xs={2} />
+            <Grid item xs={2} />
+            <Grid item xs={8}>
+              {showMessageBar() && (
+                <div>
+                  <h3>Mass send massage:</h3>
+                  <MessageBar
+                    isFromNew
+                    chatGuids={[
+                      ...new Set(
+                        selectedTargets
+                          .filter((v) => !v.label.includes('[Broadcast'))
+                          .map((v: any) => v.value.split(','))
+                          .flat()
+                      ),
+                    ]} // TODO: type this
+                    broadcastIds={selectedTargets
+                      .filter((v) => v.label.includes('[Broadcast'))
+                      .map((v: any) => v.value)}
+                    chatNames={selectedTargets.map((v: any) => v.label)} // TODO: type this
+                    files={files}
+                    onMessageSent={createBroadcastList}
+                    setFiles={setFiles} // TODO: remove
+                  />
+                  {/* {selectedTargets.filter((s) => s.label.includes('[Broadcast'))
               .length === 0 && (
               <FormControlLabel
                 control={
@@ -194,8 +205,8 @@ export default function NewChat({
                 label="Create this as a broadcast list on send"
               />
             )} */}
-            <br />
-            {/* {createAsBroadcastList && (
+                  <br />
+                  {/* {createAsBroadcastList && (
               <TextField
                 type="text"
                 label="Broadcast List Name"
@@ -205,10 +216,13 @@ export default function NewChat({
                 style={{ backgroundColor: 'white' }}
               />
             )} */}
-          </div>
-        )}
-      </Grid>
-    </Grid>
+                </div>
+              )}
+            </Grid>
+          </Grid>
+        </div>
+      )}
+    </Dropzone>
   );
 }
 
