@@ -21,18 +21,18 @@ export default function TimePicker({
       style={{
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'center'
       }}
     >
       <TextField
         type="number"
         value={timeAmount}
         onChange={(e) => setTimeAmount(parseInt(e.target.value))}
-        style={{ marginTop: 20, backgroundColor: 'white', width: 80 }}
+        style={{ marginTop: 20, backgroundColor: 'white', height: 40, width: 80, borderRadius: 5, display: 'flex', alignItems: 'center' }}
       />
       <Select
         id="demo-simple-select"
-        style={{ backgroundColor: 'white', height: 60, marginTop: 19 }}
+        style={{ backgroundColor: 'white', height: 40, marginTop: 19 }}
         value={timeDenom}
         label="Age"
         onChange={(e) => {

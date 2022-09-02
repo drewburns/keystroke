@@ -210,8 +210,9 @@ export default function MessageBar({
                       onChange={() => setCancelIfReply(!cancelIfReply)}
                       sx={{
                         color: '#1A8BFF',
+                        paddingBottom: 0,
                         '&.Mui-checked': {
-                          color: '#1A8BFF',
+                          color: '#1A8BFF'
                         },
                       }}
                     />

@@ -33,10 +33,10 @@ export default function Reminder({
     <Card
       variant="outlined"
       className="reminderCard"
-      style={{ backgroundColor: '#373737', color: 'white' }}
+      style={{ backgroundColor: '#373737', color: 'white', padding: 20 }}
     >
       <Grid container>
-        <Grid item xs={1} style={{ marginTop: 3 }}>
+        <Grid item xs={1} style={{ marginTop: -4 }}>
           {reminder['reminder_type'] === 'auto' ? (
             <AccessTimeIcon />
           ) : (
@@ -46,12 +46,12 @@ export default function Reminder({
         <Grid
           item
           xs={11}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           onDoubleClick={() => goToChat(reminder['chat.guid'])}
         >
           <p
             style={{
-              marginTop: 5,
+              marginTop: 0,
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
@@ -63,6 +63,8 @@ export default function Reminder({
                 reminder.display_name
               )}
           </p>
+          <p style={{ marginTop: 0, fontSize: 12 }}>{getTimeAgo(reminder['message.date'])}</p>
+
         </Grid>
         <Grid
           item
@@ -82,20 +84,19 @@ export default function Reminder({
               <i>Note: {reminder.note}</i>
             </p>
           )}
-          <p>{getTimeAgo(reminder['message.date'])}</p>
         </Grid>
-        <Grid container style={{ marginTop: 10 }}>
-          <Grid item xs={8}>
+        <Grid container style={{ marginTop: 10, paddingLeft: 10 }}>
+          <Grid item xs={6}>
             <Button
-              variant="text"
+              // variant="outlined"
               style={{ color: '#1D8BFF' }}
-              fullWidth
+              // fullWidth
               onClick={() => setIsReplying(!isReplying)}
             >
               {isReplying ? 'Cancel' : 'Reply'}
             </Button>
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={6}>
             <Button
               variant="outlined"
               fullWidth

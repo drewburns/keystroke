@@ -72,6 +72,7 @@ export default function Reminders({
                       variant="contained"
                       size="small"
                       onClick={() => deleteReminders('auto')}
+                      style={{ marginRight: 10, fontSize: 10}}
                     >
                       Delete all auto reminders
                     </Button>
@@ -81,6 +82,8 @@ export default function Reminders({
                       color="secondary"
                       variant="contained"
                       size="small"
+                      style={{ fontSize: 10}}
+
                       onClick={() => deleteReminders('manual')}
                     >
                       Delete all manual reminders
