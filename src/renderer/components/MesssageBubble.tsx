@@ -79,7 +79,7 @@ export default function MesssageBubble({
       renderArray.push(<p style={{ userSelect: 'text' }}>{remainingString}</p>);
     return renderArray;
   };
-  const renderAttachmnet = async (message: any) => {
+  const renderAttachment = async (message: any) => {
     mixpanel.track('Render attachment');
 
     if (isKeyStrokeImage(message.text)) {
@@ -220,7 +220,7 @@ export default function MesssageBubble({
           return;
         }
         setBubbleContent(<CircularProgress />);
-        const att = await renderAttachmnet(message);
+        const att = await renderAttachment(message);
         setBubbleContent(
           <p className={isReminderBubble ? 'reminderChatText' : 'chatText'}>
             {att}
