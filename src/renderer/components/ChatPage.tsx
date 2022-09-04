@@ -171,18 +171,18 @@ export default function ChatPage({
                 ))}
               </InfiniteScroll>
             </div>
-            {!messageForRemindCreate['message.ROWID'] && (
-              <MessageBar
-                chatGuids={[chatGuid]}
-                isFromNew={false}
-                chatNames={[chatName]}
-                files={files}
-                setFiles={setFiles}
-              />
-            )}
           </div>
         )}
       </Dropzone>
+      {!messageForRemindCreate['message.ROWID'] && (
+        <MessageBar
+          chatGuids={[chatGuid]}
+          isFromNew={false}
+          chatNames={[chatName]}
+          files={files}
+          setFiles={setFiles}
+        />
+      )}
     </div>
   );
 }

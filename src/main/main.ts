@@ -266,7 +266,7 @@ ipcMain.on('send-to-broadcast-id', async (event, arg) => {
   const broadcastId = arg[0];
   const chatGuidsToIgnore = arg[1];
   const body = arg[2];
-  const sendAt = arg[3] || null;
+  var sendAt = arg[3] || new Date();
   const cancelIfReply = arg[4] || false;
   const broadcastGuids = await getBroadcastListGuids(broadcastId);
   const uniqueBroadcastGuids = broadcastGuids.filter(
@@ -281,9 +281,11 @@ ipcMain.on('send-to-broadcast-id', async (event, arg) => {
   });
   for (let x = 0; x < uniqueBroadcastGuids.length; x++) {
     const chatGuid = uniqueBroadcastGuids[x];
-    console.log(sendAt, chatGuid, body);
+    const secondsOffset = Math.floor(x / 20) * (60 * 10);
     const name = tempData[formatPhoneNumber(chatGuid.split(';')[2])];
     const parsedBody = body.replace(/["']/g, '“').replace('{first_name}', name);
+
+    sendAt.setSeconds(sendAt.getSeconds() + secondsOffset);
     if (sendAt) {
       await createMessageToSend(chatGuid, parsedBody, sendAt, cancelIfReply);
       continue;
