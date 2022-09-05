@@ -11,7 +11,7 @@ import Dropzone from 'react-dropzone';
 import Select from 'react-select';
 import mixpanel from 'mixpanel-browser';
 
-import React from 'react';
+import React, { Fragment } from "react";
 import MessageBar from './MessageBar';
 
 // TODO: abstract out
@@ -128,7 +128,10 @@ export default function NewChat({
   };
   // console.log('name nums', nameNumbers);
   return (
-    <Dropzone
+    <div>
+      <h1 style={{ marginLeft: 20, paddingBottom: 5 }}>New Chat</h1>
+
+      <Dropzone
       noClick
       onDrop={(acceptedFiles) => {
         setFiles(files.concat(acceptedFiles));
@@ -223,6 +226,7 @@ export default function NewChat({
         </div>
       )}
     </Dropzone>
+    </div>
   );
 }
 

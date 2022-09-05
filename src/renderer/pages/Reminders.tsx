@@ -51,7 +51,7 @@ export default function Reminders({
   }
   return (
     <div>
-      <h1 style={{ marginLeft: 20, height: '5vh' }}>Reminders</h1>
+      <h1 style={{ marginLeft: 20, height: '4vh' }}>Reminders</h1>
       <div
         style={{
           overflow: 'scroll',
@@ -61,7 +61,7 @@ export default function Reminders({
           backgroundColor: '#27282A',
         }}
       >
-        <Grid container>
+        <Grid container style={{paddingTop: 10}}>
           <Grid item xs={2} />
           <Grid item xs={8}>
             {reminders.length > 0 ? (

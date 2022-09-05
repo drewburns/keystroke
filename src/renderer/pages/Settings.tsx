@@ -20,11 +20,11 @@ export default function Settings() {
   };
 
   return (
-    <div>
-      <h3>Settings</h3>
+    <div style={{paddingLeft: 15}}>
+      <h1 style={{ marginLeft: 0, paddingBottom: 5 }}>Settings</h1>
       <p>Version 4.6.6</p>
       <hr />
-      <p>Auto reminder time (alerted after not replying to message)</p>
+      <p>Set how many minutes before you're reminded to respond to a message</p>
       <TextField
         type="number"
         value={reminderTime}
