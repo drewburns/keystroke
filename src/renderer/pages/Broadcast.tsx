@@ -118,7 +118,7 @@ export default function Broadcast({ nameNumbers }: Props) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center',  paddingLeft: 60, width: '100%', justifyContent:'space-between'}}>
-          <h2>Broadcast</h2>
+          <h1>Broadcast</h1>
           <Button variant="contained" onClick={() => setOpen(true)} style={{marginRight: 100}}>
             Create New
           </Button>
@@ -138,3 +138,5 @@ export default function Broadcast({ nameNumbers }: Props) {
     </div>
   );
 }
+
+

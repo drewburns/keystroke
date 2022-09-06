@@ -31,31 +31,35 @@ export default function TimedMessageFeed({ getChatUserHandle }: Props) {
     ]);
   };
 
-  if (!messages) {
-    return (
-      <div>
-        <h3>Timed Message Feed</h3>
-        <h4>None!</h4>
-      </div>
-    );
-  }
   return (
     <div>
-      <h3>Timed Message Feed</h3>
-      <Grid container>
-        <Grid item xs={2} />
-        <Grid item xs={8}>
-          {messages &&
-            messages.map((m) => (
-              <TimedMessageCard
-                deleteMessageToSend={deleteMessageToSend}
-                getChatUserHandle={getChatUserHandle}
-                message={m}
-                updateMessageToSend={updateMessageToSend}
-              />
-            ))}
-        </Grid>
-      </Grid>
+      <h1 style={{ marginLeft: 20, height: '4vh' }}>Timed Message Feed</h1>
+      <div
+        style={{
+          overflow: 'scroll',
+          width: '100%',
+          float: 'left',
+          height: '89vh',
+          backgroundColor: '#27282A',
+        }}
+      >
+        {!messages ? <h4 style={{ paddingLeft: 20}}>None!</h4> :
+          <Grid container>
+            <Grid item xs={2} />
+            <Grid item xs={8}>
+              {messages &&
+              messages.map((m) => (
+                <TimedMessageCard
+                  deleteMessageToSend={deleteMessageToSend}
+                  getChatUserHandle={getChatUserHandle}
+                  message={m}
+                  updateMessageToSend={updateMessageToSend}
+                />
+              ))}
+            </Grid>
+          </Grid>
+        }
+      </div>
     </div>
   );
 }
