@@ -31,6 +31,7 @@ export default function Settings() {
         onChange={(e) => updateReminderTime(e.target.value)}
         style={{ backgroundColor: 'white' }}
       />
+      <p>Text Andrew: +1 860 734 6043 or Luke: +1 218 348 0139 for support</p>
     </div>
   );
 }
