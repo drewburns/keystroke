@@ -20,7 +20,7 @@ export default function Settings() {
   };
 
   return (
-    <div style={{paddingLeft: 15}}>
+    <div style={{paddingLeft: 20}}>
       <h1 style={{ marginLeft: 0, paddingBottom: 5 }}>Settings</h1>
       <p>Version 4.6.6</p>
       <hr />

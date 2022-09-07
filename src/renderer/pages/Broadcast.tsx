@@ -117,7 +117,7 @@ export default function Broadcast({ nameNumbers }: Props) {
           backgroundColor: '#27282A',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center',  paddingLeft: 60, width: '100%', justifyContent:'space-between'}}>
+        <div style={{ display: 'flex', alignItems: 'center',  paddingLeft: 20, width: '100%', justifyContent:'space-between', backgroundColor: '#1F1F1F'}}>
           <h1>Broadcast</h1>
           <Button variant="contained" onClick={() => setOpen(true)} style={{marginRight: 100}}>
             Create New
