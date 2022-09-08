@@ -21,7 +21,7 @@ export default function Settings() {
 
   return (
     <div style={{paddingLeft: 20}}>
-      <h1 style={{ marginLeft: 0, paddingBottom: 5 }}>Settings</h1>
+      <h1 style={{ marginLeft: 0, paddingBottom: 5, fontSize: 22 }}>Settings</h1>
       <p>Version 4.6.6</p>
       <hr />
       <p>Set how many hours before Keystroke reminds you to respond to a message</p>
