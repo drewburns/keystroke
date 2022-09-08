@@ -129,7 +129,7 @@ export default function NewChat({
   // console.log('name nums', nameNumbers);
   return (
     <div>
-      <h1 style={{ marginLeft: 20, paddingBottom: 5 }}>New Chat</h1>
+      <h1 style={{ marginLeft: 20, paddingBottom: 5, fontSize: 22 }}>New Chat</h1>
 
       <Dropzone
       noClick

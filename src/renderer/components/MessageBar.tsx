@@ -181,7 +181,7 @@ export default function MessageBar({
         <Grid
           item
           xs={1}
-          style={{ marginTop: 25, paddingLeft: 15, cursor: 'pointer' }}
+          style={{ marginTop: 25, paddingLeft: 15, cursor: 'pointer', paddingBottom: 0 }}
         >
           <div>
             <AccessAlarmIcon

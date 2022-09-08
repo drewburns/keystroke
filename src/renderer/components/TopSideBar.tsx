@@ -15,26 +15,26 @@ export default function TopSideBar({ setPage }: Props) {
   return (
     <div>
       {/* <SearchIcon /> */}
-      <SettingsIcon
-        onClick={() => setPage('settings')}
-        style={{ cursor: 'pointer' }}
+      <CreateIcon
+        onClick={() => setPage('newChat')}
+        style={{ cursor: 'pointer', paddingRight: 2 }}
       />
       <NotificationsIcon
         onClick={() => setPage('reminders')}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', paddingRight: 2 }}
       />
       {/* <GroupAddIcon /> */}
-      <CreateIcon
-        onClick={() => setPage('newChat')}
-        style={{ cursor: 'pointer' }}
-      />
       <AccessTimeIcon
         onClick={() => setPage('timedMessages')}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', paddingRight: 2 }}
       />
       <PeopleIcon
         onClick={() => setPage('broadcast')}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', paddingRight: 2 }}
+      />
+      <SettingsIcon
+        onClick={() => setPage('settings')}
+        style={{ cursor: 'pointer', paddingRight: 2 }}
       />
       {/* <EmojiPeopleIcon
         onClick={() => setPage('timedMessages')}

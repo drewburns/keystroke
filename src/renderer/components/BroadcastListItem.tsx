@@ -31,8 +31,8 @@ export default function BroadcastListItem({
           >
             <Grid container>
               <Grid item xs={6}>
-                <h3 style={{ paddingLeft: 10 }}>{broadcast_list.name}</h3>
-                <p style={{ paddingLeft: 10 }}>
+                <h3 style={{ paddingLeft: 10, marginBottom: 0 }}>{broadcast_list.name}</h3>
+                <p style={{ paddingLeft: 10}}>
                   <i>
                     {broadcast_list.part_list
                       ? broadcast_list.part_list.split(',').length

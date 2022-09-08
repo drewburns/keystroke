@@ -51,7 +51,7 @@ export default function Reminders({
   }
   return (
     <div>
-      <h1 style={{ marginLeft: 20, height: '4vh' }}>Reminders</h1>
+      <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>Reminders</h1>
       <div
         style={{
           overflow: 'scroll',

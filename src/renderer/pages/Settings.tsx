@@ -20,17 +20,22 @@ export default function Settings() {
   };
 
   return (
-    <div style={{paddingLeft: 15}}>
-      <h1 style={{ marginLeft: 0, paddingBottom: 5 }}>Settings</h1>
-      <p>Version 4.6.7</p>
+    <div style={{ paddingLeft: 20 }}>
+      <h1 style={{ marginLeft: 0, paddingBottom: 5, fontSize: 22 }}>
+        Settings
+      </h1>
+      <p>Version 4.6.8</p>
       <hr />
-      <p>Set how many hours before Keystroke reminds you to respond to a message</p>
+      <p>
+        Set how many hours before Keystroke reminds you to respond to a message
+      </p>
       <TextField
         type="number"
         value={reminderTime}
         onChange={(e) => updateReminderTime(e.target.value)}
         style={{ backgroundColor: 'white' }}
       />
+      <p>Text Andrew: +1 860 734 6043 or Luke: +1 218 348 0139 for support</p>
     </div>
   );
 }
