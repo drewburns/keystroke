@@ -104,10 +104,10 @@ export default function ChatPage({
     <div>
       <div style={{ marginTop: 0, paddingLeft: 10 }}>
         <div>
-          <h5 style={{ display: 'inline-block' }}>To: {chatName}</h5>
+          <h5 style={{ display: 'inline-block', marginTop: 12, marginBottom: 12}}>To: {chatName}</h5>
           {!isMuted ? (
             <NotificationsOffIcon
-              style={{ float: 'right', marginTop: 17, cursor: 'pointer' }}
+              style={{ float: 'right', marginTop: 5, cursor: 'pointer' }}
               onClick={() => {
                 window.electron.ipcRenderer.sendMessage('toggle-mute', [
                   chatGuid,
