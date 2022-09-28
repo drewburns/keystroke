@@ -13,29 +13,34 @@ type Props = {
 };
 export default function TopSideBar({ setPage }: Props) {
   return (
-    <div>
+    <div style={{ display: 'flex'}}>
+      <p style={{ paddingRight: 10 }}>✏️</p>
+      <p style={{ paddingRight: 10 }}>😳️</p>
+      <p style={{ paddingRight: 10 }}>⏳️</p>
+      <p style={{ paddingRight: 10 }}>⚡️</p>
+      <p style={{ paddingRight: 10 }}>🔎</p>
       {/* <SearchIcon /> */}
-      <CreateIcon
-        onClick={() => setPage('newChat')}
-        style={{ cursor: 'pointer', paddingRight: 2 }}
-      />
-      <NotificationsIcon
-        onClick={() => setPage('reminders')}
-        style={{ cursor: 'pointer', paddingRight: 2 }}
-      />
-      {/* <GroupAddIcon /> */}
-      <AccessTimeIcon
-        onClick={() => setPage('timedMessages')}
-        style={{ cursor: 'pointer', paddingRight: 2 }}
-      />
-      <PeopleIcon
-        onClick={() => setPage('broadcast')}
-        style={{ cursor: 'pointer', paddingRight: 2 }}
-      />
-      <SettingsIcon
-        onClick={() => setPage('settings')}
-        style={{ cursor: 'pointer', paddingRight: 2 }}
-      />
+      {/*<CreateIcon*/}
+      {/*  onClick={() => setPage('newChat')}*/}
+      {/*  style={{ cursor: 'pointer', paddingRight: 2 }}*/}
+      {/*/>*/}
+      {/*<NotificationsIcon*/}
+      {/*  onClick={() => setPage('reminders')}*/}
+      {/*  style={{ cursor: 'pointer', paddingRight: 2 }}*/}
+      {/*/>*/}
+      {/*/!* <GroupAddIcon /> *!/*/}
+      {/*<AccessTimeIcon*/}
+      {/*  onClick={() => setPage('timedMessages')}*/}
+      {/*  style={{ cursor: 'pointer', paddingRight: 2 }}*/}
+      {/*/>*/}
+      {/*<PeopleIcon*/}
+      {/*  onClick={() => setPage('broadcast')}*/}
+      {/*  style={{ cursor: 'pointer', paddingRight: 2 }}*/}
+      {/*/>*/}
+      {/*<SettingsIcon*/}
+      {/*  onClick={() => setPage('settings')}*/}
+      {/*  style={{ cursor: 'pointer', paddingRight: 2 }}*/}
+      {/*/>*/}
       {/* <EmojiPeopleIcon
         onClick={() => setPage('timedMessages')}
         style={{ cursor: 'pointer' }}
