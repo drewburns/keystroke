@@ -31,8 +31,8 @@ export default function BroadcastListItem({
           >
             <Grid container>
               <Grid item xs={6}>
-                <h3 style={{ paddingLeft: 10, marginBottom: 0 }}>{broadcast_list.name}</h3>
-                <p style={{ paddingLeft: 10}}>
+                <h3 style={{ paddingLeft: 20, marginBottom: 0 }}>{broadcast_list.name}</h3>
+                <p style={{ paddingLeft: 20}}>
                   <i>
                     {broadcast_list.part_list
                       ? broadcast_list.part_list.split(',').length
@@ -41,9 +41,20 @@ export default function BroadcastListItem({
                   </i>
                 </p>
               </Grid>
-              <Grid item xs={3} style={{ marginTop: 15, paddingRight: 15, display: 'flex', justifyContent: 'flex-end',  }}>
+              {/*<Grid item xs={3} style={{ marginTop: 15, paddingRight: 15, display: 'flex', justifyContent: 'flex-end',  }}>*/}
+              {/*  <Button*/}
+              {/*    style={{ height: 50, backgroundColor:'#D0F7C3', color:'#0B302F' }}*/}
+              {/*    variant="contained"*/}
+              {/*    // color="#D0F7C3"*/}
+              {/*    // fullWidth*/}
+              {/*    onClick={() => setSelectedList(broadcast_list)}*/}
+              {/*  >*/}
+              {/*    Edit*/}
+              {/*  </Button>*/}
+              {/*</Grid>*/}
+              <Grid item xs={6} style={{ marginTop: 15, display: 'flex', justifyContent: 'flex-end', paddingRight: 20}}>
                 <Button
-                  style={{ height: 50, backgroundColor:'#D0F7C3', color:'#0B302F' }}
+                  style={{ height: 50, backgroundColor:'#D0F7C3', color:'#0B302F', marginRight: 10 }}
                   variant="contained"
                   // color="#D0F7C3"
                   // fullWidth
@@ -51,8 +62,6 @@ export default function BroadcastListItem({
                 >
                   Edit
                 </Button>
-              </Grid>
-              <Grid item xs={3} style={{ marginTop: 15 }}>
                 <Button
                   variant="contained"
                   style={{ height: 50, backgroundColor: '#CFF7FF', color:'#0B302F' }}
