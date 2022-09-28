@@ -82,7 +82,7 @@ export default function Broadcast({ nameNumbers }: Props) {
           <div>
             <Box sx={style}>
               <h3>New Broadcast List</h3>
-              <p>Broadcast lists allow you to send one message individually to the list</p>
+              <p>Bulksend a message to a list - without making a groupchat</p>
               <TextField
                 value={newListName}
                 onChange={(e) => setNewListName(e.target.value)}
