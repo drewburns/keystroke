@@ -118,9 +118,9 @@ export default function Broadcast({ nameNumbers }: Props) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center',  paddingLeft: 20, width: '100%', justifyContent:'space-between', backgroundColor: '#1F1F1F'}}>
-          <h1 style={{ fontSize: 22 }}>Broadcast</h1>
+          <h1 style={{ fontSize: 22 }}>Broadcast ⚡️</h1>
           <Button variant="contained" onClick={() => setOpen(true)} style={{marginRight: 100}}>
-            Create New
+            New
           </Button>
         </div>
         <Grid container>

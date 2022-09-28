@@ -58,7 +58,7 @@ export default function BroadcastListItem({
                   style={{ height: 50 }}
                   onClick={() => setIsReplying(!isReplying)}
                 >
-                  {isReplying ? 'Cancel' : 'Send Message'}
+                  {isReplying ? 'Cancel' : 'Message'}
                 </Button>
               </Grid>
             </Grid>
