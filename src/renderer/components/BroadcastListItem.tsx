@@ -23,22 +23,24 @@ export default function BroadcastListItem({
       }}
     >
       {({ getRootProps, getInputProps }) => (
-        <div {...getRootProps()}>
+        <div
+          {...getRootProps()}>
           <Card
             variant="outlined"
             className="reminderCard"
-            style={{ backgroundColor: '#373737', color: 'white' }}
+            style={{ backgroundColor: '#373737', color: 'white'}}
           >
-            <Grid container>
+            <Grid
+              container>
               <Grid item xs={6}>
                 <h3 style={{ paddingLeft: 20, marginBottom: 0 }}>{broadcast_list.name}</h3>
-                <p style={{ paddingLeft: 20}}>
-                  <i>
+                <p style={{ paddingLeft: 20, fontSize: 13}}>
+                  {/*<i>*/}
                     {broadcast_list.part_list
                       ? broadcast_list.part_list.split(',').length
                       : 0}{' '}
-                    people
-                  </i>
+                    people 👋
+                  {/*</i>*/}
                 </p>
               </Grid>
               {/*<Grid item xs={3} style={{ marginTop: 15, paddingRight: 15, display: 'flex', justifyContent: 'flex-end',  }}>*/}
