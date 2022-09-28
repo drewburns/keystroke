@@ -124,7 +124,7 @@ export default function EditBroadcastList({
         </Grid>
       </div>
       <Button
-        style={{ position: 'absolute', right: 15, top: 15}}
+        style={{ position: 'absolute', right: 15, top: 15, backgroundColor: '#FFD9F5', color: '#5C595C'}}
         onClick={() => {
           setOpen(false);
           window.electron.ipcRenderer.sendMessage(
@@ -133,7 +133,7 @@ export default function EditBroadcastList({
           );
         }}
         variant="contained"
-        color="warning"
+        // color="warning"
       >
         Delete List
       </Button>
