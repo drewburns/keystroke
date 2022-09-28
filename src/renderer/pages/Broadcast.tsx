@@ -93,7 +93,7 @@ export default function Broadcast({ nameNumbers }: Props) {
               <br />
               <Button
                 onClick={() => createGroup()}
-                style={{ marginTop: 10, width: 150 }}
+                style={{ marginTop: 10, width: 150, paddingTop: 11, paddingBottom: 11, backgroundColor: '#2D7FFA' }}
                 variant="contained"
               >
                 Create
