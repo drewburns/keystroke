@@ -56,7 +56,7 @@ export default function BroadcastListItem({
               {/*</Grid>*/}
               <Grid item xs={6} style={{ marginTop: 15, display: 'flex', justifyContent: 'flex-end', paddingRight: 20}}>
                 <Button
-                  style={{ height: 50, backgroundColor:'#D0F7C3', color:'#0B302F', marginRight: 10 }}
+                  style={{ height: 50, backgroundColor:'#D0F7C3', color:'#0B302F', marginRight: 10, borderRadius: 9  }}
                   variant="contained"
                   // color="#D0F7C3"
                   // fullWidth
@@ -66,7 +66,7 @@ export default function BroadcastListItem({
                 </Button>
                 <Button
                   variant="contained"
-                  style={{ height: 50, backgroundColor: '#CFF7FF', color:'#0B302F' }}
+                  style={{ height: 50, backgroundColor: '#CFF7FF', color:'#0B302F', borderRadius: 9 }}
                   onClick={() => setIsReplying(!isReplying)}
                 >
                   {isReplying ? 'Cancel' : 'Message'}
