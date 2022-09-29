@@ -82,7 +82,7 @@ export default function Broadcast({ nameNumbers }: Props) {
           <div>
             <Box sx={style}>
               <h3>New Broadcast List</h3>
-              <p>Broadcast lists allow you to send one message individually to the list</p>
+              <p>Bulksend a message to a list - without making a groupchat</p>
               <TextField
                 value={newListName}
                 onChange={(e) => setNewListName(e.target.value)}
@@ -93,7 +93,7 @@ export default function Broadcast({ nameNumbers }: Props) {
               <br />
               <Button
                 onClick={() => createGroup()}
-                style={{ marginTop: 10, width: 150 }}
+                style={{ marginTop: 10, width: 150, paddingTop: 11, paddingBottom: 11, backgroundColor: '#2D7FFA' }}
                 variant="contained"
               >
                 Create
@@ -118,9 +118,9 @@ export default function Broadcast({ nameNumbers }: Props) {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center',  paddingLeft: 20, width: '100%', justifyContent:'space-between', backgroundColor: '#1F1F1F'}}>
-          <h1 style={{ fontSize: 22 }}>Broadcast</h1>
-          <Button variant="contained" onClick={() => setOpen(true)} style={{marginRight: 100}}>
-            Create New
+          <h1 style={{ fontSize: 22 }}>Broadcast ⚡️</h1>
+          <Button variant="contained" onClick={() => setOpen(true)} style={{marginRight: 100, backgroundColor: '#CFDFFF', color: '#0B302F'}}>
+            New
           </Button>
         </div>
         <Grid container>

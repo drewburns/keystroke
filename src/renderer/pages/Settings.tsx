@@ -36,6 +36,7 @@ export default function Settings() {
         style={{ backgroundColor: 'white' }}
       />
       <p>Text Andrew: +1 860 734 6043 or Luke: +1 218 348 0139 for support</p>
+      <p>For plan adjustments, contact us</p>
     </div>
   );
 }
