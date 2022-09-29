@@ -98,6 +98,7 @@ export default function MessageBar({
 
       if (!finalMessageBody) return;
       setTimeAmount(0);
+      mixpanel.track('broadcast sent');
       if (broadcastIds) {
         broadcastIds.forEach((id: number) => {
           window.electron.ipcRenderer.sendMessage('send-to-broadcast-id', [
@@ -181,7 +182,12 @@ export default function MessageBar({
         <Grid
           item
           xs={1}
-          style={{ marginTop: 25, paddingLeft: 15, cursor: 'pointer', paddingBottom: 0 }}
+          style={{
+            marginTop: 25,
+            paddingLeft: 15,
+            cursor: 'pointer',
+            paddingBottom: 0,
+          }}
         >
           <div>
             <AccessAlarmIcon
@@ -212,7 +218,7 @@ export default function MessageBar({
                         color: '#1A8BFF',
                         paddingBottom: 0,
                         '&.Mui-checked': {
-                          color: '#1A8BFF'
+                          color: '#1A8BFF',
                         },
                       }}
                     />

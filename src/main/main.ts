@@ -6,6 +6,7 @@
 
 import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
+import mixpanel from 'mixpanel-browser';
 import * as Sentry from '@sentry/electron/main';
 // import { getLastMessageROWIDForChat } from './sql';
 Sentry.init({
@@ -263,6 +264,7 @@ ipcMain.on('send-message', async (event, arg) => {
 });
 
 ipcMain.on('send-to-broadcast-id', async (event, arg) => {
+  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
   const broadcastId = arg[0];
   const chatGuidsToIgnore = arg[1];
   const body = arg[2];
@@ -278,6 +280,9 @@ ipcMain.on('send-to-broadcast-id', async (event, arg) => {
     const number = formatPhoneNumber(row.ZFULLNUMBER);
     const name = `${row.ZFIRSTNAME}`;
     tempData[number] = name;
+  });
+  mixpanel.track('broadcast-send-backend', {
+    num: uniqueBroadcastGuids.length,
   });
   for (let x = 0; x < uniqueBroadcastGuids.length; x++) {
     const chatGuid = uniqueBroadcastGuids[x];

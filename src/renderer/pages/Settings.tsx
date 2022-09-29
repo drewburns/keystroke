@@ -24,7 +24,7 @@ export default function Settings() {
       <h1 style={{ marginLeft: 0, paddingBottom: 5, fontSize: 22 }}>
         Settings
       </h1>
-      <p>Version 4.6.8</p>
+      <p>Version 4.6.9</p>
       <hr />
       <p>
         Set how many hours before Keystroke reminds you to respond to a message
