@@ -186,6 +186,7 @@ export default function MesssageBubble({
   };
 
   const isKeyStrokeImage = (text) => {
+    if (!text) return false;
     const val = text.includes(
       'https://keystroke-images.s3.us-east-1.amazonaws.com'
     );
