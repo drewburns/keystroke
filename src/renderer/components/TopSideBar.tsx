@@ -10,8 +10,9 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 
 type Props = {
   setPage: (page: string) => void;
+  page: string | null | undefined;
 };
-export default function TopSideBar({ setPage }: Props) {
+export default function TopSideBar({ setPage, page }: Props) {
   return (
     <div>
       {/* <SearchIcon /> */}

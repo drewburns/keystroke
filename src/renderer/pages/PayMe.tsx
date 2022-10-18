@@ -17,7 +17,7 @@ export default function PayMe({ tryCode }: Props) {
           textDecoration: 'underline',
         }}
         target="_blank"
-        href="https://checkout.stripe.com/c/pay/cs_live_b1kSHCw4UZne2hHhlK87u0UZF240lMbyfB61nlxMtpR3KWq92FAs6JKaS0#fidkdWxOYHwnPyd1blppbHNgWjA0SVVMXzBBUXJcM05tfEpRTVRSRn03MHVRTEphTWFIUU5hXTxrXU48NkxXa2hpbk1BdXR%2FV0BddFJIbVJrdUtST29jcFJhf3VIcmdVaE4xTmJ1MWJ3TGF8NTVLS0NuNWxWcScpJ3VpbGtuQH11anZgYUxhJz8nPXJIYVc1Z0lDPFNSPFZANz08J3gl"
+        href="https://buy.stripe.com/8wMdR0bLF9VW9SE289"
         rel="noreferrer"
       >
         Click here to purchase a code (30 free trial, cancel anytime!)
