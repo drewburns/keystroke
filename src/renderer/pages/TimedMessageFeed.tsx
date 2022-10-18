@@ -2,6 +2,7 @@ import { Button, Card, Grid } from '@mui/material';
 import React from 'react';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
+import NewChat from 'renderer/components/NewChat';
 import TimedMessageCard from 'renderer/components/TimedMessageCard';
 
 type Props = {
@@ -33,7 +34,14 @@ export default function TimedMessageFeed({ getChatUserHandle }: Props) {
 
   return (
     <div>
-      <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>Timed Message Feed</h1>
+      {/* <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>
+        Send a new timed message
+      </h1>
+      <NewChat />
+      <hr /> */}
+      <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>
+        Timed Message Feed
+      </h1>
       <div
         style={{
           overflow: 'scroll',
@@ -43,22 +51,24 @@ export default function TimedMessageFeed({ getChatUserHandle }: Props) {
           backgroundColor: '#27282A',
         }}
       >
-        {!messages ? <h4 style={{ paddingLeft: 20}}>None!</h4> :
+        {!messages ? (
+          <h4 style={{ paddingLeft: 20 }}>None!</h4>
+        ) : (
           <Grid container>
             <Grid item xs={2} />
             <Grid item xs={8}>
               {messages &&
-              messages.map((m) => (
-                <TimedMessageCard
-                  deleteMessageToSend={deleteMessageToSend}
-                  getChatUserHandle={getChatUserHandle}
-                  message={m}
-                  updateMessageToSend={updateMessageToSend}
-                />
-              ))}
+                messages.map((m) => (
+                  <TimedMessageCard
+                    deleteMessageToSend={deleteMessageToSend}
+                    getChatUserHandle={getChatUserHandle}
+                    message={m}
+                    updateMessageToSend={updateMessageToSend}
+                  />
+                ))}
             </Grid>
           </Grid>
-        }
+        )}
       </div>
     </div>
   );

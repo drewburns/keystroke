@@ -24,6 +24,7 @@ import Settings from './pages/Settings';
 import PayMe from './pages/PayMe';
 import { myID } from './myid';
 import Broadcast from './pages/Broadcast';
+import TopSideBar from './components/TopSideBar';
 
 type SelectedChatType = {
   chatGuid: string;
@@ -91,6 +92,7 @@ const Hello = () => {
       setIsPaid(true);
       window.electron.ipcRenderer.sendMessage('set-access-code', code);
     }
+    // setIsPaid(false);
   };
 
   React.useEffect(() => {
@@ -180,9 +182,9 @@ const Hello = () => {
     setPage('chat');
   };
 
-  if (!isPaid) {
-    return <PayMe tryCode={checkIfPaid} />;
-  }
+  // if (!isPaid) {
+  //   return <PayMe tryCode={checkIfPaid} />;
+  // }
 
   return (
     <div>
@@ -206,9 +208,11 @@ const Hello = () => {
             getChatUserHandle={getChatUserHandle}
           />
         </Grid>
+        {/* <TopSideBar setPage={setPage} /> */}
         <Grid item xs={9}>
           {page === 'reminders' && (
             <Reminders
+              isPaid={isPaid}
               getChatUserHandle={getChatUserHandle}
               goToChat={goToChat}
               nameNumbersLoaded={Object.keys(nameNumbers).length !== 0}
@@ -232,8 +236,12 @@ const Hello = () => {
           {page === 'timedMessages' && (
             <TimedMessageFeed getChatUserHandle={getChatUserHandle} />
           )}
-          {page === 'settings' && <Settings />}
-          {page === 'broadcast' && <Broadcast nameNumbers={nameNumbers} />}
+          {page === 'settings' && (
+            <Settings tryCode={checkIfPaid} isPaid={isPaid} />
+          )}
+          {page === 'broadcast' && (
+            <Broadcast isPaid={isPaid} nameNumbers={nameNumbers} />
+          )}
         </Grid>
       </Grid>
     </div>

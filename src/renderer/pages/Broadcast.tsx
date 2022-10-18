@@ -6,9 +6,10 @@ import EditBroadcastList from 'renderer/components/EditBroadcastList';
 
 type Props = {
   nameNumbers: any[];
+  isPaid: boolean;
 };
 
-export default function Broadcast({ nameNumbers }: Props) {
+export default function Broadcast({ nameNumbers, isPaid }: Props) {
   const [lists, setLists] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [selectedList, setSelectedList] = React.useState(null);
@@ -69,6 +70,47 @@ export default function Broadcast({ nameNumbers }: Props) {
     setSelectedList(null);
   };
 
+  if (!isPaid) {
+    return (
+      <div style={{ textAlign: 'center', padding: 30 }}>
+        <h2>Upgrade to use Broadcast lists!</h2>
+        <p>
+          With broadcast lists you can create lists and send to many people
+          individually without making a groupchat
+        </p>
+        <a
+          href="https://buy.stripe.com/8wMdR0bLF9VW9SE289"
+          target="_blank"
+          style={{ textDecoration: 'none' }}
+          rel="noreferrer"
+        >
+          <Button
+            variant="contained"
+            style={{
+              marginTop: 10,
+              color: 'black',
+              fontWeight: 'bold',
+            }}
+          >
+            Upgrade Now
+          </Button>
+        </a>
+        <br />
+        <br />
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/Owz7JcYIriU"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        />
+        <br />
+      </div>
+    );
+  }
+
   return (
     <div>
       <Modal
@@ -93,7 +135,13 @@ export default function Broadcast({ nameNumbers }: Props) {
               <br />
               <Button
                 onClick={() => createGroup()}
-                style={{ marginTop: 10, width: 150, paddingTop: 11, paddingBottom: 11, backgroundColor: '#2D7FFA' }}
+                style={{
+                  marginTop: 10,
+                  width: 150,
+                  paddingTop: 11,
+                  paddingBottom: 11,
+                  backgroundColor: '#2D7FFA',
+                }}
                 variant="contained"
               >
                 Create
@@ -117,9 +165,26 @@ export default function Broadcast({ nameNumbers }: Props) {
           backgroundColor: '#27282A',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center',  paddingLeft: 20, width: '100%', justifyContent:'space-between', backgroundColor: '#1F1F1F'}}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: 20,
+            width: '100%',
+            justifyContent: 'space-between',
+            backgroundColor: '#1F1F1F',
+          }}
+        >
           <h1 style={{ fontSize: 22 }}>Broadcast ⚡️</h1>
-          <Button variant="contained" onClick={() => setOpen(true)} style={{marginRight: 100, backgroundColor: '#CFDFFF', color: '#0B302F'}}>
+          <Button
+            variant="contained"
+            onClick={() => setOpen(true)}
+            style={{
+              marginRight: 100,
+              backgroundColor: '#CFDFFF',
+              color: '#0B302F',
+            }}
+          >
             New
           </Button>
         </div>
@@ -138,5 +203,3 @@ export default function Broadcast({ nameNumbers }: Props) {
     </div>
   );
 }
-
-
