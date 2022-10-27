@@ -1,5 +1,5 @@
 /* eslint-disable guard-for-in */
-import { Grid, Modal } from '@mui/material';
+import { Button, Grid, Modal, TextField } from '@mui/material';
 import mixpanel from 'mixpanel-browser';
 import { ipcMain, ipcRenderer } from 'electron';
 import axios from 'axios';
@@ -35,8 +35,10 @@ const Hello = () => {
   mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
 
   const { setState } = useGlobalState();
+  const [email, setEmail] = React.useState('');
   const [chatThreads, setChatThreads] = React.useState([]);
   const [isPaid, setIsPaid] = React.useState(false);
+  const [hasEmail, setHasEmail] = React.useState(false);
   const [page, setPage] = React.useState('reminders');
   const [nameNumbers, setNameNumbers] = React.useState({});
   const [selectedChat, setSelectedChat] = React.useState<SelectedChatType>({
@@ -104,7 +106,14 @@ const Hello = () => {
       console.log('accesscode', res);
       checkIfPaid(res);
     });
+    window.electron.ipcRenderer.once('get-email', (res: any) => {
+      console.log('GOT EMAIL', res);
+      setHasEmail(!!res);
+      mixpanel.people.set(mixpanel.get_distinct_id(), { email: res });
+      mixpanel.alias(res, mixpanel.get_distinct_id());
+    });
     window.electron.ipcRenderer.sendMessage('get-access-code');
+    window.electron.ipcRenderer.sendMessage('get-email');
     window.electron.ipcRenderer.once('name-numbers', (res: any) => {
       console.log('namenums', nameNumbers);
       // eslint-disable-next-line no-console
@@ -181,10 +190,44 @@ const Hello = () => {
     });
     setPage('chat');
   };
+  const saveEmail = () => {
+    window.electron.ipcRenderer.sendMessage('set-email', email);
+    setHasEmail(true);
+  };
 
   // if (!isPaid) {
   //   return <PayMe tryCode={checkIfPaid} />;
   // }
+  if (!hasEmail) {
+    return (
+      <Grid container style={{ alignContent: 'center' }}>
+        <Grid item xs={3} />
+        <Grid item xs={6}>
+          <h2>Hey there! Enter your email to get started:</h2>
+          <TextField
+            fullWidth
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            id="outlined-basic"
+            label="Email"
+            variant="filled"
+            placeholder="Email"
+            style={{ marginTop: 10, backgroundColor: 'white' }}
+          />
+          <br />
+          <Button
+            variant="contained"
+            onClick={() => saveEmail()}
+            fullWidth
+            style={{ marginTop: 20 }}
+          >
+            Enter
+          </Button>
+        </Grid>
+      </Grid>
+    );
+  }
 
   return (
     <div>

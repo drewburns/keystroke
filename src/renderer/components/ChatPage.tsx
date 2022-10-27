@@ -30,7 +30,6 @@ export default function ChatPage({
   const [files, setFiles] = React.useState<any>([]);
   const [isMuted, setIsMuted] = React.useState(false);
 
-  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
 
   function unique(array: any[], propertyName: string) {
     return array.filter(

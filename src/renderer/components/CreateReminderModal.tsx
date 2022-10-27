@@ -15,7 +15,6 @@ export default function CreateReminderModal({
   const [timeAmount, setTimeAmount] = React.useState(1);
   const [timeDenom, setTimeDenom] = React.useState(60 * 60);
 
-  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
 
   const style = {
     position: 'absolute',

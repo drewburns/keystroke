@@ -157,8 +157,18 @@ ipcMain.on('get-access-code', async (event, arg) => {
   event.reply('get-access-code', result);
 });
 
+ipcMain.on('get-email', async (event, arg) => {
+  const result = store.get('email');
+  event.reply('get-email', result);
+});
+
 ipcMain.on('set-access-code', async (event, arg) => {
   store.set('access-code', arg);
+});
+
+ipcMain.on('set-email', async (event, arg) => {
+  store.set('email', arg);
+  mixpanel.identify(arg);
 });
 
 ipcMain.on('update-auto-reminder-time', async (event, arg) => {
@@ -440,6 +450,10 @@ const runScanHelper = async () => {
   app.dock.setBadge(badgeNum[0].count.toString());
 
   mainWindow?.webContents.send('get-acccess-code', store.get('access-code'));
+  mainWindow?.webContents.send('get-email', store.get('email'));
+  if (store.get('email')) {
+    mixpanel.identify(store.get('email'));
+  }
 };
 
 const scanTimedMessageToDelete = async () => {
@@ -510,14 +524,14 @@ const checkForNewMessage = async () => {
       mainWindow?.webContents.send('new-message', { data: results });
       results.forEach((row: any) => {
         if (row.is_from_me === 0 && row.ks_muted !== 1) {
-          new Notification({
-            title: getChatUserHandle(
-              tempData,
-              row.member_list.split(','),
-              row.display_name
-            ),
-            body: showMessagePreview(row) || row.text,
-          }).show();
+          // new Notification({
+          //   title: getChatUserHandle(
+          //     tempData,
+          //     row.member_list.split(','),
+          //     row.display_name
+          //   ),
+          //   body: showMessagePreview(row) || row.text,
+          // }).show();
         }
       });
     }

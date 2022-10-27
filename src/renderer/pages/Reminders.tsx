@@ -22,7 +22,6 @@ export default function Reminders({
 }: Props) {
   const [reminders, setReminders] = React.useState([]);
 
-  mixpanel.init('f5cd229535c67bec6dccbd57ac7ede27');
   const dismissReminder = (reminder_id: string) => {
     window.electron.ipcRenderer.sendMessage('update-reminder', [
       reminder_id,
