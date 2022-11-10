@@ -7,19 +7,24 @@ import TimedMessageCard from 'renderer/components/TimedMessageCard';
 
 type Props = {
   getChatUserHandle: (list: string[], displayName: string) => string;
+  nameNumbers: any;
 };
 
-export default function TimedMessageFeed({ getChatUserHandle }: Props) {
+export default function TimedMessageFeed({
+  getChatUserHandle,
+  nameNumbers,
+}: Props) {
   const [messages, setMessages] = React.useState([]);
   React.useEffect(() => {
-    window.electron.ipcRenderer.once(
+    window.electron.ipcRenderer.on(
       'get-message-to-send-feed',
       (results: any) => {
+        console.log(results);
         setMessages(results);
       }
     );
     window.electron.ipcRenderer.sendMessage('get-message-to-send-feed');
-  }, [messages]);
+  }, []);
 
   const deleteMessageToSend = (id: number) => {
     window.electron.ipcRenderer.sendMessage('delete-message-to-send', id);
@@ -34,11 +39,13 @@ export default function TimedMessageFeed({ getChatUserHandle }: Props) {
 
   return (
     <div>
-      {/* <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>
-        Send a new timed message
-      </h1>
-      <NewChat />
-      <hr /> */}
+      <NewChat
+        refreshList={() => {
+          window.electron.ipcRenderer.sendMessage('get-message-to-send-feed');
+        }}
+        nameNumbers={nameNumbers}
+      />
+      <hr />
       <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>
         Timed Message Feed
       </h1>
@@ -48,7 +55,7 @@ export default function TimedMessageFeed({ getChatUserHandle }: Props) {
           width: '100%',
           float: 'left',
           height: '89vh',
-          backgroundColor: '#27282A',
+          backgroundColor: '#FAF8FF',
         }}
       >
         {!messages ? (

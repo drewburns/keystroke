@@ -21,6 +21,7 @@ import React from 'react';
 import { truncate, uploadToS3 } from '../util';
 
 import TimePicker from './TimePicker';
+import { toast } from 'react-toastify';
 
 type Props = {
   chatGuids: string[];
@@ -128,6 +129,7 @@ export default function MessageBar({
       setMessageBody('');
       if (onMessageSent) onMessageSent();
       setFiles && setFiles([]);
+      toast.success('Sent message!');
     }
     // TODO: assume for now that this will always work
   };

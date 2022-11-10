@@ -33,28 +33,29 @@ export default function Reminder({
     <Card
       variant="outlined"
       className="reminderCard"
-      style={{ backgroundColor: '#373737', color: 'white', padding: 20 }}
+      style={{ backgroundColor: '#fff', color: 'black', padding: 20 }}
     >
       <Grid container>
-        <Grid item xs={1} style={{ marginTop: -4 }}>
-          {reminder['reminder_type'] === 'auto' ? (
-            <AccessTimeIcon />
-          ) : (
-            <GroupAddIcon />
-          )}
-        </Grid>
         <Grid
           item
-          xs={11}
-          style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          xs={12}
+          style={{
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            borderRadius: 10,
+            // justifyContent: 'space-between',
+          }}
           onDoubleClick={() => goToChat(reminder['chat.guid'])}
         >
           <p
             style={{
               marginTop: 0,
+              fontSize: 20,
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap',
+              fontWeight: 'bold',
             }}
           >
             {reminder.member_list &&
@@ -63,22 +64,23 @@ export default function Reminder({
                 reminder.display_name
               )}
           </p>
-          <p style={{ marginTop: 0, fontSize: 12 }}>{getTimeAgo(reminder['message.date'])}</p>
-
         </Grid>
+        <p style={{ marginTop: 0, fontSize: 12, padding: 0 }}>
+          {getTimeAgo(reminder['message.date'])}
+        </p>
         <Grid
           item
           xs={12}
           style={{ cursor: 'pointer' }}
           onDoubleClick={() => goToChat(reminder['chat.guid'])}
         >
-          {/* <p style={{ marginTop: 9 }}>{reminder.text}</p> */}
-          <MesssageBubble
+          <p style={{ marginTop: 9 }}>{reminder.text}</p>
+          {/* <MesssageBubble
             isReminderBubble
             message={reminder}
             index={1}
             getNameForNumber={getNameForNumber}
-          />
+          /> */}
           {reminder.note && (
             <p>
               <i>Note: {reminder.note}</i>
@@ -86,24 +88,25 @@ export default function Reminder({
           )}
         </Grid>
         <Grid container style={{ marginTop: 10, paddingLeft: 10 }}>
-          <Grid item xs={6}>
+          <Grid item xs={4} style={{ paddingRight: 10 }}>
             <Button
-              // variant="outlined"
-              style={{ color: '#1D8BFF' }}
-              // fullWidth
+              variant="outlined"
+              style={{ backgroundColor: 'black', color: 'white' }}
+              fullWidth
               onClick={() => setIsReplying(!isReplying)}
             >
-              {isReplying ? 'Cancel' : 'Reply'}
+              {isReplying ? 'Cancel' : 'Respond'}
             </Button>
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={4}>
             <Button
               variant="outlined"
               fullWidth
-              color="warning"
+              style={{ backgroundColor: '#9EA2FF', color: 'white' }}
+              // color="warning"
               onClick={() => dismissReminder(reminder['reminder.id'])}
             >
-              Dismiss
+              Snooze
             </Button>
           </Grid>
         </Grid>

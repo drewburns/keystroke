@@ -36,7 +36,7 @@ export default function Reminders({
     mixpanel.track('Reminder page loaded');
     window.electron.ipcRenderer.on('get-reminders', (results: any[]) => {
       mixpanel.track('Get reminders');
-      if (results) setReminders(isPaid ? results : results.slice(0, 5));
+      if (results) setReminders(results);
     });
 
     window.electron.ipcRenderer.sendMessage('get-reminders', null);
@@ -52,22 +52,22 @@ export default function Reminders({
   }
   return (
     <div>
-      <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>Reminders</h1>
+      {/* <h1 style={{ marginLeft: 20, height: '4vh', fontSize: 22 }}>Reminders</h1> */}
       <div
         style={{
           overflow: 'scroll',
           width: '100%',
           float: 'left',
           height: '89vh',
-          backgroundColor: '#27282A',
+          backgroundColor: '#FAF8FF',
         }}
       >
         <Grid container style={{ paddingTop: 10 }}>
-          <Grid item xs={2} />
-          <Grid item xs={8}>
-            {reminders.length > 0 ? (
+          <Grid item xs={3} />
+          <Grid item xs={6}>
+            {(isPaid ? reminders : reminders.slice(0, 5)).length > 0 ? (
               <div>
-                <Grid container>
+                {/* <Grid container>
                   <Grid item xs={4}>
                     <Button
                       variant="contained"
@@ -89,7 +89,7 @@ export default function Reminders({
                       Delete all manual reminders
                     </Button>
                   </Grid>
-                </Grid>
+                </Grid> */}
                 {reminders.map((reminder) => (
                   <Reminder
                     getChatUserHandle={getChatUserHandle}

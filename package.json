@@ -141,9 +141,10 @@
     "react-select": "^5.4.0",
     "react-textarea-autosize": "^8.3.4",
     "react-tiny-link": "^3.6.1",
+    "react-toastify": "^9.1.1",
     "run-applescript": "^6.0.0",
     "shell-path": "^3.0.0",
-    "sqlite3": "^5.0.10",
+    "sqlite3": "^5.1.0",
     "update-electron-app": "^2.0.1",
     "use-electron-context-menu": "^1.0.2"
   },

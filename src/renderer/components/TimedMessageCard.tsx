@@ -14,7 +14,7 @@ export default function TimedMessageCard({
   getChatUserHandle,
   message,
   deleteMessageToSend,
-  updateMessageToSend
+  updateMessageToSend,
 }: Props) {
   const [body, setBody] = React.useState(message.body);
 
@@ -45,8 +45,8 @@ export default function TimedMessageCard({
       variant="outlined"
       className="reminderCard"
       style={{
-        backgroundColor: '#373737',
-        color: 'white',
+        backgroundColor: 'white',
+        color: 'black',
         paddingLeft: 5,
       }}
     >
@@ -59,11 +59,8 @@ export default function TimedMessageCard({
         }}
       >
         To:{' '}
-        {message.part_list &&
-          getChatUserHandle(
-            message.part_list.split(','),
-            message['chat.display_name']
-          )}
+        {message.handle_number &&
+          getChatUserHandle([[message.handle_number]], message['chat.display_name'])}
       </p>
       <p>Body:</p>{' '}
       <EditTextarea
@@ -74,10 +71,9 @@ export default function TimedMessageCard({
       />
       <i>Sending in {timeToGo(new Date(message.scheduled_for))}</i>
       <Button
-        style={{ marginTop: 20 }}
+        style={{ marginTop: 20, color: 'white', backgroundColor: 'black' }}
         variant="outlined"
         fullWidth
-        color="warning"
         onClick={() => deleteMessageToSend(message.id)}
       >
         Cancel

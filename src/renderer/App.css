@@ -21,9 +21,9 @@ p {
 
 body {
   position: relative;
-  color: white;
+  color: black;
   height: 100vh;
-  background: #1E1E1E;
+  background: white;
   font-family: sans-serif;
   overflow-y: hidden;
 }
@@ -241,4 +241,15 @@ a:hover {
   padding-right: 5px;
   margin-bottom: 5px;
   font-size: 14px;
+}
+
+.topBarIcon {
+  width: 48px;
+  height: 48px;
+  background-color: white;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: -5px;
+  text-align: center;
 }

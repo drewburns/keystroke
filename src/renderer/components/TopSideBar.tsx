@@ -14,17 +14,33 @@ type Props = {
 };
 export default function TopSideBar({ setPage, page }: Props) {
   return (
-    <div>
+    <div style={{ color: 'black', display: 'flex', cursor: 'pointer' }}>
       {/* <SearchIcon /> */}
+      <div onClick={() => setPage('reminders')} className="topBarIcon">
+        <h3 style={{ marginBottom: 0, marginTop: 5 }}>⌛️</h3>
+        <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Reminds</p>
+      </div>
+      <div onClick={() => setPage('timedMessages')} className="topBarIcon">
+        <h3 style={{ marginBottom: 0, marginTop: 5 }}>🌞</h3>
+        <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Delays</p>
+      </div>
+      <div onClick={() => setPage('broadcast')} className="topBarIcon">
+        <h3 style={{ marginBottom: 0, marginTop: 5 }}>⚡️</h3>
+        <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Blasts</p>
+      </div>
+      <div onClick={() => setPage('settings')} className="topBarIcon">
+        <h3 style={{ marginBottom: 0, marginTop: 5 }}>📊️</h3>
+        <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Stats</p>
+      </div>
+      {/* 
       <CreateIcon
-        onClick={() => setPage('newChat')}
-        style={{ cursor: 'pointer', paddingRight: 2 }}
-      />
+          onClick={() => setPage('newChat')}
+          style={{ cursor: 'pointer', paddingRight: 2 }}
+        />
       <NotificationsIcon
         onClick={() => setPage('reminders')}
         style={{ cursor: 'pointer', paddingRight: 2 }}
       />
-      {/* <GroupAddIcon /> */}
       <AccessTimeIcon
         onClick={() => setPage('timedMessages')}
         style={{ cursor: 'pointer', paddingRight: 2 }}
@@ -36,7 +52,7 @@ export default function TopSideBar({ setPage, page }: Props) {
       <SettingsIcon
         onClick={() => setPage('settings')}
         style={{ cursor: 'pointer', paddingRight: 2 }}
-      />
+      /> */}
       {/* <EmojiPeopleIcon
         onClick={() => setPage('timedMessages')}
         style={{ cursor: 'pointer' }}

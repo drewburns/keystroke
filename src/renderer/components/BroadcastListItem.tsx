@@ -3,6 +3,7 @@ import React from 'react';
 import mixpanel from 'mixpanel-browser';
 import MessageBar from './MessageBar';
 import Dropzone from 'react-dropzone';
+import { toast } from 'react-toastify';
 
 type Props = {
   broadcast_list: any;
@@ -23,53 +24,64 @@ export default function BroadcastListItem({
       }}
     >
       {({ getRootProps, getInputProps }) => (
-        <div
-          {...getRootProps()}>
+        <div {...getRootProps()}>
           <Card
             variant="outlined"
             className="reminderCard"
-            style={{ backgroundColor: '#373737', color: 'white'}}
+            style={{ backgroundColor: '#fff', color: 'black' }}
           >
-            <Grid
-              container>
+            <Grid container>
               <Grid item xs={6}>
-                <h3 style={{ paddingLeft: 20, marginBottom: 0 }}>{broadcast_list.name}</h3>
-                <p style={{ paddingLeft: 20, fontSize: 13}}>
+                <h3 style={{ paddingLeft: 20, marginBottom: 0 }}>
+                  {broadcast_list.name}
+                </h3>
+                <p style={{ paddingLeft: 20, fontSize: 13 }}>
                   {/*<i>*/}
-                    {broadcast_list.part_list
-                      ? broadcast_list.part_list.split(',').length
-                      : 0}{' '}
-                    people 👋
+                  {broadcast_list.part_list
+                    ? broadcast_list.part_list.split(',').length
+                    : 0}{' '}
+                  members 👋
                   {/*</i>*/}
                 </p>
-              </Grid>
-              {/*<Grid item xs={3} style={{ marginTop: 15, paddingRight: 15, display: 'flex', justifyContent: 'flex-end',  }}>*/}
-              {/*  <Button*/}
-              {/*    style={{ height: 50, backgroundColor:'#D0F7C3', color:'#0B302F' }}*/}
-              {/*    variant="contained"*/}
-              {/*    // color="#D0F7C3"*/}
-              {/*    // fullWidth*/}
-              {/*    onClick={() => setSelectedList(broadcast_list)}*/}
-              {/*  >*/}
-              {/*    Edit*/}
-              {/*  </Button>*/}
-              {/*</Grid>*/}
-              <Grid item xs={6} style={{ marginTop: 15, display: 'flex', justifyContent: 'flex-end', paddingRight: 20}}>
                 <Button
-                  style={{ height: 50, backgroundColor:'#D0F7C3', color:'#0B302F', marginRight: 10, borderRadius: 9  }}
                   variant="contained"
+                  style={{
+                    height: 40,
+                    marginLeft: 10,
+                    marginTop: 0,
+                    marginBottom: 15,
+                    backgroundColor: 'black',
+                    color: 'white',
+                    borderRadius: 9,
+                  }}
+                  onClick={() => setIsReplying(!isReplying)}
+                >
+                  {isReplying ? 'Cancel' : 'Message'}
+                </Button>
+              </Grid>
+              <Grid
+                item
+                xs={6}
+                style={{
+                  marginTop: 15,
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  paddingRight: 20,
+                }}
+              >
+                <Button
+                  style={{
+                    height: 50,
+                    color: '#0B302F',
+                    marginRight: 10,
+                    borderRadius: 9,
+                  }}
+                  variant="outlined"
                   // color="#D0F7C3"
                   // fullWidth
                   onClick={() => setSelectedList(broadcast_list)}
                 >
                   Edit
-                </Button>
-                <Button
-                  variant="contained"
-                  style={{ height: 50, backgroundColor: '#CFF7FF', color:'#0B302F', borderRadius: 9 }}
-                  onClick={() => setIsReplying(!isReplying)}
-                >
-                  {isReplying ? 'Cancel' : 'Message'}
                 </Button>
               </Grid>
             </Grid>
@@ -82,6 +94,7 @@ export default function BroadcastListItem({
                 isFromNew={false}
                 onMessageSent={() => {
                   setIsReplying(false);
+                  // toast.success('Sent message!');
                   mixpanel.track('Replied to reminder');
                 }}
               />

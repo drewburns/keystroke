@@ -26,6 +26,9 @@ import { myID } from './myid';
 import Broadcast from './pages/Broadcast';
 import TopSideBar from './components/TopSideBar';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 type SelectedChatType = {
   chatGuid: string;
   chatName: string;
@@ -229,8 +232,17 @@ const Hello = () => {
     );
   }
 
+  const showPageName = (name: string) => {
+    if (page === 'reminders') return 'Missed Texts';
+    if (page === 'timedMessages') return 'Delayed Texts';
+    if (page === 'broadcast') return 'Text Blasts';
+    if (page === 'settings') return 'Settings';
+  };
+
   return (
-    <div>
+    <div style={{ backgroundColor: '#FAF8FF', color: 'black' }}>
+      <ToastContainer />
+
       <Modal
         open={messageForRemindCreate['message.ROWID']}
         onClose={() => setMessageForRemindCreate({})}
@@ -241,18 +253,39 @@ const Hello = () => {
         />
       </Modal>
       <Grid container>
-        <Grid item xs={3}>
-          <Sidebar
-            selectedChat={selectedChat}
-            setPage={setPage}
-            chatThreads={chatThreads}
-            nameNumbers={nameNumbers}
-            setSelectedChat={updateSelectedChat}
-            getChatUserHandle={getChatUserHandle}
-          />
+        <Grid
+          container
+          style={{
+            color: 'white',
+            backgroundColor: '#575EFF',
+            padding: 0,
+            margin: 0,
+          }}
+        >
+          <Grid item xs={4} marginTop="10px">
+            <TopSideBar setPage={setPage} />
+          </Grid>
+          <Grid item xs={4} style={{ textAlign: 'center' }}>
+            <h3>{showPageName(page)}</h3>
+          </Grid>
+          <Grid item xs={4} marginTop="10px">
+            <div
+              onClick={() => setPage('settings')}
+              className="topBarIcon"
+              style={{
+                color: 'black',
+                float: 'right',
+                cursor: 'pointer',
+              }}
+            >
+              <h3 style={{ marginBottom: 0, marginTop: 5 }}>🏆</h3>
+              <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>
+                Account
+              </p>
+            </div>
+          </Grid>
         </Grid>
-        {/* <TopSideBar setPage={setPage} /> */}
-        <Grid item xs={9}>
+        <Grid item xs={12}>
           {page === 'reminders' && (
             <Reminders
               isPaid={isPaid}
@@ -277,7 +310,12 @@ const Hello = () => {
             />
           )}
           {page === 'timedMessages' && (
-            <TimedMessageFeed getChatUserHandle={getChatUserHandle} />
+            <TimedMessageFeed
+              getChatUserHandle={getChatUserHandle}
+              setSelectedChat={setSelectedChat}
+              nameNumbers={nameNumbers}
+              setPage={setPage}
+            />
           )}
           {page === 'settings' && (
             <Settings tryCode={checkIfPaid} isPaid={isPaid} />

@@ -72,7 +72,7 @@ export default function Sidebar({
           width: '100%',
           float: 'left',
           height: '100vh',
-          backgroundColor: '#27282A',
+          backgroundColor: '#FAF8FF',
         }}
       >
         {showFolders ? (

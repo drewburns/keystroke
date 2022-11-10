@@ -40,7 +40,7 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
     textAlign: 'center',
     justifyContent: 'center',
     transform: 'translate(-50%, -50%)',
-    bgcolor: '#333',
+    bgcolor: '#fff',
     // border: '1px #d3d3d3 solid',
     boxShadow: 24,
     p: 4,
@@ -140,7 +140,8 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
                   width: 150,
                   paddingTop: 11,
                   paddingBottom: 11,
-                  backgroundColor: '#2D7FFA',
+                  backgroundColor: 'black',
+                  color: 'white',
                 }}
                 variant="contained"
               >
@@ -156,38 +157,26 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
           />
         )}
       </Modal>
+      <Button
+        variant="contained"
+        onClick={() => setOpen(true)}
+        style={{
+          backgroundColor: 'black',
+          margin: 20,
+          color: 'white',
+        }}
+      >
+        Add List
+      </Button>
       <div
         style={{
           overflow: 'scroll',
           width: '100%',
           float: 'left',
-          height: '100vh',
-          backgroundColor: '#27282A',
+          height: '80vh',
+          backgroundColor: '#FAF8FF',
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            paddingLeft: 20,
-            width: '100%',
-            justifyContent: 'space-between',
-            backgroundColor: '#1F1F1F',
-          }}
-        >
-          <h1 style={{ fontSize: 22 }}>Broadcast ⚡️</h1>
-          <Button
-            variant="contained"
-            onClick={() => setOpen(true)}
-            style={{
-              marginRight: 100,
-              backgroundColor: '#CFDFFF',
-              color: '#0B302F',
-            }}
-          >
-            New
-          </Button>
-        </div>
         <Grid container>
           <Grid item xs={1} />
           <Grid item xs={10}>

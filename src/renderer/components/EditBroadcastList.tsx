@@ -27,7 +27,7 @@ const style = {
   textAlign: 'center',
   justifyContent: 'center',
   transform: 'translate(-50%, -50%)',
-  bgcolor: '#333',
+  bgcolor: 'white',
   // border: '1px #d3d3d3 solid',
   boxShadow: 24,
   p: 4,
@@ -92,7 +92,13 @@ export default function EditBroadcastList({
   return (
     <Box sx={style}>
       <div>
-        <div style={{ width: '100%', display: 'flex', justifyContent: 'flex-start'}}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            justifyContent: 'flex-start',
+          }}
+        >
           <h3>{selectedList.name}</h3>
         </div>
         <Autocomplete
@@ -110,21 +116,27 @@ export default function EditBroadcastList({
         >
           {listMembers.map((part) => (
             // <Grid item xs={}>
-              <p style={{ marginRight: 15 }}>
-                {nameNumbers[formatPhoneNumber(part)] || part.split(';')[2]}{' '}
-                <span
-                  onClick={() => removeItem(part)}
-                  style={{ color: 'red', cursor: 'pointer', fontWeight: 'bold' }}
-                >
-                  X
-                </span>
-              </p>
+            <p style={{ marginRight: 15 }}>
+              {nameNumbers[formatPhoneNumber(part)] || part.split(';')[2]}{' '}
+              <span
+                onClick={() => removeItem(part)}
+                style={{ color: 'red', cursor: 'pointer', fontWeight: 'bold' }}
+              >
+                X
+              </span>
+            </p>
             // </Grid>
           ))}
         </Grid>
       </div>
       <Button
-        style={{ position: 'absolute', right: 15, top: 15, backgroundColor: '#FFD9F5', color: '#5C595C'}}
+        style={{
+          position: 'absolute',
+          right: 15,
+          top: 15,
+          backgroundColor: 'black',
+          color: 'white',
+        }}
         onClick={() => {
           setOpen(false);
           window.electron.ipcRenderer.sendMessage(

@@ -104,13 +104,12 @@ export const getBroadcastListsSQL = `
 // left join chat_handle_join on chat.ROWID = chat_handle_join.chat_id
 // left  join handle on handle.ROWID = chat_handle_join.handle_id group by chat.guid;
 export const getMessagesToSendFeedSQL = `
-SELECT GROUP_CONCAT(handle.id) as part_list, chat.display_name AS "chat.display_name", message_to_send.*
+SELECT handle.id as "handle_number", chat.display_name AS "chat.display_name", message_to_send.*
 from message_to_send
 JOIN chat on  message_to_send.chat_guid = chat.guid
 left join chat_handle_join on chat.ROWID = chat_handle_join.chat_id
 left  join handle on handle.ROWID = chat_handle_join.handle_id 
 WHERE sent_at IS NULL
-group by chat.guid
 `;
 
 export const cancelMessageToSendSQL = (message_to_send_id: number) => {
