@@ -8,6 +8,14 @@ import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
 import mixpanel from 'mixpanel-browser';
 import * as Sentry from '@sentry/electron/main';
+
+import checkInternetConnected from 'check-internet-connected';
+
+const config = {
+  timeout: 5000, //timeout connecting to each try (default 5000)
+  retries: 3, //number of retries to do before failing (default 5)
+  domain: 'apple.com', //the domain to check DNS record of
+};
 // import { getLastMessageROWIDForChat } from './sql';
 Sentry.init({
   dsn: 'https://1b2cb5027f6a480aa94fc8f567fe00db@o1338627.ingest.sentry.io/6609806',
@@ -430,16 +438,25 @@ const runBoot = async () => {
 const runScanHelper = async () => {
   // const output = execSync('echo "hello world"', { encoding: 'utf-8' }); // the default is 'buffer'
   // console.log('Output was:\n', output);
-  const rows = await getChatPreviews();
-  mainWindow?.webContents.send('asynchronous-message', { data: rows });
+  checkInternetConnected(config)
+    .then(async () => {
+      const rows = await getChatPreviews();
+      mainWindow?.webContents.send('asynchronous-message', { data: rows });
 
-  await createAutoReminders();
-  await sendTimedMessage();
-  await scanTimedMessageToDelete();
-  const badgeNum = await getBadgeNumber();
-  app.dock.setBadge(badgeNum[0].count.toString());
+      await createAutoReminders();
+      await sendTimedMessage();
+      await scanTimedMessageToDelete();
+      const badgeNum = await getBadgeNumber();
+      app.dock.setBadge(badgeNum[0].count.toString());
 
-  mainWindow?.webContents.send('get-acccess-code', store.get('access-code'));
+      mainWindow?.webContents.send(
+        'get-acccess-code',
+        store.get('access-code')
+      );
+    })
+    .catch((err) => {
+      console.log('No connection', err);
+    });
 };
 
 const scanTimedMessageToDelete = async () => {
