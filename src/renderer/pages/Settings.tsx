@@ -32,7 +32,7 @@ export default function Settings({ tryCode, isPaid }: Props) {
       <p>Version 4.6.13</p>
       <hr />
       <p>
-        Set how many hours before Keystroke reminds you to respond to a message
+        Set how many hours before Keystroke reminds you to respond to a message (default 12)
       </p>
       <TextField
         type="number"
