@@ -62,7 +62,7 @@ export default function Reminders({
           backgroundColor: '#FAF8FF',
         }}
       >
-        <Grid container style={{ paddingTop: 10 }}>
+        <Grid container style={{ paddingTop: 0 }}>
           <Grid item xs={3} />
           <Grid item xs={6}>
             {(isPaid ? reminders : reminders.slice(0, 5)).length > 0 ? (

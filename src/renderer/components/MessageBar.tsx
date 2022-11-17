@@ -181,82 +181,7 @@ export default function MessageBar({
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Grid container>
-        <Grid
-          item
-          xs={1}
-          style={{
-            marginTop: 25,
-            paddingLeft: 15,
-            cursor: 'pointer',
-            paddingBottom: 0,
-          }}
-        >
-          <div>
-            <AccessAlarmIcon
-              onClick={handleClick}
-              style={date && { color: '#1A8BFF' }}
-            />
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
-              transformOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-            >
-              <div style={{ padding: 10, backgroundColor: 'black' }}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={cancelIfReply}
-                      onChange={() => setCancelIfReply(!cancelIfReply)}
-                      sx={{
-                        color: '#1A8BFF',
-                        paddingBottom: 0,
-                        '&.Mui-checked': {
-                          color: '#1A8BFF',
-                        },
-                      }}
-                    />
-                  }
-                  style={{ color: 'white' }}
-                  label="Cancel if they reply first"
-                />
-
-                <TimePicker
-                  timeDenom={timeDenom}
-                  timeAmount={timeAmount}
-                  setTimeAmount={setTimeAmount}
-                  setTimeDenom={setTimeDenom}
-                />
-                {date ? (
-                  <Button fullWidth onClick={() => setDate(null)}>
-                    Remove
-                  </Button>
-                ) : (
-                  <Button
-                    fullWidth
-                    onClick={() => {
-                      const t = new Date();
-                      t.setSeconds(t.getSeconds() + timeAmount * timeDenom);
-                      setDate(t);
-                      setAnchorEl(null);
-                    }}
-                  >
-                    Select
-                  </Button>
-                )}
-              </div>
-            </Popover>
-          </div>
-        </Grid>
-        <Grid item xs={10} style={{ marginTop: 20, marginBottom: 10 }}>
+        <Grid item xs={12} style={{ marginTop: 20, marginBottom: 10 }}>
           <Grid container>
             {files.map((f) => (
               <div>
@@ -285,6 +210,60 @@ export default function MessageBar({
               onKeyDown={onKeyDown}
               className="messageInputBox"
             />
+          </div>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          style={{
+            // marginTop: 25,
+            // paddingLeft: 15,
+            cursor: 'pointer',
+            // paddingBottom: 0,
+          }}
+        >
+          <div>
+            <div
+              style={{
+                padding: 10,
+                color: 'black',
+              }}
+            >
+              <p style={{ margin: 0, paddingBottom: 10, textAlign: 'center' }}>
+                <i>Send message in</i>
+              </p>
+              <TimePicker
+                timeDenom={timeDenom}
+                timeAmount={timeAmount}
+                setTimeAmount={setTimeAmount}
+                setTimeDenom={setTimeDenom}
+              />
+              <div
+                style={{
+                  display: 'flex',
+                  alignContent: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={cancelIfReply}
+                      onChange={() => setCancelIfReply(!cancelIfReply)}
+                      sx={{
+                        color: '#1A8BFF',
+                        paddingBottom: 0,
+                        '&.Mui-checked': {
+                          color: '#1A8BFF',
+                        },
+                      }}
+                    />
+                  }
+                  style={{ color: 'black' }}
+                  label="Cancel if they reply first"
+                />
+              </div>
+            </div>
           </div>
         </Grid>
       </Grid>

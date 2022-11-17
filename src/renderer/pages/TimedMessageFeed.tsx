@@ -40,7 +40,9 @@ export default function TimedMessageFeed({
   return (
     <div>
       <NewChat
-        refreshList={() => {
+        refreshList={async () => {
+          console.log('refresh??');
+          await new Promise((r) => setTimeout(r, 1000));
           window.electron.ipcRenderer.sendMessage('get-message-to-send-feed');
         }}
         nameNumbers={nameNumbers}

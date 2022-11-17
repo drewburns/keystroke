@@ -106,7 +106,7 @@ export default function Reminder({
               // color="warning"
               onClick={() => dismissReminder(reminder['reminder.id'])}
             >
-              Snooze
+              Dismiss
             </Button>
           </Grid>
         </Grid>
