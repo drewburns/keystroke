@@ -240,7 +240,7 @@ const Hello = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#FAF8FF', color: 'black' }}>
+    <div style={{ backgroundColor: '#FAF8FF', color: 'black', marginTop: -8 }}>
       <ToastContainer />
 
       <Modal
