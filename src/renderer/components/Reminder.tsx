@@ -119,6 +119,7 @@ export default function Reminder({
           chatName
           files={[]}
           isFromNew={false}
+          isFromReminder={true}
           onMessageSent={() => {
             dismissReminder(reminder['reminder.id']);
             mixpanel.track('Replied to reminder');
