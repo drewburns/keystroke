@@ -10,6 +10,12 @@ import mixpanel from 'mixpanel-browser';
 import * as Sentry from '@sentry/electron/main';
 import checkInternetConnected from 'check-internet-connected';
 
+const config = {
+  timeout: 5000, //timeout connecting to each try (default 5000)
+  retries: 3, //number of retries to do before failing (default 5)
+  domain: 'apple.com', //the domain to check DNS record of
+};
+
 // import { getLastMessageROWIDForChat } from './sql';
 Sentry.init({
   dsn: 'https://1b2cb5027f6a480aa94fc8f567fe00db@o1338627.ingest.sentry.io/6609806',
