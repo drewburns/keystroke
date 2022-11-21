@@ -38,7 +38,7 @@ export default function MessageBar({
   chatGuids,
   files,
   setFiles,
-  isFromNew,
+  isFromNew, isFromReminder,
   broadcastIds,
   messageId,
   onMessageSent,
@@ -48,7 +48,7 @@ export default function MessageBar({
   const [messageBody, setMessageBody] = React.useState('');
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
-  const [timeAmount, setTimeAmount] = React.useState(0);
+  const [timeAmount, setTimeAmount] = React.useState(1);
   const [timeDenom, setTimeDenom] = React.useState(60 * 60);
   const [cancelIfReply, setCancelIfReply] = React.useState(true);
 
@@ -129,7 +129,7 @@ export default function MessageBar({
       setMessageBody('');
       if (onMessageSent) onMessageSent();
       setFiles && setFiles([]);
-      toast.success('Sent message!');
+      toast.success(!!isFromReminder ? 'Sent message!' : 'Message queued');
     }
     // TODO: assume for now that this will always work
   };
@@ -222,49 +222,51 @@ export default function MessageBar({
             // paddingBottom: 0,
           }}
         >
-          <div>
-            <div
-              style={{
-                padding: 10,
-                color: 'black',
-              }}
-            >
-              <p style={{ margin: 0, paddingBottom: 10, textAlign: 'center' }}>
-                <i>Send message in</i>
-              </p>
-              <TimePicker
-                timeDenom={timeDenom}
-                timeAmount={timeAmount}
-                setTimeAmount={setTimeAmount}
-                setTimeDenom={setTimeDenom}
-              />
+          {!isFromReminder &&
+            <div>
               <div
                 style={{
-                  display: 'flex',
-                  alignContent: 'center',
-                  justifyContent: 'center',
+                  padding: 10,
+                  color: 'black',
                 }}
               >
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={cancelIfReply}
-                      onChange={() => setCancelIfReply(!cancelIfReply)}
-                      sx={{
-                        color: '#1A8BFF',
-                        paddingBottom: 0,
-                        '&.Mui-checked': {
-                          color: '#1A8BFF',
-                        },
-                      }}
-                    />
-                  }
-                  style={{ color: 'black' }}
-                  label="Cancel if they reply first"
+                <p style={{ margin: 0, paddingBottom: 10, textAlign: 'center' }}>
+                  <i>Send message in</i>
+                </p>
+                <TimePicker
+                  timeDenom={timeDenom}
+                  timeAmount={timeAmount}
+                  setTimeAmount={setTimeAmount}
+                  setTimeDenom={setTimeDenom}
                 />
+                <div
+                  style={{
+                    display: 'flex',
+                    alignContent: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={cancelIfReply}
+                        onChange={() => setCancelIfReply(!cancelIfReply)}
+                        sx={{
+                          color: '#1A8BFF',
+                          paddingBottom: 0,
+                          '&.Mui-checked': {
+                            color: '#1A8BFF',
+                          },
+                        }}
+                      />
+                    }
+                    style={{ color: 'black' }}
+                    label="Cancel if they reply first"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          }
         </Grid>
       </Grid>
     </LocalizationProvider>
