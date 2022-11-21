@@ -133,7 +133,7 @@ export default function NewChat({
   return (
     <div>
       <h1 style={{ marginLeft: 20, paddingBottom: 5, fontSize: 22 }}>
-        New Chat
+        New Delayed Text
       </h1>
 
       <Dropzone
