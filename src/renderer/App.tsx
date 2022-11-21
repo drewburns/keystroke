@@ -240,7 +240,7 @@ const Hello = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#FAF8FF', color: 'black', marginTop: -8 }}>
+    <div style={{ backgroundColor: '#FAF8FF', color: 'black', marginTop: -8, marginLeft: -10, marginRight: -10 }}>
       <ToastContainer />
 
       <Modal
@@ -258,8 +258,8 @@ const Hello = () => {
           style={{
             color: 'white',
             backgroundColor: '#575EFF',
-            padding: 0,
-            margin: 0,
+            paddingRight: 10,
+            paddingLeft: 10
           }}
         >
           <Grid item xs={4} marginTop="10px">
