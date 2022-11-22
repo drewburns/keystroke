@@ -36,8 +36,11 @@ export default function TimedMessageCard({
     const mins = ((diff % 3.6e6) / 6e4) | 0;
     const secs = Math.round((diff % 6e4) / 1e3);
 
+    if (hours > 0) {
+      return `${sign + z(hours)} hours, ${z(mins)} minutes`;
+    }
     // Return formatted string
-    return `${sign + z(hours)}:${z(mins)}:${z(secs)}`;
+    return `${z(mins)} minutes`;
   }
 
   return (
