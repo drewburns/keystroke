@@ -98,7 +98,7 @@ export default function MessageBar({
       }
 
       if (!finalMessageBody) return;
-      setTimeAmount(0);
+      setTimeAmount(1);
       mixpanel.track('broadcast sent');
       if (broadcastIds) {
         broadcastIds.forEach((id: number) => {
