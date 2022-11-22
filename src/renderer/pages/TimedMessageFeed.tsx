@@ -63,7 +63,7 @@ export default function TimedMessageFeed({
         {!messages ? (
           <h4 style={{ paddingLeft: 20 }}>None!</h4>
         ) : (
-          <Grid container style={{overflow: 'scroll', height: '50vh', paddingBottom: '5vh'}}>
+          <Grid container style={{overflow: 'scroll', height: '50vh', paddingBottom: '10vh'}}>
             <Grid item xs={2} />
             <Grid item xs={8}>
               {messages &&
