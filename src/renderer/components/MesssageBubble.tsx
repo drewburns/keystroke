@@ -239,7 +239,7 @@ export default function MesssageBubble({
   }, [message]);
 
   return (
-    <Grid container>
+    <Grid container style={{ color: 'white' }}>
       {message.is_from_me === 1 && <Grid item xs={6} md={4} />}
       <Grid item xs={6} md={8}>
         {message['chat.guid'] &&

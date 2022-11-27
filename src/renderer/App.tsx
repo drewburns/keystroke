@@ -89,6 +89,7 @@ const Hello = () => {
   }, [page]);
 
   const checkIfPaid = async (code: string) => {
+    return true;
     const res = await axios.get(
       'https://gist.github.com/drewburns/e4e17713c7e8a936dea1803167559703'
     );
@@ -240,7 +241,15 @@ const Hello = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#FAF8FF', color: 'black', marginTop: -8, marginLeft: -10, marginRight: -10 }}>
+    <div
+      style={{
+        backgroundColor: '#FAF8FF',
+        color: 'black',
+        marginTop: -8,
+        marginLeft: -10,
+        marginRight: -10,
+      }}
+    >
       <ToastContainer />
 
       <Modal
@@ -259,7 +268,7 @@ const Hello = () => {
             color: 'white',
             backgroundColor: '#575EFF',
             paddingRight: 10,
-            paddingLeft: 10
+            paddingLeft: 10,
           }}
         >
           <Grid item xs={4} marginTop="10px">
@@ -285,7 +294,19 @@ const Hello = () => {
             </div>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
+        {page === 'chat' && (
+          <Grid item xs={3}>
+            <Sidebar
+              chatThreads={chatThreads}
+              nameNumbers={nameNumbers}
+              selectedChat={selectedChat}
+              setPage={setPage}
+              setSelectedChat={updateSelectedChat}
+              getChatUserHandle={getChatUserHandle}
+            />
+          </Grid>
+        )}
+        <Grid item xs={page === 'chat' ? 9 : 12}>
           {page === 'reminders' && (
             <Reminders
               isPaid={isPaid}

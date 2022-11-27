@@ -28,6 +28,10 @@ export default function TopSideBar({ setPage, page }: Props) {
         <h3 style={{ marginBottom: 0, marginTop: 5 }}>⚡️</h3>
         <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Blasts</p>
       </div>
+      <div onClick={() => setPage('chat')} className="topBarIcon">
+        <h3 style={{ marginBottom: 0, marginTop: 5 }}>💬</h3>
+        <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Chats</p>
+      </div>
       {/* <div onClick={() => setPage('settings')} className="topBarIcon">
         <h3 style={{ marginBottom: 0, marginTop: 5 }}>📊️</h3>
         <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Stats</p>

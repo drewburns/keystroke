@@ -448,25 +448,22 @@ const runBoot = async () => {
 const runScanHelper = async () => {
   // const output = execSync('echo "hello world"', { encoding: 'utf-8' }); // the default is 'buffer'
   // console.log('Output was:\n', output);
-  checkInternetConnected(config)
-    .then(async () => {
-      const rows = await getChatPreviews();
-      mainWindow?.webContents.send('asynchronous-message', { data: rows });
+  // checkInternetConnected(config)
+  //   .then(async () => {
+  const rows = await getChatPreviews();
+  mainWindow?.webContents.send('asynchronous-message', { data: rows });
 
-      await createAutoReminders();
-      await sendTimedMessage();
-      await scanTimedMessageToDelete();
-      const badgeNum = await getBadgeNumber();
-      app.dock.setBadge(badgeNum[0].count.toString());
+  await createAutoReminders();
+  await sendTimedMessage();
+  await scanTimedMessageToDelete();
+  const badgeNum = await getBadgeNumber();
+  app.dock.setBadge(badgeNum[0].count.toString());
 
-      mainWindow?.webContents.send(
-        'get-acccess-code',
-        store.get('access-code')
-      );
-    })
-    .catch((err) => {
-      console.log('No connection', err);
-    });
+  mainWindow?.webContents.send('get-acccess-code', store.get('access-code'));
+  // })
+  // .catch((err) => {
+  //   console.log('No connection', err);
+  // });
 };
 
 const scanTimedMessageToDelete = async () => {

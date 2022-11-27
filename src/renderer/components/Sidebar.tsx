@@ -63,9 +63,6 @@ export default function Sidebar({
 
   return (
     <div className="sidebar-container">
-      <Grid container className="sidebar-top">
-        <TopSideBar setPage={setPage} />
-      </Grid>
       <div
         style={{
           overflow: 'scroll',
