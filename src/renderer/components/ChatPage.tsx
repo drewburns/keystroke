@@ -30,7 +30,6 @@ export default function ChatPage({
   const [files, setFiles] = React.useState<any>([]);
   const [isMuted, setIsMuted] = React.useState(false);
 
-
   function unique(array: any[], propertyName: string) {
     return array.filter(
       (e, i) =>
@@ -103,7 +102,11 @@ export default function ChatPage({
     <div>
       <div style={{ marginTop: 0, paddingLeft: 10 }}>
         <div>
-          <h5 style={{ display: 'inline-block', marginTop: 12, marginBottom: 12}}>To: {chatName}</h5>
+          <h5
+            style={{ display: 'inline-block', marginTop: 12, marginBottom: 12 }}
+          >
+            To: {chatName}
+          </h5>
           {!isMuted ? (
             <NotificationsOffIcon
               style={{ float: 'right', marginTop: 5, cursor: 'pointer' }}
@@ -173,15 +176,17 @@ export default function ChatPage({
           </div>
         )}
       </Dropzone>
-      {!messageForRemindCreate['message.ROWID'] && (
-        <MessageBar
-          chatGuids={[chatGuid]}
-          isFromNew={false}
-          chatNames={[chatName]}
-          files={files}
-          setFiles={setFiles}
-        />
-      )}
+      <div style={{ marginTop: -20 }}>
+        {!messageForRemindCreate['message.ROWID'] && (
+          <MessageBar
+            chatGuids={[chatGuid]}
+            isFromNew={false}
+            chatNames={[chatName]}
+            files={files}
+            setFiles={setFiles}
+          />
+        )}
+      </div>
     </div>
   );
 }
