@@ -95,9 +95,9 @@ export default function ChatPage({
     setMessageForRemindCreate(message);
   };
 
-  if (!chatGuid) {
-    return <h1>Welcome</h1>;
-  }
+  // if (!chatGuid) {
+  //   return <h1>Welcome</h1>;
+  // }
   return (
     <div>
       <div style={{ marginTop: 0, paddingLeft: 10 }}>
@@ -155,7 +155,7 @@ export default function ChatPage({
               <InfiniteScroll
                 dataLength={messages.length}
                 next={getMore}
-                style={{ display: 'flex', flexDirection: 'column-reverse' }}
+                style={{ display: 'flex', flexDirection: 'column-reverse', paddingBottom: 20 }}
                 inverse
                 hasMore={hasMore}
                 loader={<CircularProgress />}
