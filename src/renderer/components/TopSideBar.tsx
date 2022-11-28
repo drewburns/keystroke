@@ -14,7 +14,14 @@ type Props = {
 };
 export default function TopSideBar({ setPage, page }: Props) {
   return (
-    <div style={{ color: 'black', display: 'flex', cursor: 'pointer' }}>
+    <div
+      style={{
+        color: 'black',
+        display: 'flex',
+        cursor: 'pointer',
+        marginBottom: 10,
+      }}
+    >
       {/* <SearchIcon /> */}
       <div onClick={() => setPage('reminders')} className="topBarIcon">
         <h3 style={{ marginBottom: 0, marginTop: 5 }}>⌛️</h3>
