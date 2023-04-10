@@ -24,6 +24,7 @@ export default function ChatPage({
   setMessageForRemindCreate,
   messageForRemindCreate,
 }: Props) {
+  console.log(chatGuid);
   const { state, setState } = useGlobalState();
   const [messages, setMessages] = React.useState<any[]>([]);
   const [hasMore, setHasMore] = React.useState(true);
@@ -41,6 +42,7 @@ export default function ChatPage({
     mixpanel.track('Message page loaded');
     // setMessages([]);
     window.electron.ipcRenderer.once('get-messages', (results: any[]) => {
+      console.log('RESULTS', results);
       setMessages(unique(results, 'message.ROWID'));
       window.electron.ipcRenderer.sendMessage('set-chat-read', [chatGuid]);
     });

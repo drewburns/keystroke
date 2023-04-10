@@ -17,6 +17,8 @@ import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
 import FilePresentIcon from '@mui/icons-material/FilePresent';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import mixpanel from 'mixpanel-browser';
+import { copyBlobToClipboard } from 'copy-image-clipboard';
+
 import React from 'react';
 import { truncate, uploadToS3 } from '../util';
 
@@ -81,21 +83,29 @@ export default function MessageBar({
       mixpanel.track('on send message keystroke', {
         numUsers: chatGuids.length,
       });
-      for (const x in files) {
-        const file = files[x];
-        if (file.type === 'image/heic') {
-          alert('HEIC image type not accepted yet');
-          return;
-        }
-        if (allowedFileTypes.includes(file.type)) {
-          const uploadedImage = await uploadToS3({
-            image: file,
-            fileType: file.type,
-          });
-          finalMessageBody += ` ${uploadedImage}`;
-        }
-      }
-
+      // const blobs = []
+      // for (const x in files) {
+      //   const file = files[x];
+      //   console.log(file);
+      //   const blob = new Blob([file], { type: file.type });
+      //   // copyBlobToClipboard(blob)
+      //   //   const obj = {}
+      //   //   obj[file.type] = blob
+      //   //   navigator.clipboard.write([
+      //   //     new ClipboardItem(obj)
+      //   // ]);
+      //   // if (file.type === 'image/heic') {
+      //   //   alert('HEIC image type not accepted yet');
+      //   //   return;
+      //   // }
+      //   // if (allowedFileTypes.includes(file.type)) {
+      //   //   const uploadedImage = await uploadToS3({
+      //   //     image: file,
+      //   //     fileType: file.type,
+      //   //   });
+      //   //   finalMessageBody += ` ${uploadedImage}`;
+      //   // }
+      // }
       if (!finalMessageBody) return;
       setTimeAmount(0);
       mixpanel.track('broadcast sent');

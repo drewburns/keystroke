@@ -81,7 +81,7 @@ export default function BroadcastListItem({
                   // fullWidth
                   onClick={() => setSelectedList(broadcast_list)}
                 >
-                  Edit
+                  Edit List
                 </Button>
               </Grid>
             </Grid>
@@ -94,7 +94,7 @@ export default function BroadcastListItem({
                 isFromNew={false}
                 onMessageSent={() => {
                   setIsReplying(false);
-                  // toast.success('Sent message!');
+                  toast.success('Sent message!');
                   mixpanel.track('Replied to reminder');
                 }}
               />

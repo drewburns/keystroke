@@ -18,7 +18,7 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
 
     window.electron.ipcRenderer.on('get-broadcast-lists', (results: any[]) => {
       console.log('results');
-      setLists(results);
+      setLists(results.reverse());
     });
 
     window.electron.ipcRenderer.on('create-list', () => {
@@ -31,7 +31,7 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
     position: 'absolute',
     top: '50%',
     left: '50%',
-    width: '75%',
+    width: '90%',
     maxHeight: '500px',
     maxWidth: '600px',
     alignItems: 'center',
@@ -68,6 +68,7 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
     // window.electron.ipcRenderer.sendMessage('create-list', newListName);
     window.electron.ipcRenderer.sendMessage('get-broadcast-lists');
     setSelectedList(null);
+    setNewListName('');
   };
 
   if (!isPaid) {

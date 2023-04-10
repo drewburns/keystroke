@@ -42,7 +42,7 @@ const Hello = () => {
   const [chatThreads, setChatThreads] = React.useState([]);
   const [isPaid, setIsPaid] = React.useState(false);
   const [hasEmail, setHasEmail] = React.useState(false);
-  const [page, setPage] = React.useState('reminders');
+  const [page, setPage] = React.useState('broadcast');
   const [nameNumbers, setNameNumbers] = React.useState({});
   const [selectedChat, setSelectedChat] = React.useState<SelectedChatType>({
     chatGuid: '',
@@ -138,22 +138,22 @@ const Hello = () => {
     });
   }, []);
 
-  React.useEffect(() => {
-    const curIndex = chatThreads.findIndex(
-      (thread) => thread['chat.guid'] === selectedChat.chatGuid
-    );
-    if (!chatThreads || chatThreads.length === 0) return;
-    const row = chatThreads[0];
-    if (curIndex !== 0) {
-      setSelectedChat({
-        chatGuid: row['chat.guid'],
-        chatName: getChatUserHandle(
-          row.member_list.split(','),
-          row['chat.display_name']
-        ),
-      });
-    }
-  }, [chatThreads, nameNumbers]);
+  // React.useEffect(() => {
+  //   const curIndex = chatThreads.findIndex(
+  //     (thread) => thread['chat.guid'] === selectedChat.chatGuid
+  //   );
+  //   if (!chatThreads || chatThreads.length === 0) return;
+  //   const row = chatThreads[0];
+  //   if (curIndex !== 0) {
+  //     setSelectedChat({
+  //       chatGuid: row['chat.guid'],
+  //       chatName: getChatUserHandle(
+  //         row.member_list.split(','),
+  //         row['chat.display_name']
+  //       ),
+  //     });
+  //   }
+  // }, [chatThreads, nameNumbers]);
 
   React.useEffect(() => {
     window.electron.ipcRenderer.on('go-to-page-keypress', (newPage: any) => {
@@ -326,7 +326,7 @@ const Hello = () => {
         <Grid item xs={page === 'chat' ? 9 : 12}>
           {page === 'reminders' && (
             <Reminders
-              isPaid={isPaid}
+              isPaid={true}
               getChatUserHandle={getChatUserHandle}
               goToChat={goToChat}
               nameNumbersLoaded={Object.keys(nameNumbers).length !== 0}
@@ -355,11 +355,9 @@ const Hello = () => {
               setPage={setPage}
             />
           )}
-          {page === 'settings' && (
-            <Settings tryCode={checkIfPaid} isPaid={isPaid} />
-          )}
+          {page === 'settings' && <Settings tryCode={checkIfPaid} isPaid />}
           {page === 'broadcast' && (
-            <Broadcast isPaid={isPaid} nameNumbers={nameNumbers} />
+            <Broadcast isPaid nameNumbers={nameNumbers} />
           )}
         </Grid>
       </Grid>

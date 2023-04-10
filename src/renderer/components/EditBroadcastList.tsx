@@ -19,8 +19,8 @@ const style = {
   top: '50%',
   left: '50%',
   width: '75%',
-  maxHeight: '500px',
-  maxWidth: '700px',
+  maxHeight: '600px',
+  maxWidth: '1000px',
   alignItems: 'center',
   alignContent: 'center',
   // display: 'flex',
@@ -57,7 +57,8 @@ export default function EditBroadcastList({
                 .join(' & '),
             value: r.guid || r.broadcast_list_id || r.part_list,
           }));
-        setSelectOptions(data.sort((a, b) => a.label.length - b.label.length));
+        const newOptions = data.sort((a, b) => a.label.length - b.label.length);
+        setSelectOptions(newOptions);
       }
     );
     window.electron.ipcRenderer.sendMessage('get-chat-participants', null);
@@ -67,6 +68,7 @@ export default function EditBroadcastList({
   const [listMembers, setListMembers] = React.useState(
     selectedList.part_list ? selectedList.part_list.split(',') : []
   );
+  console.log(listMembers);
   const addUserToList = (name: string, guid: string) => {
     // setValue(newValue);
     const newMems = [...listMembers];
@@ -88,7 +90,7 @@ export default function EditBroadcastList({
   };
 
   const [selectOptions, setSelectOptions] = React.useState([]);
-
+  const [selectedItem, setSelectedItem] = React.useState('');
   return (
     <Box sx={style}>
       <div>
@@ -101,32 +103,70 @@ export default function EditBroadcastList({
         >
           <h3>{selectedList.name}</h3>
         </div>
-        <Autocomplete
-          style={{ backgroundColor: 'white', borderRadius: 5 }}
-          options={selectOptions}
-          renderInput={(params) => <TextField {...params} label="Add" />}
-          onChange={(event: any, selectedItem: any) => {
-            if (!selectedItem) return;
-            addUserToList(selectedItem.label, selectedItem.value);
-          }}
-        />
-        <Grid
-          container
-          style={{ overflow: 'scroll', width: '100%', maxHeight: 350 }}
-        >
-          {listMembers.map((part) => (
-            // <Grid item xs={}>
-            <p style={{ marginRight: 15 }}>
-              {nameNumbers[formatPhoneNumber(part)] || part.split(';')[2]}{' '}
-              <span
-                onClick={() => removeItem(part)}
-                style={{ color: 'red', cursor: 'pointer', fontWeight: 'bold' }}
-              >
-                X
-              </span>
-            </p>
-            // </Grid>
-          ))}
+        <Grid container>
+          <Grid
+            item
+            xs={4}
+            style={{ overflow: 'scroll', width: '100%', maxHeight: 350 }}
+          >
+            {listMembers.map((part) => (
+              // <Grid item xs={}>
+              <p style={{ marginRight: 15, textAlign: 'left' }}>
+                {nameNumbers[formatPhoneNumber(part)] || part.split(';')[2]}{' '}
+                <span
+                  onClick={() => removeItem(part)}
+                  style={{
+                    color: 'red',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  X
+                </span>
+              </p>
+              // </Grid>
+            ))}
+          </Grid>
+          <Grid item xs={8}>
+            <div>
+              <TextField
+                label="Search..."
+                value={searchValue}
+                fullWidth
+                onChange={(e) => setSearchValue(e.target.value)}
+              />
+            </div>
+            <div style={{ height: 400, overflow: 'scroll', marginTop: 10 }}>
+              {selectOptions
+                .filter((x) =>
+                  x.label.toLowerCase().includes(searchValue.toLowerCase())
+                )
+                .map((option) => (
+                  <>
+                    {!listMembers.includes(option.value) && (
+                      <Grid
+                        container
+                        style={{ borderBottom: '1px solid #d3d3d3' }}
+                      >
+                        <Grid item xs={8}>
+                          <p style={{ textAlign: 'left' }}>{option.label}</p>
+                        </Grid>
+                        <Grid item xs={4}>
+                          <Button
+                            onClick={() =>
+                              addUserToList(option.label, option.value)
+                            }
+                            style={{ marginTop: 4 }}
+                          >
+                            Add
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    )}
+                  </>
+                ))}
+            </div>
+          </Grid>
         </Grid>
       </div>
       <Button
