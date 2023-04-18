@@ -44,10 +44,12 @@ const Hello = () => {
   const [hasEmail, setHasEmail] = React.useState(false);
   const [page, setPage] = React.useState('broadcast');
   const [nameNumbers, setNameNumbers] = React.useState({});
+  const [nicknames, setNicknames] = React.useState({});
   const [selectedChat, setSelectedChat] = React.useState<SelectedChatType>({
     chatGuid: '',
     chatName: '',
   });
+  const [accessCode, setAccessCode] = React.useState('');
 
   const [messageForRemindCreate, setMessageForRemindCreate] = React.useState(
     {}
@@ -89,22 +91,33 @@ const Hello = () => {
   }, [page]);
 
   const checkIfPaid = async (code: string) => {
-    return true;
-    const res = await axios.get(
-      'https://gist.github.com/drewburns/e4e17713c7e8a936dea1803167559703'
-    );
-    const paidUsers = res.data;
-    if (paidUsers.includes(code)) {
-      setIsPaid(true);
-      window.electron.ipcRenderer.sendMessage('set-access-code', code);
-    }
-    // setIsPaid(false);
+    window.electron.ipcRenderer.sendMessage('set-access-code', code);
+    setAccessCode(code);
+    axios
+      .get('https://gist.github.com/drewburns/9bb4bb64eaa454e7a8982d16d3ef7e39')
+      .then((res) => {
+        const regex = /===.+===/;
+        const paidUsers = res.data
+          .match(regex)[0]
+          .replaceAll('===', '')
+          .split(',')
+          .filter((x) => x);
+        console.log('paid user', paidUsers);
+        setIsPaid(paidUsers.includes(code));
+      })
+      .catch(() => {
+        setIsPaid(false);
+      });
   };
 
   React.useEffect(() => {
     mixpanel.track('App load');
     window.electron.ipcRenderer.on('asynchronous-message', (res: any) => {
       setChatThreads(res.data);
+    });
+    window.electron.ipcRenderer.on('get-nicknames', (res: any) => {
+      setNicknames(res);
+      // console.log('nicknames', res);
     });
     window.electron.ipcRenderer.once('get-access-code', (res: any) => {
       console.log('accesscode', res);
@@ -216,9 +229,9 @@ const Hello = () => {
     setHasEmail(true);
   };
 
-  // if (!isPaid) {
-  //   return <PayMe tryCode={checkIfPaid} />;
-  // }
+  if (!isPaid) {
+    return <PayMe tryCode={checkIfPaid} />;
+  }
   if (!hasEmail) {
     return (
       <Grid container style={{ alignContent: 'center' }}>
@@ -289,7 +302,7 @@ const Hello = () => {
           }}
         >
           <Grid item xs={4} marginTop="10px">
-            <TopSideBar setPage={setPage} />
+            <TopSideBar setPage={setPage} code={accessCode} />
           </Grid>
           <Grid item xs={4} style={{ textAlign: 'center' }}>
             <h3>{showPageName(page)}</h3>
@@ -357,7 +370,7 @@ const Hello = () => {
           )}
           {page === 'settings' && <Settings tryCode={checkIfPaid} isPaid />}
           {page === 'broadcast' && (
-            <Broadcast isPaid nameNumbers={nameNumbers} />
+            <Broadcast isPaid nameNumbers={nameNumbers} nicknames={nicknames} />
           )}
         </Grid>
       </Grid>

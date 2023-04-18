@@ -123,6 +123,7 @@
     "electron-json-storage": "^4.5.0",
     "electron-localshortcut": "^3.2.1",
     "electron-log": "^4.4.7",
+    "electron-prompt": "^1.7.0",
     "electron-store": "^8.0.2",
     "electron-updater": "^5.0.1",
     "electron-util": "^0.17.2",
@@ -140,6 +141,7 @@
     "react-electron-contextmenu": "^1.0.0",
     "react-expanding-textarea": "^2.3.6",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-pulse-dot": "^2.1.0",
     "react-router-dom": "^6.3.0",
     "react-select": "^5.4.0",
     "react-textarea-autosize": "^8.3.4",
@@ -148,6 +150,7 @@
     "run-applescript": "^6.0.0",
     "shell-path": "^3.0.0",
     "sqlite3": "^5.1.0",
+    "sweetalert2": "^11.7.3",
     "update-electron-app": "^2.0.1",
     "use-electron-context-menu": "^1.0.2"
   },

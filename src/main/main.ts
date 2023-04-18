@@ -8,6 +8,9 @@ import { systemPreferences } from 'electron';
 import MenuBuilder from './menu';
 import mixpanel from 'mixpanel-browser';
 import * as Sentry from '@sentry/electron/main';
+const prompt = require('electron-prompt');
+import Swal from 'sweetalert2';
+
 import checkInternetConnected from 'check-internet-connected';
 
 const config = {
@@ -174,6 +177,33 @@ ipcMain.on('set-access-code', async (event, arg) => {
   store.set('access-code', arg);
 });
 
+ipcMain.on('set-nickname', async (event, arg) => {
+  const guid = arg[0];
+  // console.log(
+  //   dialog.showMessageBoxSync({ properties: {message: } })
+  // );
+
+  // prompt({
+  //   title: 'New nickname',
+  //   label: 'Nickname',
+  //   value: '',
+  //   type: 'input',
+  // })
+  //   .then((r) => {
+  //     if (!r) return;
+  //     const nicknames = store.get('nicknames') || {};
+  //     nicknames[guid] = r;
+  //     store.set('nicknames', nicknames);
+  //     event.reply('get-nicknames', store.get('nicknames'));
+  //   })
+  //   .catch(console.error);
+});
+
+ipcMain.on('get-nicknames', async (event, arg) => {
+  const result = store.get('nicknames');
+  event.reply('get-nicknames', result);
+});
+
 ipcMain.on('set-email', async (event, arg) => {
   store.set('email', arg);
   mixpanel.identify(arg);
@@ -299,14 +329,18 @@ ipcMain.on('send-to-broadcast-id', async (event, arg) => {
     const name = `${row.ZFIRSTNAME}`;
     tempData[number] = name;
   });
+  const nicknames = store.get('nicknames');
   mixpanel.track('broadcast-send-backend', {
     num: uniqueBroadcastGuids.length,
   });
   for (let x = 0; x < uniqueBroadcastGuids.length; x++) {
     const chatGuid = uniqueBroadcastGuids[x];
     const secondsOffset = Math.floor(x / 20) * (60 * 10);
+    // const nickname = nicknames[chatGuid];
     const name = tempData[formatPhoneNumber(chatGuid.split(';')[2])];
-    const parsedBody = body.replace(/["']/g, '“').replace('{first_name}', name);
+    const parsedBody = body
+      .replace(/["']/g, '“')
+      .replace('{first_name}', name.split(' ')[0]);
 
     sendAt.setSeconds(sendAt.getSeconds() + secondsOffset);
     if (sendAt) {
@@ -450,14 +484,14 @@ const runScanHelper = async () => {
   // console.log('Output was:\n', output);
   // checkInternetConnected(config)
   //   .then(async () => {
-  const rows = await getChatPreviews();
-  mainWindow?.webContents.send('asynchronous-message', { data: rows });
+  // const rows = await getChatPreviews();
+  // mainWindow?.webContents.send('asynchronous-message', { data: rows });
 
-  await createAutoReminders();
+  // await createAutoReminders();
   await sendTimedMessage();
   await scanTimedMessageToDelete();
   const badgeNum = await getBadgeNumber();
-  app.dock.setBadge(badgeNum[0].count.toString());
+  // app.dock.setBadge(badgeNum[0].count.toString());
 
   mainWindow?.webContents.send('get-acccess-code', store.get('access-code'));
   // })
@@ -510,6 +544,7 @@ const runNameNumbers = async () => {
   // const output = execSync('echo "hello world"', { encoding: 'utf-8' }); // the default is 'buffer'
   // console.log('Output was:\n', output);
   const rows = await getNamesForNumbers();
+  mainWindow?.webContents.send('get-nicknames', store.get('nicknames'));
   mainWindow?.webContents.send('name-numbers', { data: rows });
 };
 
@@ -559,7 +594,7 @@ async function runScan() {
 
 runBoot();
 runScan();
-checkForNewMessage();
+// checkForNewMessage();
 
 app
   .whenReady()

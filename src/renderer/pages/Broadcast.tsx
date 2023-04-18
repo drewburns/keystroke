@@ -3,13 +3,16 @@ import { Box } from '@mui/system';
 import React from 'react';
 import BroadcastListItem from 'renderer/components/BroadcastListItem';
 import EditBroadcastList from 'renderer/components/EditBroadcastList';
+import help1 from '../images/help1.png';
+import help2 from '../images/help2.png';
 
 type Props = {
   nameNumbers: any[];
+  nicknames: Record<string, string>;
   isPaid: boolean;
 };
 
-export default function Broadcast({ nameNumbers, isPaid }: Props) {
+export default function Broadcast({ nameNumbers, isPaid, nicknames }: Props) {
   const [lists, setLists] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [selectedList, setSelectedList] = React.useState(null);
@@ -71,43 +74,102 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
     setNewListName('');
   };
 
-  if (!isPaid) {
+  if (lists.length === 0) {
     return (
-      <div style={{ textAlign: 'center', padding: 30 }}>
-        <h2>Upgrade to use Broadcast lists!</h2>
-        <p>
-          With broadcast lists you can create lists and send to many people
-          individually without making a groupchat
-        </p>
-        <a
-          href="https://buy.stripe.com/8wMdR0bLF9VW9SE289"
-          target="_blank"
-          style={{ textDecoration: 'none' }}
-          rel="noreferrer"
+      <div
+        style={{
+          marginBottom: 100,
+          // overflow: 'scroll',
+          position: 'relative',
+          // height: 600,
+        }}
+      >
+        <Modal
+          open={open}
+          onClose={() => {
+            setOpen(false);
+            setSelectedList(null);
+          }}
         >
+          {!selectedList ? (
+            <div>
+              <Box sx={style}>
+                <h3>New Broadcast List</h3>
+                <p>Bulksend a message to a list - without making a groupchat</p>
+                <TextField
+                  value={newListName}
+                  onChange={(e) => setNewListName(e.target.value)}
+                  style={{ backgroundColor: 'white', borderRadius: 5 }}
+                  label="Name"
+                  placeholder="New list..."
+                />
+                <br />
+                <Button
+                  onClick={() => createGroup()}
+                  style={{
+                    marginTop: 10,
+                    width: 150,
+                    paddingTop: 11,
+                    paddingBottom: 11,
+                    backgroundColor: 'black',
+                    color: 'white',
+                  }}
+                  variant="contained"
+                >
+                  Create
+                </Button>
+              </Box>
+            </div>
+          ) : (
+            <EditBroadcastList
+              setOpen={setOpen}
+              nicknames={nicknames}
+              selectedList={selectedList}
+              nameNumbers={nameNumbers}
+            />
+          )}
+        </Modal>
+        <div style={{ textAlign: 'center', padding: 30 }}>
+          <h2>Welcome to Keystroke!</h2>
+          <p>
+            With broadcast lists you can create lists and send to many people
+            individually without making a groupchat
+          </p>
+
           <Button
             variant="contained"
+            onClick={() => setOpen(true)}
             style={{
-              marginTop: 10,
-              color: 'black',
-              fontWeight: 'bold',
+              backgroundColor: 'black',
+              margin: 20,
+              color: 'white',
             }}
           >
-            Upgrade Now
+            Add List
           </Button>
-        </a>
-        <br />
-        <br />
-        <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/Owz7JcYIriU"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        />
-        <br />
+          <h3>Setup:</h3>
+          <p>1. Accept all privacy and automation popups</p>
+          <p>
+            2. Go to "System Settings" -- "Privacy and Security" -- "Full Disk
+            Access" -- "Keystroke"
+          </p>
+          <p>3. Restart App</p>
+          <br />
+          <br />
+          <img src={help1} style={{ height: 400 }} />
+          <img src={help2} style={{ height: 400 }} />
+          {/* <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/Owz7JcYIriU"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          /> */}
+
+          <br />
+        </div>
       </div>
     );
   }
@@ -153,6 +215,7 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
         ) : (
           <EditBroadcastList
             setOpen={setOpen}
+            nicknames={nicknames}
             selectedList={selectedList}
             nameNumbers={nameNumbers}
           />
@@ -169,6 +232,7 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
       >
         Add List
       </Button>
+      <i>Hint: use {'{first_name}'} to insert their first name</i>
       <div
         style={{
           overflow: 'scroll',
@@ -183,6 +247,7 @@ export default function Broadcast({ nameNumbers, isPaid }: Props) {
           <Grid item xs={10}>
             {lists.map((broadcast_list) => (
               <BroadcastListItem
+                nicknames={nicknames}
                 broadcast_list={broadcast_list}
                 setSelectedList={setSelectedList}
               />

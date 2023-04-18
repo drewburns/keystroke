@@ -29,9 +29,9 @@ export default function Settings({ tryCode, isPaid }: Props) {
       <h1 style={{ marginLeft: 0, paddingBottom: 5, fontSize: 22 }}>
         Settings
       </h1>
-      <p>Version 5.0.0</p>
+      <p>Version 5.0.5</p>
       <hr />
-      <p>
+      {/* <p>
         Set how many hours before Keystroke reminds you to respond to a message
         (default 12)
       </p>
@@ -40,8 +40,8 @@ export default function Settings({ tryCode, isPaid }: Props) {
         value={reminderTime}
         onChange={(e) => updateReminderTime(e.target.value)}
         style={{ backgroundColor: 'white' }}
-      />
-      <p>Text Andrew: +1 860 734 6043 or Luke: +1 218 348 0139 for support</p>
+      /> */}
+      <p>Text Andrew: +1 860 734 6043 for support</p>
       <p>For plan adjustments, contact us</p>
       <hr />
       {!isPaid && (
@@ -58,7 +58,7 @@ export default function Settings({ tryCode, isPaid }: Props) {
             href="https://buy.stripe.com/8wMdR0bLF9VW9SE289"
             rel="noreferrer"
           >
-            Click here to purchase a code (30 free trial, cancel anytime!)
+            Click here to purchase a code (7 free trial, cancel anytime!)
           </a>
           <h3>Enter your access code:</h3>
           <TextField

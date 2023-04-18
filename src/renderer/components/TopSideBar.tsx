@@ -11,8 +11,9 @@ import EmojiPeopleIcon from '@mui/icons-material/EmojiPeople';
 type Props = {
   setPage: (page: string) => void;
   page: string | null | undefined;
+  code: string | null | undefined;
 };
-export default function TopSideBar({ setPage, page }: Props) {
+export default function TopSideBar({ setPage, page, code }: Props) {
   return (
     <div
       style={{
@@ -23,22 +24,24 @@ export default function TopSideBar({ setPage, page }: Props) {
       }}
     >
       {/* <SearchIcon /> */}
-      <div onClick={() => setPage('reminders')} className="topBarIcon">
+      {/* <div onClick={() => setPage('reminders')} className="topBarIcon">
         <h3 style={{ marginBottom: 0, marginTop: 5 }}>⌛️</h3>
         <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Reminds</p>
-      </div>
-      <div onClick={() => setPage('timedMessages')} className="topBarIcon">
-        <h3 style={{ marginBottom: 0, marginTop: 5 }}>🌞</h3>
-        <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Delays</p>
-      </div>
+      </div> */}
+      {code === 'ato' && (
+        <div onClick={() => setPage('timedMessages')} className="topBarIcon">
+          <h3 style={{ marginBottom: 0, marginTop: 5 }}>🌞</h3>
+          <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Delays</p>
+        </div>
+      )}
       <div onClick={() => setPage('broadcast')} className="topBarIcon">
         <h3 style={{ marginBottom: 0, marginTop: 5 }}>⚡️</h3>
         <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Blasts</p>
       </div>
-      <div onClick={() => setPage('chat')} className="topBarIcon">
+      {/* <div onClick={() => setPage('chat')} className="topBarIcon">
         <h3 style={{ marginBottom: 0, marginTop: 5 }}>💬</h3>
         <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Chats</p>
-      </div>
+      </div> */}
       {/* <div onClick={() => setPage('settings')} className="topBarIcon">
         <h3 style={{ marginBottom: 0, marginTop: 5 }}>📊️</h3>
         <p style={{ fontSize: 10, margin: 0, fontWeight: 'bold' }}>Stats</p>

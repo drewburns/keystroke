@@ -191,6 +191,7 @@ export default function NewChat({
                       files={files}
                       onMessageSent={createBroadcastList}
                       setFiles={setFiles} // TODO: remove
+                      allowDelay
                     />
                     {/* {selectedTargets.filter((s) => s.label.includes('[Broadcast'))
               .length === 0 && (

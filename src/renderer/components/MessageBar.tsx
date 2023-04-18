@@ -33,6 +33,8 @@ type Props = {
   onMessageSent?: () => void;
   chatNames: string[];
   messageId: string | null;
+  nicknames: Record<string, string>;
+  allowDelay: boolean | null;
 };
 
 export default function MessageBar({
@@ -43,7 +45,9 @@ export default function MessageBar({
   broadcastIds,
   messageId,
   onMessageSent,
+  nicknames,
   chatNames,
+  allowDelay,
 }: Props) {
   // console.log(chatGuids);
   const [messageBody, setMessageBody] = React.useState('');
@@ -121,9 +125,10 @@ export default function MessageBar({
         });
       }
       chatGuids.forEach((chatGuid: string, index: number) => {
+        const nickname = nicknames ? nicknames[chatGuid] : '';
         const firstName = chatNames ? chatNames[index].split(' ')[0] : '';
         const parsedBody = chatNames
-          ? finalMessageBody.replace('{first_name}', firstName)
+          ? finalMessageBody.replace('{first_name}', nickname || firstName)
           : finalMessageBody;
         mixpanel.track('sent message', { isDate: !!date });
         window.electron.ipcRenderer.sendMessage('send-message', [
@@ -200,10 +205,12 @@ export default function MessageBar({
           }}
         >
           <div>
-            <AccessAlarmIcon
-              onClick={handleClick}
-              style={date && { color: '#1A8BFF' }}
-            />
+            {allowDelay && (
+              <AccessAlarmIcon
+                onClick={handleClick}
+                style={date && { color: '#1A8BFF' }}
+              />
+            )}
             <Popover
               id={id}
               open={open}

@@ -8,10 +8,12 @@ import { toast } from 'react-toastify';
 type Props = {
   broadcast_list: any;
   setSelectedList: (obj: any) => void;
+  nicknames: Record<string, string>;
 };
 
 export default function BroadcastListItem({
   broadcast_list,
+  nicknames,
   setSelectedList,
 }: Props) {
   const [isReplying, setIsReplying] = React.useState(false);
@@ -88,6 +90,7 @@ export default function BroadcastListItem({
             <Collapse in={isReplying}>
               <MessageBar
                 broadcastIds={[broadcast_list.id]}
+                nicknames={nicknames}
                 chatGuids={[]}
                 files={files}
                 setFiles={setFiles}

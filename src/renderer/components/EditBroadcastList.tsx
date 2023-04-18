@@ -6,12 +6,15 @@ import {
   Autocomplete,
   Button,
 } from '@mui/material';
+import Swal from 'sweetalert2';
+
 import { formatPhoneNumber } from '../util';
 import React from 'react';
 
 type Props = {
   selectedList: any;
   nameNumbers: any[];
+  nicknames: Record<string, string>;
   setOpen: (val: boolean) => void;
 };
 const style = {
@@ -35,6 +38,7 @@ const style = {
 export default function EditBroadcastList({
   selectedList,
   nameNumbers,
+  nicknames,
   setOpen,
 }: Props) {
   React.useEffect(() => {
@@ -68,7 +72,6 @@ export default function EditBroadcastList({
   const [listMembers, setListMembers] = React.useState(
     selectedList.part_list ? selectedList.part_list.split(',') : []
   );
-  console.log(listMembers);
   const addUserToList = (name: string, guid: string) => {
     // setValue(newValue);
     const newMems = [...listMembers];
@@ -89,8 +92,37 @@ export default function EditBroadcastList({
     ]);
   };
 
+  const editName = async (part) => {
+    // const { value: newName } = await Swal.fire({
+    //   input: 'text',
+    //   inputLabel: 'Enter nickname',
+    //   inputPlaceholder: 'Enter nickname',
+    //   customClass: {
+    //     container: 'my-swal',
+    //   },
+    // });
+    // alert(newName);
+
+    // if (url) {
+    //   Swal.fire(`Entered URL: ${url}`)
+    // }
+
+    // window.electron.ipcRenderer.sendMessage('set-nickname', [part]);
+  };
+
   const [selectOptions, setSelectOptions] = React.useState([]);
   const [selectedItem, setSelectedItem] = React.useState('');
+  const getNickName = (part) => {
+    return nameNumbers[formatPhoneNumber(part)];
+    // const nickname = nicknames[part];
+    // const foundName = nameNumbers[formatPhoneNumber(part)];
+    // if (foundName && nickname) {
+    //   return (
+    // foundName.split(' ')[0] + ` "${nickname}" ` + foundName.split(' ')[1]
+    //   );
+    // }
+    // return foundName;
+  };
   return (
     <Box sx={style}>
       <div>
@@ -112,7 +144,7 @@ export default function EditBroadcastList({
             {listMembers.map((part) => (
               // <Grid item xs={}>
               <p style={{ marginRight: 15, textAlign: 'left' }}>
-                {nameNumbers[formatPhoneNumber(part)] || part.split(';')[2]}{' '}
+                {getNickName(part) || part.split(';')[2]}{' '}
                 <span
                   onClick={() => removeItem(part)}
                   style={{
@@ -123,6 +155,17 @@ export default function EditBroadcastList({
                 >
                   X
                 </span>
+                {/* <span
+                  onClick={() => editName(part)}
+                  style={{
+                    color: 'orange',
+                    cursor: 'pointer',
+                    fontWeight: 'bold',
+                    marginLeft: 5,
+                  }}
+                >
+                  ✏️
+                </span> */}
               </p>
               // </Grid>
             ))}

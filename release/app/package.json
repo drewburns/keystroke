@@ -1,6 +1,6 @@
 {
   "name": "keystroke",
-  "version": "5.0.0",
+  "version": "5.0.5",
   "description": "A foundation for scalable desktop apps",
   "license": "MIT",
   "repository": "github:drewburns/keystroke",
